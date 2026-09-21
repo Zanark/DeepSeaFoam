@@ -10,7 +10,13 @@ DeepSeaFoam is a cross-application dark theme derived from [Ethan Schoonover's S
 - **Headers, toolbars, and panels:** `#001E26`
 - **Primary interaction accent:** `#2AA198`
 
-The interface should recede behind the work. Cyan is a restrained signal, ivory supplies selective warmth, and errors remain clear exceptions. The theme does not add ocean decoration, colored glow, gradients, or textures, and it does not recolor documents, artwork, images, videos, or exported content.
+The interface should recede behind the work. Cyan is a restrained signal, ivory supplies selective warmth, and errors remain clear exceptions. Application exports do not add ocean decoration, colored glow, gradients, or textures, and never recolor documents, artwork, images, videos, or exported content.
+
+## The underwater showcase
+
+The [website](https://zanark.github.io/DeepSeaFoam/) is a cinematic interpretation of the theme: a brief surface-crossing descent, refracted light, drifting particles, and layered kelp with out-of-focus foreground fronds. Scroll deeper and the light fades. Follow the tiny light in the midnight zone to meet its resident.
+
+This scenery belongs **only to the showcase**, not the canonical palette or application exports. Exact-color swatches and interface studies remain unfiltered. All artwork is original local SVG/CSS; there is no video, WebGL, external image service, audio, or runtime dependency. The site stays within a 100 KiB source budget. **Pause motion** freezes animation; reduced-motion preferences skip the descent automatically. **Skip descent**, Escape, or scrolling also bypasses the opening. The page and anglerfish discovery remain usable without JavaScript.
 
 ## Download
 

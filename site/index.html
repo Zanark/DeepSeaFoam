@@ -15,10 +15,61 @@
     <link rel="manifest" href="site.webmanifest">
     <link rel="stylesheet" href="palette.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="ocean.css">
     <script src="app.js" type="module"></script>
+    <script src="ocean.js" type="module"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the theme</a>
+
+    <div class="ocean-world" aria-hidden="true">
+      <div class="water-column"></div>
+      <div class="water-light">
+        <div class="water-ceiling"></div>
+        <div class="light-shafts"></div>
+        <div class="light-shafts secondary"></div>
+      </div>
+      <div class="distant-shoal">
+        <svg viewBox="0 0 480 100"><g fill="currentColor">
+          <path d="M30 40q20-15 42 0-22 14-42 0l-12 9V31z"/>
+          <path d="M130 22q14-10 30 0-16 10-30 0l-9 7V15z"/>
+          <path d="M201 57q18-12 38 0-20 12-38 0l-10 8V49z"/>
+          <path d="M294 34q13-9 28 0-15 9-28 0l-8 6V28z"/>
+          <path d="M375 68q15-11 33 0-18 11-33 0l-9 7V61z"/>
+          <path d="M440 20q9-7 21 0-12 7-21 0l-6 5V15z"/>
+        </g></svg>
+      </div>
+      <div class="kelp-bed kelp-far">
+        <img class="kelp left" src="kelp.svg" alt="">
+        <img class="kelp right" src="kelp.svg" alt="">
+      </div>
+      <div class="kelp-bed kelp-middle">
+        <img class="kelp left" src="kelp.svg" alt="">
+        <img class="kelp right" src="kelp.svg" alt="">
+      </div>
+      <div class="marine-snow snow-far"></div>
+      <div class="marine-snow snow-near"></div>
+      <div class="reading-shade"></div>
+    </div>
+    <div class="ocean-foreground" aria-hidden="true">
+      <div class="kelp-bed kelp-near">
+        <img class="kelp left" src="kelp.svg" alt="">
+        <img class="kelp right" src="kelp.svg" alt="">
+      </div>
+    </div>
+    <div class="dive-entry" aria-hidden="true">
+      <div class="surface-crossing"></div>
+      <div class="entry-bubbles"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <p>LEAVE THE SURFACE BEHIND</p>
+    </div>
+    <div class="dive-controls" hidden>
+      <button id="skip-dive" type="button" hidden>Skip descent</button>
+      <button id="motion-toggle" type="button" aria-pressed="false"><span aria-hidden="true">Ⅱ</span> <span class="motion-label">Pause motion</span></button>
+    </div>
+    <div class="depth-gauge" aria-hidden="true">
+      <span class="depth-track"><i></i></span>
+      <div><span id="depth-zone">THE SUNLIT ZONE</span><strong id="depth-value">0000 <small>m</small></strong><small>AN IMAGINED DESCENT</small></div>
+    </div>
 
     <header class="site-header">
       <a class="brand" href="#top" aria-label="DeepSeaFoam home">
@@ -46,15 +97,15 @@
     <main id="main">
       <section class="hero section-shell" id="top" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="eyebrow"><span></span> Solarized heritage. A distinct identity.</p>
+          <p class="eyebrow"><span></span> DeepSeaFoam / Beneath the everyday</p>
           <h1 id="hero-title">
-            Quiet depth for
-            <em>focused work.</em>
+            Leave the noise
+            <em>above the surface.</em>
           </h1>
           <p class="hero-lede">
-            A cross-application theme built around one defining relationship:
-            a genuinely black workspace held inside almost-black blue-green structure,
-            with seafoam signals and warm light reserved for what matters.
+            Down here, everything gets quieter. A black workspace. Deep blue-green
+            structure. Small seafoam signals. A little warm light.
+            One considered identity for the tools you call home.
           </p>
           <div class="hero-actions">
             <a class="button button-primary" href="https://github.com/Zanark/DeepSeaFoam/releases/latest">
@@ -70,6 +121,7 @@
             <div><dt>5</dt><dd>native exports</dd></div>
             <div><dt>0</dt><dd>runtime dependencies</dd></div>
           </dl>
+          <a class="descent-cue" href="#identity"><span></span> SCROLL INTO THE QUIET <b aria-hidden="true">↓</b></a>
         </div>
 
         <div class="workstation-wrap">
@@ -137,7 +189,7 @@
             </div>
           </div>
           <p class="workstation-caption">
-            <span>LIVE THEME STUDY</span>
+            <span>YOUR WORKSTATION, BELOW THE NOISE</span>
             Built entirely with semantic HTML and CSS—no screenshot, no image mockup.
           </p>
         </div>
@@ -145,7 +197,7 @@
 
       <section class="surface-decision" id="identity" aria-labelledby="surface-title">
         <div class="section-intro section-shell">
-          <p class="eyebrow"><span></span> The defining decision</p>
+          <p class="eyebrow"><span></span> 01 / Below the surface</p>
           <h2 id="surface-title">Depth is not the same as darkness.</h2>
           <p>
             DeepSeaFoam does not wash every surface in teal or substitute generic charcoal.
@@ -238,7 +290,7 @@
         </div>
         <div class="palette-groups section-shell" id="palette-groups" aria-live="polite">
           <noscript>
-            <p class="noscript-note">JavaScript is only used to render copyable swatches from the canonical palette JSON. The complete palette remains available in the repository README.</p>
+            <p class="noscript-note">Copyable swatches and scene controls need JavaScript. The underwater scene and the rest of the page still work. <a href="https://github.com/Zanark/DeepSeaFoam#core-interface-palette">See all 27 swatches in the repository README.</a></p>
           </noscript>
         </div>
       </section>
@@ -337,6 +389,49 @@
         </div>
       </section>
 
+      <section class="abyss-encounter section-shell" aria-labelledby="abyss-title">
+        <div class="encounter-copy">
+          <p class="eyebrow"><span></span> 03 / A light in the midnight zone</p>
+          <h2 id="abyss-title">Not every light<br>is a notification.</h2>
+          <p>Stay a moment. There is someone down here.</p>
+        </div>
+        <details class="angler-discovery">
+          <summary>
+            <svg class="angler" viewBox="0 0 380 280" aria-hidden="true">
+              <defs>
+                <radialGradient id="lure-halo"><stop stop-color="#EEE8D5" stop-opacity=".5"/><stop offset=".2" stop-color="#2AA198" stop-opacity=".25"/><stop offset="1" stop-color="#2AA198" stop-opacity="0"/></radialGradient>
+                <linearGradient id="fish-skin" x2=".8" y2="1"><stop stop-color="#28535A"/><stop offset=".45" stop-color="#0B2932"/><stop offset="1" stop-color="#001015"/></linearGradient>
+              </defs>
+              <g class="angler-drift">
+                <g class="fish-body">
+                  <path class="fish-tail" d="M118 180C82 143 61 145 43 148q20 33 0 57c27 0 52-6 75-25Z" fill="#123B42" stroke="#396364"/>
+                  <path d="m134 151 8-39 20 13 15-32 21 26 24-14 13 35m-82 62 14 29 37-18" fill="#123B42" stroke="#396364" stroke-linejoin="round"/>
+                  <path d="M105 180c3-47 67-70 124-49 37 14 55 51 51 73-14 24-65 31-102 15-27-12-56-4-73-39Z" fill="url(#fish-skin)" stroke="#396364"/>
+                  <path d="M260 165q-43 10-39 44 27 11 55-5-3-22-16-39Z" fill="#00090D" stroke="#586E75"/>
+                  <path d="m235 181 1 12 7-18 2 12 6-18 4 12m-25 23 7-8 2 13 8-11 2 12 8-11 3 9" fill="#93A1A1" opacity=".7"/>
+                  <path d="M179 179q-22 5-19 28 17-2 29-18" fill="#174047" stroke="#396364"/>
+                  <path d="M147 159q-11 18 2 34m8-36q-10 15 0 28" fill="none" stroke="#396364"/>
+                  <circle cx="241" cy="151" r="8" fill="#001015" stroke="#586E75"/>
+                  <circle cx="243" cy="149" r="3" fill="#EEE8D5"/>
+                  <path d="M207 133c-16-51 8-104 43-100 32 4 30 28 24 39" fill="none" stroke="#839496" stroke-width="2"/>
+                </g>
+                <g class="angler-lure">
+                  <circle cx="274" cy="77" r="66" fill="url(#lure-halo)"/>
+                  <circle class="lure-bulb" cx="274" cy="77" r="7" fill="#FDF6E3"/>
+                  <circle cx="272" cy="75" r="2" fill="#FFF"/>
+                </g>
+              </g>
+            </svg>
+            <span class="lure-hint"><span class="before-discovery">Follow the little light <b aria-hidden="true">↗</b></span><span class="after-discovery">Hello, little night light.</span></span>
+          </summary>
+          <div class="creature-note">
+            <span>FIELD NOTE / 001</span>
+            <h3>You found the night shift.</h3>
+            <p>One tiny anglerfish. An unreasonable amount of atmosphere.<br>Even in the abyss, a little warm light goes a long way.</p>
+          </div>
+        </details>
+      </section>
+
       <section class="final-cta">
         <div class="final-mark" aria-hidden="true">
           <span></span><span></span><span></span>
@@ -369,6 +464,7 @@
             <span>DeepSeaFoam</span>
           </a>
           <p>A quiet workstation beneath deep water.</p>
+          <button class="replay-dive" id="replay-dive" type="button" hidden>Back to the surface. Dive again. <span aria-hidden="true">↑</span></button>
         </div>
         <div class="footer-links">
           <div><strong>Project</strong><a href="https://github.com/Zanark/DeepSeaFoam">Repository</a><a href="https://github.com/Zanark/DeepSeaFoam/releases">Releases</a></div>

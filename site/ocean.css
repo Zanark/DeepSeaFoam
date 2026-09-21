@@ -1,0 +1,411 @@
+@layer ocean {
+  body { isolation: isolate; }
+  main, footer { position: relative; z-index: 2; }
+  [hidden] { display: none !important; }
+
+  /* The scenery is separate from the exact-color interface studies. */
+  .ocean-world, .ocean-foreground {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    contain: layout paint;
+  }
+  .ocean-world {
+    z-index: 0;
+    --water-light: 1;
+    --look-x: 0px;
+    --look-y: 0px;
+    background: #00090E;
+  }
+  .water-column {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 65% -18%, #427F77 0, #103E46 26%, transparent 65%),
+      radial-gradient(ellipse at 0 55%, #0A3035, transparent 50%),
+      linear-gradient(#031F2B, #001219 65%, #000509);
+    opacity: calc(1 - var(--descent, 0) * .7);
+    transition: opacity .8s ease;
+  }
+  .water-light {
+    position: absolute;
+    inset: 0;
+    opacity: var(--water-light);
+    transition: opacity 1.2s ease;
+  }
+  .water-ceiling {
+    position: absolute;
+    top: -29%;
+    left: -20%;
+    width: 140%;
+    height: 65%;
+    background: url("water-light.svg") center / 800px 400px;
+    opacity: .65;
+    transform: perspective(450px) rotateX(-48deg) scale(1.2);
+    mask-image: linear-gradient(#000 15%, transparent 95%);
+    animation: surface-drift 22s ease-in-out infinite alternate;
+  }
+  .light-shafts {
+    position: absolute;
+    inset: -20% -30% -30%;
+    background: conic-gradient(from 148deg at 65% 0,
+      transparent 0deg, #A2DEC215 5deg, transparent 9deg,
+      transparent 16deg, #A2DEC22B 19deg, transparent 23deg,
+      transparent 30deg, #A2DEC219 33deg, transparent 37deg,
+      transparent 42deg, #A2DEC227 45deg, transparent 50deg,
+      transparent 57deg, #A2DEC213 60deg, transparent 66deg);
+    filter: blur(8px);
+    transform-origin: 65% 0;
+    mask-image: linear-gradient(#000, transparent 95%);
+    animation: shaft-drift 18s ease-in-out infinite alternate;
+  }
+  .light-shafts.secondary {
+    opacity: .45;
+    transform: scaleX(-1);
+    animation-delay: -9s;
+    animation-direction: alternate-reverse;
+  }
+  .reading-shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, #00070BA8 25%, #00070BB8 68%, transparent),
+      linear-gradient(transparent 70%, #00070B66);
+  }
+  .kelp-bed { position: absolute; inset: 0; }
+  .kelp {
+    position: absolute;
+    bottom: -14%;
+    height: 107%;
+    width: auto;
+    max-width: none;
+    transform-origin: 50% 100%;
+    animation: kelp-sway 11s ease-in-out infinite alternate;
+  }
+  .kelp.left { left: -2%; }
+  .kelp.right { right: -3%; scale: -1 1; animation-delay: -7s; animation-duration: 14s; }
+  .kelp-far {
+    opacity: .22;
+    filter: blur(3px);
+    transform: translate(calc(var(--look-x) * .2), calc(var(--look-y) * .2)) scale(.83);
+  }
+  .kelp-far .left { left: 6%; bottom: -21%; }
+  .kelp-far .right { right: 7%; height: 91%; }
+  .kelp-middle {
+    opacity: calc(.85 - var(--descent, 0) * .45);
+    transform: translate(calc(var(--look-x) * .5), calc(var(--look-y) * .5));
+  }
+  .kelp-middle .right { height: 90%; bottom: -10%; }
+  .ocean-foreground {
+    z-index: 4;
+    /* Lens-close foliage cannot cross the central reading corridor. */
+    mask-image: linear-gradient(90deg, #000, #000 3%, transparent 13%, transparent 87%, #000 97%);
+  }
+  .kelp-near { filter: blur(7px); opacity: .85; }
+  .kelp-near .kelp { height: 144%; bottom: -22%; animation-duration: 17s; }
+  .kelp-near .left { left: -15%; rotate: 12deg; }
+  .kelp-near .right { right: -17%; rotate: -8deg; height: 170%; animation-delay: -12s; }
+  .distant-shoal {
+    position: absolute;
+    top: 23%;
+    left: 62%;
+    width: min(34vw, 480px);
+    color: #000F19;
+    opacity: calc(.55 * (1 - var(--descent, 0)));
+    filter: blur(.7px);
+    animation: shoal-drift 38s ease-in-out infinite alternate;
+  }
+  .marine-snow {
+    position: absolute;
+    inset: -120px -40px;
+    background-image: radial-gradient(1px 1px at 30px 70px, #C3DDCF80 70%, transparent),
+      radial-gradient(1px 1px at 130px 210px, #93A1A170 70%, transparent),
+      radial-gradient(2px 2px at 220px 130px, #93A1A144 70%, transparent);
+    background-size: 307px 293px;
+    animation: snow-drift 28s linear infinite;
+  }
+  .snow-far { opacity: .32; }
+  .snow-near { opacity: .27; background-size: 479px 437px; filter: blur(1px); animation-duration: 20s; animation-direction: reverse; }
+
+  .hero {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    padding-top: clamp(95px, 16vh, 180px);
+    gap: 100px;
+  }
+  .hero-copy { max-width: 970px; text-align: center; }
+  .hero .eyebrow { justify-content: center; font-size: .66rem; letter-spacing: .22em; }
+  .hero-copy h1 {
+    margin: 34px -25px 30px;
+    font-size: clamp(4rem, 7.5vw, 7.4rem);
+    font-weight: 440;
+    line-height: .98;
+    letter-spacing: -.07em;
+    color: var(--dsf-solid-warm);
+    text-shadow: 0 4px 60px #000;
+  }
+  .hero-copy h1 em {
+    margin-top: 0;
+    color: #A6BEB8;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: -.065em;
+  }
+  .hero-lede { max-width: 540px; margin: 0 auto 32px; font-size: 1.02rem; }
+  .hero-actions, .hero-facts { justify-content: center; }
+  .hero-facts { margin-top: 44px; }
+  .hero-facts div:first-child { padding-left: 28px; }
+  .descent-cue {
+    display: inline-flex;
+    align-items: center;
+    gap: 13px;
+    margin-top: 50px;
+    color: var(--dsf-solid-text);
+    font: .58rem var(--mono);
+    letter-spacing: .19em;
+    text-decoration: none;
+  }
+  .descent-cue span { height: 35px; width: 1px; background: linear-gradient(transparent, var(--dsf-solid-accent)); }
+  .descent-cue b { color: var(--dsf-solid-accent); font-size: 1rem; }
+  .workstation-wrap { width: min(850px, 100%); }
+  .workstation { box-shadow: 0 40px 100px #000B; }
+  .surface-decision, .palette-section, .applications, .final-cta {
+    width: min(1320px, calc(100% - 96px));
+    margin-inline: auto;
+    background: #001219C9;
+    border: 1px solid var(--dsf-overlay-separator);
+    border-radius: 12px;
+  }
+  .surface-decision .section-shell, .palette-section .section-shell,
+  .applications .section-shell, .final-cta .section-shell {
+    width: min(1080px, calc(100% - 64px));
+  }
+  .surface-stage { width: min(1080px, calc(100% - 64px)); margin-inline: auto; }
+  .principles, .hierarchy, .extension-note, .footer-grid { max-width: min(1120px, calc(100% - 128px)); }
+  .principle-grid article { background: #00090DBB; }
+  .site-header { width: min(1180px, calc(100% - 80px)); }
+  .site-header nav a, .header-download { text-shadow: 0 2px 9px #000; }
+  .section-intro h2, .hierarchy h2, .extension-note h2 { text-wrap: balance; }
+  footer { background: #00090DD9; margin-top: 80px; padding-bottom: 64px; }
+  .final-mark { opacity: .35; }
+
+  .dive-entry {
+    display: none;
+    position: fixed;
+    z-index: 30;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .is-diving .dive-entry { display: block; animation: dive-clear 2.8s ease both; }
+  .surface-crossing {
+    position: absolute;
+    inset: -100%;
+    background: linear-gradient(#03151B 25%, #255553 44%, #90B8A4AA 49.4%, #102F38 50.4%, #001018EE 70%);
+    animation: cross-surface 2.8s cubic-bezier(.3, .05, .15, 1) both;
+  }
+  .surface-crossing::after {
+    content: "";
+    position: absolute;
+    inset: 37% 0 46%;
+    background: url("water-light.svg") center / 800px 400px;
+    opacity: .65;
+    filter: blur(2px);
+    mask-image: linear-gradient(transparent, #000 30% 70%, transparent);
+  }
+  .dive-entry > p {
+    position: absolute;
+    top: 48%;
+    width: 100%;
+    text-align: center;
+    color: var(--dsf-solid-warm);
+    font: .65rem var(--mono);
+    letter-spacing: .35em;
+    animation: entry-caption 2.8s ease both;
+  }
+  .entry-bubbles i {
+    position: absolute;
+    top: 110%;
+    left: 13%;
+    width: 27px;
+    aspect-ratio: .85;
+    border: 1px solid #D0E5CF88;
+    border-radius: 47% 53% 41% 59%;
+    box-shadow: inset 2px 3px 5px #EEE8D566, 0 0 12px #2AA19833;
+    animation: entry-bubble 2.6s cubic-bezier(.16, .4, .5, 1) both;
+  }
+  .entry-bubbles i:nth-child(2) { left: 24%; width: 12px; animation-delay: .15s; }
+  .entry-bubbles i:nth-child(3) { left: 77%; width: 44px; animation-delay: .1s; filter: blur(2px); }
+  .entry-bubbles i:nth-child(4) { left: 66%; width: 18px; animation-delay: .3s; }
+  .entry-bubbles i:nth-child(5) { left: 89%; width: 70px; filter: blur(3px); }
+  .entry-bubbles i:nth-child(6) { left: 5%; width: 85px; filter: blur(4px); animation-delay: .2s; }
+  .is-diving .ocean-world { animation: camera-descent 2.8s var(--ease-out) both; }
+  .dive-controls {
+    position: fixed;
+    z-index: 50;
+    bottom: 18px;
+    right: 18px;
+    display: flex;
+    gap: 5px;
+    padding: 4px;
+    border: 1px solid var(--dsf-overlay-separator);
+    border-radius: 7px;
+    background: #00131BEC;
+  }
+  .dive-controls button {
+    min-height: 40px;
+    padding: 6px 13px;
+    border: 0;
+    border-radius: 3px;
+    background: transparent;
+    color: var(--dsf-solid-warm);
+    font: .65rem var(--mono);
+    cursor: pointer;
+  }
+  .dive-controls button:hover { background: var(--dsf-overlay-hover); }
+  .dive-controls button > span:first-child { color: var(--dsf-solid-accent); margin-right: 7px; }
+  .depth-gauge {
+    position: fixed;
+    z-index: 5;
+    bottom: 28px;
+    left: 24px;
+    display: flex;
+    gap: 15px;
+    color: var(--dsf-solid-text);
+    font: .5rem var(--mono);
+    letter-spacing: .15em;
+    pointer-events: none;
+  }
+  .depth-gauge strong { display: block; margin: 7px 0 9px; color: var(--dsf-solid-warm); font-size: 1.15rem; font-weight: 400; }
+  .depth-gauge small { font-size: .5rem; }
+  .depth-track { position: relative; width: 8px; border-block: 1px solid var(--dsf-solid-border); background: repeating-linear-gradient(transparent 0 7px, #586E7577 7px 8px); }
+  .depth-track i { position: absolute; top: calc(var(--depth-progress, 0) * 100%); width: 14px; height: 2px; background: var(--dsf-solid-accent); }
+  .replay-dive {
+    min-height: 44px;
+    margin-top: 12px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--dsf-solid-accent);
+    font: .7rem var(--mono);
+    cursor: pointer;
+  }
+  .copy-toast { bottom: 85px; }
+
+  .abyss-encounter {
+    display: grid;
+    min-height: 600px;
+    padding: 100px 40px 120px;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 30px;
+  }
+  .encounter-copy h2 {
+    margin: 25px 0;
+    color: var(--dsf-solid-warm);
+    font-family: var(--display);
+    font-size: clamp(2.5rem, 4.5vw, 4rem);
+    letter-spacing: -.06em;
+    line-height: 1.05;
+    font-weight: 470;
+  }
+  .encounter-copy > p:last-child { max-width: 290px; font-size: .9rem; }
+  .encounter-copy .eyebrow { font-size: .58rem; letter-spacing: .12em; }
+  .angler-discovery { position: relative; min-width: 0; text-align: center; }
+  .angler-discovery summary { list-style: none; cursor: pointer; border-radius: 50%; }
+  .angler-discovery summary::-webkit-details-marker { display: none; }
+  .angler-discovery summary:focus-visible { outline: none; }
+  .angler-discovery summary:focus-visible .lure-hint { outline: 2px solid var(--dsf-solid-accent); outline-offset: 8px; }
+  .angler { width: min(430px, 100%); margin: auto; overflow: visible; }
+  .angler-drift { animation: angler-drift 9s ease-in-out infinite alternate; transform-origin: center; }
+  .fish-body { opacity: .18; transition: opacity 1.2s ease; }
+  .angler-discovery:is([open], :hover, :focus-within) .fish-body { opacity: 1; }
+  .angler-lure { animation: lure-breathe 4s ease-in-out infinite alternate; }
+  .lure-bulb { filter: drop-shadow(0 0 5px #EEE8D5) drop-shadow(0 0 14px #2AA198); }
+  .lure-hint { display: block; width: fit-content; margin-inline: auto; color: var(--dsf-solid-faint-text); font: .65rem var(--mono); letter-spacing: .06em; }
+  .lure-hint b { color: var(--dsf-solid-accent); }
+  .after-discovery, .angler-discovery[open] .before-discovery { display: none; }
+  .angler-discovery[open] .after-discovery { display: inline; }
+  .creature-note { padding: 28px 15px 0; }
+  .creature-note > span { color: var(--dsf-solid-accent); font: .55rem var(--mono); letter-spacing: .16em; }
+  .creature-note h3 { margin: 10px 0; color: var(--dsf-solid-warm); font-size: 1.3rem; font-weight: 500; }
+  .creature-note p { font-size: .8rem; }
+
+  @keyframes surface-drift {
+    to { transform: perspective(450px) rotateX(-48deg) scale(1.3) translate(2%, 3%); }
+  }
+  @keyframes shaft-drift { from { rotate: -4deg; } to { rotate: 5deg; } }
+  @keyframes kelp-sway { from { transform: rotate(-3deg) skewX(-2deg); } to { transform: rotate(4deg) skewX(3deg); } }
+  @keyframes shoal-drift { from { transform: translateX(5%) translateY(0); } to { transform: translateX(-60%) translateY(-20px); } }
+  @keyframes snow-drift { from { transform: translate(0, 70px); } to { transform: translate(30px, -120px); } }
+  @keyframes angler-drift { to { transform: translateY(-9px) rotate(-3deg); } }
+  @keyframes lure-breathe { from { opacity: .8; } to { opacity: 1; } }
+  @keyframes dive-clear { 0%, 40% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes cross-surface { from { transform: translateY(27%); } to { transform: translateY(-32%); } }
+  @keyframes entry-caption { 0%, 25% { opacity: .8; } 55%, 100% { opacity: 0; } }
+  @keyframes entry-bubble { from { transform: translateY(0) scale(.6); } to { transform: translateY(-130vh) scale(1.4); } }
+  @keyframes camera-descent { from { transform: scale(1.16) translateY(6%); } to { transform: none; } }
+
+  @media (min-width: 1700px) {
+    .kelp-near .left { left: -8%; }
+    .kelp-near .right { right: -10%; }
+  }
+  @media (max-width: 1100px) {
+    .hero { padding-top: 110px; gap: 80px; }
+    .hero-copy h1 { font-size: clamp(4rem, 9vw, 6rem); }
+    .kelp-middle .left { left: -11%; }
+    .kelp-middle .right { right: -11%; }
+    .kelp-near .left { left: -26%; }
+    .kelp-near .right { right: -32%; }
+    .depth-gauge { left: 12px; }
+    .depth-gauge > div { display: none; }
+    .depth-track { height: 70px; }
+    .abyss-encounter { padding-inline: 40px; }
+  }
+  @media (max-width: 780px) {
+    .site-header { width: calc(100% - 40px); }
+    .hero { width: calc(100% - 48px); padding-top: 90px; gap: 70px; }
+    .hero-copy h1 { margin-inline: 0; font-size: clamp(3.3rem, 10vw, 5rem); }
+    .hero-copy h1 em { line-height: 1.05; }
+    .hero .eyebrow { font-size: .51rem; letter-spacing: .12em; }
+    .hero-lede { max-width: 430px; font-size: .92rem; }
+    .hero-facts div, .hero-facts div:first-child { padding-inline: 12px; }
+    .surface-decision, .palette-section, .applications, .final-cta { width: calc(100% - 32px); border-radius: 8px; }
+    .surface-decision .section-shell, .palette-section .section-shell,
+    .applications .section-shell, .final-cta .section-shell, .surface-stage { width: calc(100% - 32px); }
+    .principles, .hierarchy, .extension-note, .footer-grid { max-width: calc(100% - 64px); }
+    .kelp-middle { opacity: .6; }
+    .kelp-middle .kelp { height: 88%; }
+    .kelp-middle .left { left: -150px; }
+    .kelp-middle .right { right: -155px; height: 75%; }
+    .kelp-far .left { left: -120px; }
+    .kelp-far .right { right: -120px; }
+    .kelp-near .kelp { height: 110%; }
+    .kelp-near .left { left: -225px; }
+    .kelp-near .right { right: -235px; }
+    .ocean-foreground { mask-image: linear-gradient(90deg, #000, transparent 8%, transparent 92%, #000); }
+    .water-ceiling { top: -14%; height: 50%; }
+    .water-light { opacity: calc(var(--water-light) * .85); }
+    .reading-shade { background: linear-gradient(90deg, transparent, #00070B99 15% 85%, transparent); }
+    .abyss-encounter { grid-template-columns: 1fr; padding: 90px 24px; gap: 10px; text-align: center; }
+    .encounter-copy .eyebrow { justify-content: center; }
+    .encounter-copy > p:last-child { margin-inline: auto; }
+    .angler { width: 300px; }
+    .depth-gauge { display: none; }
+    .dive-controls { bottom: 12px; right: 12px; }
+    .dive-controls button { min-height: 36px; padding: 6px 10px; font-size: .6rem; }
+    .descent-cue { margin-top: 35px; font-size: .5rem; }
+  }
+  /* Freeze all motion, including the original cursor and scroll animations. */
+  body:not(.ocean-ready) *, body:not(.ocean-ready) *::before, body:not(.ocean-ready) *::after,
+  .motion-paused *, .motion-paused *::before, .motion-paused *::after,
+  .page-hidden *, .page-hidden *::before, .page-hidden *::after { animation-play-state: paused !important; }
+  .motion-paused, .motion-paused * { scroll-behavior: auto !important; transition: none !important; }
+  @media (prefers-reduced-motion: reduce) {
+    .dive-entry { display: none !important; }
+    .ocean-world, .kelp-bed { transform: none !important; }
+    .water-ceiling { animation: none; }
+    .angler-drift { animation: none; }
+  }
+}
