@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "DeepSeaFoam",
+  "version": "0.1.0",
+  "description": "A quiet workstation beneath deep water, with small seafoam-colored signals and warm light illuminating what matters.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "deepseafoam@zanark.github.io",
+      "strict_min_version": "109.0"
+    }
+  },
+  "theme": {
+    "colors": {
+      "frame": "#001E26",
+      "frame_inactive": "#001E26",
+      "tab_background_text": "#93A1A1",
+      "tab_text": "#EEE8D5",
+      "tab_selected": "#000000",
+      "tab_line": "#2AA198",
+      "tab_loading": "#2AA198",
+      "toolbar": "#001E26",
+      "toolbar_text": "#93A1A1",
+      "toolbar_field": "#000000",
+      "toolbar_field_text": "#93A1A1",
+      "toolbar_field_border": "#586E75",
+      "toolbar_field_focus": "#000000",
+      "toolbar_field_text_focus": "#EEE8D5",
+      "toolbar_field_border_focus": "#2AA198",
+      "toolbar_field_highlight": "#2AA19855",
+      "toolbar_field_highlight_text": "#EEE8D5",
+      "toolbar_top_separator": "#586E7566",
+      "toolbar_bottom_separator": "#586E7566",
+      "icons": "#93A1A1",
+      "icons_attention": "#2AA198",
+      "button_background_hover": "#586E7533",
+      "button_background_active": "#000000",
+      "popup": "#001E26",
+      "popup_text": "#93A1A1",
+      "popup_border": "#586E75",
+      "popup_highlight": "#000000",
+      "popup_highlight_text": "#2AA198",
+      "sidebar": "#001E26",
+      "sidebar_text": "#93A1A1",
+      "sidebar_border": "#586E7566",
+      "ntp_background": "#000000",
+      "ntp_text": "#93A1A1"
+    }
+  }
+}
