@@ -1266,17 +1266,14 @@
     font-size: .58rem;
   }
 
-  .app-card-top b {
-    display: grid;
+  .app-card-top img {
     width: 48px;
     height: 48px;
-    place-items: center;
+    padding: 7px;
+    object-fit: contain;
+    flex-shrink: 0;
     border: 1px solid var(--dsf-solid-border);
     border-radius: 8px;
-    color: var(--dsf-solid-accent);
-    font-family: var(--display);
-    font-size: .9rem;
-    font-weight: 650;
   }
 
   .app-card h3 {

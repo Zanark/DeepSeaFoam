@@ -1,4 +1,5 @@
-import { access, readFile, stat } from "node:fs/promises";
+import { access, readFile, readdir, stat } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -16,7 +17,8 @@ const requiredFiles = [
   "kelp.svg",
   "water-light.svg",
   "mark.svg",
-  "site.webmanifest"
+  "site.webmanifest",
+  "icons/NOTICE.txt"
 ];
 
 for (const file of requiredFiles) {
@@ -35,6 +37,32 @@ const css = `${mainCss}\n${oceanCss}`;
 
 const palette = JSON.parse(paletteText);
 const manifest = JSON.parse(manifestText);
+const { icons } = JSON.parse(await readFile(path.join(root, "docs", "application-icons.json"), "utf8"));
+const appIds = ["vscode", "visual-studio", "obsidian", "terminal", "firefox"];
+if (icons.length !== appIds.length || icons.some((icon, index) => icon.id !== appIds[index])) {
+  throw new Error("Application icon provenance must cover all five cards exactly once");
+}
+for (const icon of icons) {
+  if (!/^[a-z-]+\.svg$/.test(icon.file)) throw new Error(`Invalid icon filename: ${icon.file}`);
+  const bytes = await readFile(path.join(site, "icons", icon.file));
+  if (createHash("sha256").update(bytes).digest("hex") !== icon.sha256) {
+    throw new Error(`Application artwork differs from its recorded upstream SVG: ${icon.file}`);
+  }
+  const svg = bytes.toString("utf8");
+  const references = [
+    ...[...svg.matchAll(/\bhref=["']([^"']+)["']/g)].map((match) => match[1]),
+    ...[...svg.matchAll(/url\(["']?([^"')]+)["']?\)/g)].map((match) => match[1])
+  ];
+  if (!svg.includes("<svg") || /<(?:script|foreignObject)\b|\son\w+\s*=/i.test(svg) ||
+      references.some((reference) => !reference.startsWith("#"))) {
+    throw new Error(`Application icon must be a self-contained, passive SVG: ${icon.file}`);
+  }
+  const card = html.match(new RegExp(`<a class="app-card app-${icon.id}"[^>]*>[\\s\\S]*?</a>`))?.[0];
+  if (!card?.includes(`src="icons/${icon.file}"`) || !card.includes('loading="lazy" alt=""')) {
+    throw new Error(`Application card must use its local decorative SVG: ${icon.id}`);
+  }
+  if (icon.license) await access(path.join(site, "icons", icon.license));
+}
 const logoUrl = "mark.svg?v=seaweed-foam";
 if (!html.includes(`rel="icon" href="${logoUrl}"`) ||
     [...html.matchAll(/<img\b[^>]*src="([^"]+)"/g)].filter((match) => match[1] === logoUrl).length !== 3 ||
@@ -106,13 +134,25 @@ for (const reference of relativeReferences) {
   await access(target);
 }
 
-const totalBytes = (
-  await Promise.all(requiredFiles.map(async (file) => (await stat(path.join(site, file))).size))
-).reduce((total, size) => total + size, 0);
-
-const budget = 100 * 1024;
-if (totalBytes > budget) {
-  throw new Error(`Website exceeds the 100 KiB source budget: ${totalBytes} bytes`);
+async function listAssets(directory) {
+  const files = [];
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const target = path.join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...await listAssets(target));
+    else if (entry.isFile()) files.push(target);
+    else throw new Error(`Unsupported website asset: ${target}`);
+  }
+  return files;
 }
 
-console.log(`Validated static website: ${totalBytes} bytes across ${requiredFiles.length} files.`);
+const assets = await listAssets(site);
+const totalBytes = (await Promise.all(assets.map(async (file) => (await stat(file)).size)))
+  .reduce((total, size) => total + size, 0);
+
+// The complete budget includes unmodified third-party SVGs and their notices.
+const budget = 128 * 1024;
+if (totalBytes > budget) {
+  throw new Error(`Website exceeds the 128 KiB asset budget: ${totalBytes} bytes`);
+}
+
+console.log(`Validated static website: ${totalBytes} bytes across ${assets.length} files.`);

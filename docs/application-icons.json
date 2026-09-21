@@ -1,0 +1,40 @@
+{
+  "retrieved": "2026-09-21",
+  "icons": [
+    {
+      "id": "vscode",
+      "file": "vscode.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/7330accdbc47e2dc0c19789a48533c4a3c50fe58/icons/vscode/vscode-original.svg",
+      "sha256": "503d580c442a7071aae180d9b4766e312e4600bf0e9d842b30f56d0e614eceb8",
+      "license": "LICENSE-devicon.txt"
+    },
+    {
+      "id": "visual-studio",
+      "file": "visual-studio.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/7330accdbc47e2dc0c19789a48533c4a3c50fe58/icons/visualstudio/visualstudio-original.svg",
+      "sha256": "82646b70fd41ee1ff3a751c1c773d1428bd776829ec4169203e67a15948d50ad",
+      "license": "LICENSE-devicon.txt"
+    },
+    {
+      "id": "obsidian",
+      "file": "obsidian.svg",
+      "source": "https://obsidian.md/images/obsidian-logo-gradient.svg",
+      "sha256": "119b01b96c99f736098742c329f440313b6763bd2aea22cafe08179699431280",
+      "guidelines": "https://obsidian.md/brand"
+    },
+    {
+      "id": "terminal",
+      "file": "windows-terminal.svg",
+      "source": "https://raw.githubusercontent.com/microsoft/terminal/7c92ecd037476f957809d0813b14d8bc44bb071a/res/terminal/Terminal.svg",
+      "sha256": "035e8e1982ee01c203fd1bf0212c8b28816f72a4ab2f12b6c77316de05d13f85",
+      "license": "LICENSE-terminal.txt"
+    },
+    {
+      "id": "firefox",
+      "file": "firefox.svg",
+      "source": "https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/firefox/firefox.svg",
+      "sha256": "3f3742d1e78c0db6c2d3531250f70c30675ee5310de32fa89befaf738c54efd0",
+      "license": "LICENSE-browser-logos.txt"
+    }
+  ]
+}
