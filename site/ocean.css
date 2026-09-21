@@ -85,7 +85,7 @@
   .kelp.left { left: -2%; }
   .kelp.right { right: -3%; scale: -1 1; animation-delay: -5s; animation-duration: 8.5s; }
   .kelp-far {
-    opacity: .22;
+    opacity: .34;
     filter: blur(3px);
     transform: translate(calc(var(--look-x) * .2), calc(var(--look-y) * .2)) scale(.83);
   }
@@ -97,6 +97,8 @@
     transform: translate(calc(var(--look-x) * .5), calc(var(--look-y) * .5));
   }
   .kelp-middle .right { height: 90%; bottom: -10%; }
+  .kelp.sprig { left: var(--x); height: var(--h); animation-delay: var(--lag); }
+  .kelp.sprig:nth-child(even) { scale: -1 1; animation-duration: 12s; }
   .ocean-foreground {
     z-index: 4;
     /* Lens-close foliage cannot cross the central reading corridor. */
@@ -381,6 +383,8 @@
     .kelp-middle .right { right: -155px; height: 75%; }
     .kelp-far .left { left: -120px; }
     .kelp-far .right { right: -120px; }
+    .kelp-far .sprig { left: calc(var(--x) - 26%); height: calc(var(--h) * .75); }
+    .kelp-middle .sprig { left: calc(var(--x) - 17%); opacity: .65; }
     .kelp-near .kelp { height: 110%; }
     .kelp-near .left { left: -225px; }
     .kelp-near .right { right: -235px; }

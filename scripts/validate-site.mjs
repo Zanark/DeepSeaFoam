@@ -115,6 +115,14 @@ if (depthOrder.some((position, index) => position < 0 || (index > 0 && position 
   throw new Error("Creature encounters must be separated along the descent, without collapsible sections");
 }
 
+for (const [depth, minimum] of [["far", 6], ["middle", 4], ["near", 2]]) {
+  const bed = html.match(new RegExp(`<div class="kelp-bed kelp-${depth}">([\\s\\S]*?)</div>`))?.[1] ?? "";
+  const plants = [...bed.matchAll(/<img\b[^>]*src="kelp\.svg"[^>]*>/g)];
+  if (plants.length < minimum || plants.some(([plant]) => !plant.includes('alt=""'))) {
+    throw new Error(`The ${depth} kelp bed needs at least ${minimum} decorative local plants`);
+  }
+}
+
 if (/@import\s|url\(\s*['"]?https?:/i.test(css)) {
   throw new Error("The website stylesheet must not load external assets");
 }
