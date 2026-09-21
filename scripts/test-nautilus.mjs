@@ -478,7 +478,7 @@ test("resize observers constrain the pose without a second loop and collapsed zo
   s.controller.destroy();
 });
 
-test("foreground bounds follow visual viewport resize and pan and restore styles on teardown", () => {
+test("viewport bounds follow visual viewport resize and pan and restore styles on teardown", () => {
   const s = scene({ viewport: true });
   const viewport = s.win.visualViewport;
   assert.deepEqual(s.zone.style, { left: "0px", top: "0px", width: "900px", height: "800px" });

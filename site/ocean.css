@@ -319,7 +319,8 @@
   }
   .copy-toast { bottom: 85px; }
 
-  .nautilus-zone { position: fixed; inset: 0; z-index: 6; overflow: hidden; pointer-events: none; contain: layout paint; }
+  /* Keep the free-roaming nautilus above the ocean, but below every readable surface. */
+  .nautilus-zone { position: fixed; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; contain: layout paint; }
   .nautilus {
     position: absolute; top: 50%; left: 50%;
     width: clamp(120px, 16vw, 190px); max-width: 90%; max-height: 80%;

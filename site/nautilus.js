@@ -150,11 +150,12 @@ export function resizeDrift(state, { width, height, fishWidth, fishHeight }) {
 
 const controllers = new WeakMap();
 
-// CSS contract: a fixed foreground zone and an absolutely positioned SVG at left/top
-// 50%, with transform: translate(-50%, -50%), transform-origin: 50% 50%, and a
-// responsive size that fits the zone. No transform animation/transition on the
-// SVG or .nautilus-float. JS owns only the SVG's transform and the zone's
-// data-nautilus-state (running, paused, static). Reduced motion uses the fallback.
+// CSS contract: a fixed scene layer above the ocean but below main/footer content,
+// and an absolutely positioned SVG at left/top 50%, with transform:
+// translate(-50%, -50%), transform-origin: 50% 50%, and a responsive size that
+// fits the zone. No transform animation/transition on the SVG or .nautilus-float.
+// JS owns only the SVG's transform and the zone's data-nautilus-state (running,
+// paused, static). Reduced motion uses the fallback.
 export function mountNautilus(zone) {
   if (!zone || typeof zone.querySelector !== "function" || !zone.ownerDocument) {
     throw new TypeError("Nautilus mounting requires a zone element");

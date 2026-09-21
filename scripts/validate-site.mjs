@@ -141,7 +141,7 @@ for (const marker of [
   '<canvas class="water-surface" aria-hidden="true"></canvas>',
   '<script src="ocean.js?v=touch-water" type="module"></script>',
   '<script src="water.js?v=touch-water" type="module"></script>',
-  '<script src="nautilus.js?v=free-nautilus" type="module"></script>',
+  '<script src="nautilus.js?v=nautilus-behind-content" type="module"></script>',
   'class="nautilus-zone"',
   'class="blobfish-zone"',
   'class="angler-zone"',
@@ -175,9 +175,10 @@ if (css.includes("nautilus-pass") || css.includes("nautilus-bob")) {
 }
 if (html.indexOf('class="nautilus-zone"') > html.indexOf("<main") ||
     !html.includes('class="nautilus-zone" aria-hidden="true"') ||
-    !/\.nautilus-zone\s*\{[^}]*position:\s*fixed;[^}]*z-index:\s*6;[^}]*pointer-events:\s*none/.test(css) ||
-    !html.includes('href="ocean.css?v=free-nautilus"')) {
-  throw new Error("Nautilus must occupy a pointer-transparent root foreground layer, not a section");
+    !/main,\s*footer\s*\{[^}]*position:\s*relative;[^}]*z-index:\s*2/.test(css) ||
+    !/\.nautilus-zone\s*\{[^}]*position:\s*fixed;[^}]*z-index:\s*1;[^}]*pointer-events:\s*none/.test(css) ||
+    !html.includes('href="ocean.css?v=nautilus-behind-content"')) {
+  throw new Error("Nautilus must roam in a pointer-transparent root layer below readable content");
 }
 const hideout = html.match(/<section class="blobfish-zone"[\s\S]*?<\/section>/)?.[0] ?? "";
 if (!hideout.includes('src="blobfish.webp"') || (hideout.match(/class="cover-kelp"/g)?.length ?? 0) < 20 ||

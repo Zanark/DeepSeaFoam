@@ -18,7 +18,7 @@ The hero has no eyebrow. Its four-line poem reads:
 
 **Find your app** sits beside **Explore the palette**, using the existing document green `#45D072` with dark text. These are navigation choices, not new theme colors. ([site/index.html:125–141](../site/index.html#L125-L141), `.button-applications`, [site/styles.css:299–306](../site/styles.css#L299-L306), [site/palette.css:11](../site/palette.css#L11))
 
-The reading path is **hero/workspace → surface hierarchy → editorial rationale/photo reference → palette → applications → interaction study → anglerfish → download → footer/blobfish**. Applications immediately follow the palette. The nautilus is no longer an inline section or spacer: it occupies a root-level foreground layer independently of document flow. The old four principle cards, four-item signal legend, and heritage/extension block are retired from the page; the research narrative and interaction study remain. Creature placement is composition, not biological depth ordering, and the 0–2,000 m gauge is explicitly narrative. ([site/index.html:69–85](../site/index.html#L69-L85), [site/index.html:219–318](../site/index.html#L219-L318), [site/index.html:391–525](../site/index.html#L391-L525), [scripts/validate-site.mjs:160–180](../scripts/validate-site.mjs#L160-L180), `updateScene`, [site/ocean.js:65–82](../site/ocean.js#L65-L82))
+The reading path is **hero/workspace → surface hierarchy → editorial rationale/photo reference → palette → applications → interaction study → anglerfish → download → footer/blobfish**. Applications immediately follow the palette. The nautilus is no longer an inline section or spacer: it occupies a root-level scene layer independently of document flow, above the ocean but below readable content. The old four principle cards, four-item signal legend, and heritage/extension block are retired from the page; the research narrative and interaction study remain. Creature placement is composition, not biological depth ordering, and the 0–2,000 m gauge is explicitly narrative. ([site/index.html:69–85](../site/index.html#L69-L85), [site/index.html:219–318](../site/index.html#L219-L318), [site/index.html:391–525](../site/index.html#L391-L525), [scripts/validate-site.mjs:160–181](../scripts/validate-site.mjs#L160-L181), `updateScene`, [site/ocean.js:65–82](../site/ocean.js#L65-L82))
 
 ## Architecture
 
@@ -37,7 +37,7 @@ config:
 ---
 flowchart LR
   accTitle: Showcase architecture and palette boundary
-  accDescr: Generated palette assets feed the swatches and CSS. Ocean state coordinates a fixed foreground nautilus, bubbles painted above it, and background water. CSS provides a corner fallback and native checkbox reveals without JavaScript.
+  accDescr: Generated palette assets feed the swatches and CSS. Ocean state coordinates a fixed nautilus behind readable content, bubbles painted above it, and background water. CSS provides a corner fallback and native checkbox reveals without JavaScript.
   subgraph Data["Unchanged theme data"]
     P["Canonical palette"] --> G["generate.mjs"]
     G --> A["palette.json and palette.css"]
@@ -48,7 +48,7 @@ flowchart LR
   H --> O["ocean.js: scene controls"]
   O --> B["Shared body state classes"]
   B --> C
-  B --> N["nautilus.js: fixed foreground, free 2D"]
+  B --> N["nautilus.js: fixed behind-content layer, free 2D"]
   V["visualViewport: resize and pan"] --> N
   B --> K["Bubbles: foreground above nautilus"]
   B --> W["water.js: pointer and touch wakes"]
@@ -59,7 +59,7 @@ flowchart LR
 
 The modules load independently from HTML; shared body classes coordinate motion rather than making palette loading a prerequisite. The diagram shows that state contract, not a JavaScript import chain. ([site/index.html:16–22](../site/index.html#L16-L22), `syncMotion`, [site/ocean.js:96–108](../site/ocean.js#L96-L108), `mountNautilus` / `blocked`, [site/nautilus.js:209–213](../site/nautilus.js#L209-L213), `mountWater`, [site/water.js:113–115](../site/water.js#L113-L115))
 
-The nautilus zone is **fixed, `aria-hidden`, and pointer-transparent across the full viewport**, outside `main` and above the reading content. The fish inherits `pointer-events: none`, so links and controls remain reachable through its painted area. The zone and bubble field both use `z-index: 6`; the bubble field follows the zone in DOM order and therefore paints above the fish. During the opening dive, `.is-diving` hides the nautilus zone and its controller suspends motion. ([site/index.html:69–90](../site/index.html#L69-L90), [site/ocean.css:1–13](../site/ocean.css#L1-L13), [site/ocean.css:139](../site/ocean.css#L139), [site/ocean.css:322–332](../site/ocean.css#L322-L332), [site/nautilus.js:209–213](../site/nautilus.js#L209-L213))
+The nautilus zone is **fixed, `aria-hidden`, and pointer-transparent across the full viewport**, outside `main`. It uses `z-index: 1`, above the ocean world at `0` but below `main` and `footer` at `2`; the fish therefore keeps its full roaming area without painting over text or controls. Foreground kelp and bubbles remain above it at `4` and `6`. During the opening dive, `.is-diving` hides the nautilus zone and its controller suspends motion. ([site/index.html:69–90](../site/index.html#L69-L90), [site/ocean.css:1–16](../site/ocean.css#L1-L16), [site/ocean.css:109–140](../site/ocean.css#L109-L140), [site/ocean.css:322–333](../site/ocean.css#L322-L333), [site/nautilus.js:210–214](../site/nautilus.js#L210-L214))
 
 ### Components
 
@@ -75,7 +75,7 @@ The nautilus zone is **fixed, `aria-hidden`, and pointer-transparent across the 
 
 ## Data flow and interaction lifecycle
 
-The no-JavaScript fallback parks the nautilus near the **lower-right corner** (`left: 80%; top: 75%`, with smaller maximum dimensions), rather than in the middle of the reading corridor. Unsupported animation APIs leave that fallback intact. Reduced motion removes the inline motion transform and selects the same static corner state; ordinary pause instead freezes the current swimming pose. With an unchanged viewport, scrolling the document does not move that paused foreground location. Eligible animation starts from the centered model, and resuming resets the frame clock so suspended time is not replayed. ([site/ocean.css:322–332](../site/ocean.css#L322-L332), `createDrift`, [site/nautilus.js:54–65](../site/nautilus.js#L54-L65), `mountNautilus` / `sync`, [site/nautilus.js:158–173](../site/nautilus.js#L158-L173), [site/nautilus.js:215–255](../site/nautilus.js#L215-L255))
+The no-JavaScript fallback parks the nautilus near the **lower-right corner** (`left: 80%; top: 75%`, with smaller maximum dimensions), beneath readable content rather than in front of it. Unsupported animation APIs leave that fallback intact. Reduced motion removes the inline motion transform and selects the same static corner state; ordinary pause instead freezes the current swimming pose. With an unchanged viewport, scrolling the document does not move that paused scene-layer location. Eligible animation starts from the centered model, and resuming resets the frame clock so suspended time is not replayed. ([site/ocean.css:322–333](../site/ocean.css#L322-L333), `createDrift`, [site/nautilus.js:54–65](../site/nautilus.js#L54-L65), `mountNautilus` / `sync`, [site/nautilus.js:159–174](../site/nautilus.js#L159-L174), [site/nautilus.js:216–256](../site/nautilus.js#L216-L256))
 
 ```mermaid
 ---
@@ -90,13 +90,13 @@ config:
 ---
 flowchart TD
   accTitle: Nautilus motion lifecycle
-  accDescr: The fixed foreground fish has a static lower-right corner fallback. Reduced motion restores that fallback; pause retains the current pose. The opening dive hides the fish, viewport events refit it, and eligible motion resumes without catching up.
-  F["Fixed foreground: CSS corner fallback"] --> M["mountNautilus"]
+  accDescr: The fixed behind-content fish has a static lower-right corner fallback. Reduced motion restores that fallback; pause retains the current pose. The opening dive hides the fish, viewport events refit it, and eligible motion resumes without catching up.
+  F["Fixed behind-content layer: CSS corner fallback"] --> M["mountNautilus"]
   M --> Q{"Reduced motion?"}
   Q -->|yes| S["Static corner fallback; no RAF"]
   Q -->|no| E{"Ready, visible, focused and unpaused?"}
   E -->|yes| J{"Dive active?"}
-  J -->|no| R["Running: bounded free 2D foreground drift"]
+  J -->|no| R["Running: bounded free 2D scene drift"]
   E -->|no| P["Paused: retain pose; no RAF"]
   R -->|pause, offscreen, hidden, blur| P
   R -->|opening dive| I["Hidden by CSS; no RAF"]
@@ -190,7 +190,7 @@ The shared `mark.svg` paints **18 lower-half foam circles and five reflection pa
 
 The site cap is **256 KiB across every deployed file**, raised from 200 KiB to accommodate seven additional SVG product marks and two additional upstream notices. The measured source-site snapshot is **249,286 bytes across 34 files**. Counting is recursive and includes the transparent illustration, all motion modules, every product SVG, all notices, and `.nojekyll`; no assets are excluded to meet the cap. The linked-only Pexels photograph is not a deployed asset. ([site/icons/NOTICE.txt:4–14](../site/icons/NOTICE.txt#L4-L14), `listAssets` / `totalBytes` / `budget`, [scripts/validate-site.mjs:224–245](../scripts/validate-site.mjs#L224-L245))
 
-Validation checks the twelve-card inventory and icon hashes, blobfish hash/size/alpha/dimensions, photo attribution links, required controls, section order, foreground-layer contract, and research limits. It does not prove visual kelp occlusion, installed-app compatibility, or comfort. Browser acceptance must additionally cover wide/narrow viewports; seeded left/right/up/down/diagonal travel; bounded turns; foreground paint with bubbles above; native click/tap-through; pause remaining fixed during document scroll; intro hiding; no-JavaScript/reduced-motion fallback; and native pinch/visual-viewport containment. Phone emulation is not physical-device or Safari validation. ([scripts/validate-site.mjs:48–114](../scripts/validate-site.mjs#L48-L114), [scripts/validate-site.mjs:134–192](../scripts/validate-site.mjs#L134-L192), [scripts/test-nautilus.mjs:25–140](../scripts/test-nautilus.mjs#L25-L140), [scripts/test-nautilus.mjs:340–414](../scripts/test-nautilus.mjs#L340-L414), [scripts/test-nautilus.mjs:481–500](../scripts/test-nautilus.mjs#L481-L500))
+Validation checks the twelve-card inventory and icon hashes, blobfish hash/size/alpha/dimensions, photo attribution links, required controls, section order, behind-content layering contract, and research limits. It does not prove visual kelp occlusion, installed-app compatibility, or comfort. Browser acceptance must additionally cover wide/narrow viewports; seeded left/right/up/down/diagonal travel; bounded turns; nautilus paint below reading content with kelp and bubbles above; native click/tap-through; pause remaining fixed during document scroll; intro hiding; no-JavaScript/reduced-motion fallback; and native pinch/visual-viewport containment. Phone emulation is not physical-device or Safari validation. ([scripts/validate-site.mjs:48–114](../scripts/validate-site.mjs#L48-L114), [scripts/validate-site.mjs:134–193](../scripts/validate-site.mjs#L134-L193), [scripts/test-nautilus.mjs:25–140](../scripts/test-nautilus.mjs#L25-L140), [scripts/test-nautilus.mjs:340–414](../scripts/test-nautilus.mjs#L340-L414), [scripts/test-nautilus.mjs:481–500](../scripts/test-nautilus.mjs#L481-L500))
 
 The `main` Pages workflow validates and uploads only `site`. Release packaging separately runs validation and parses the Visual Studio and JetBrains XML, then packages application-specific assets and a versioned source/site bundle with SHA-256 checksums. The packaging additions include chat-target files, a Chromium ZIP, a JetBrains JAR, a Sublime color scheme, and Alacritty TOML. Browser-generated `Cached Theme.pak` files are excluded. **0.5.0 is the application-expansion package version, not a palette-color revision.** A website deployment and a native release remain separate publication steps; neither is established by this document or by the presence of packaging code. Preserve earlier immutable release assets rather than silently replacing them. ([.github/workflows/pages.yml:3–7](../.github/workflows/pages.yml#L3-L7), [.github/workflows/pages.yml:30–51](../.github/workflows/pages.yml#L30-L51), [scripts/package-release.ps1:26–38](../scripts/package-release.ps1#L26-L38), [scripts/package-release.ps1:65–92](../scripts/package-release.ps1#L65-L92), [scripts/package-release.ps1:106–138](../scripts/package-release.ps1#L106-L138))
 
