@@ -1,7 +1,7 @@
 {
   "$schema": "./schema.json",
   "name": "DeepSeaFoam",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A quiet workstation beneath deep water, with small seafoam-colored signals and warm light illuminating what matters.",
   "attribution": {
     "origin": "SpriteCanvas",
@@ -10,30 +10,29 @@
     "derivedFromUrl": "https://ethanschoonover.com/solarized/",
     "terminalInspiration": "Solarized Dark Higher Contrast (user-supplied scheme)"
   },
-  "pastelAdaptation": {
-    "sourceVersion": "0.3.0",
+  "signalAdaptation": {
     "space": "oklch",
-    "lightness": 0.73,
-    "chroma": 0.12,
-    "originals": {
-      "accent": "#2AA198",
-      "document": "#859900",
-      "warning": "#B58900",
-      "error": "#DC322F"
+    "method": "proportional-shade",
+    "sourceGroup": "terminal",
+    "roles": {
+      "accent": { "source": "brightCyan", "scale": 0.94 },
+      "document": { "source": "brightGreen", "scale": 0.9 },
+      "warning": { "source": "brightYellow", "scale": 0.94 },
+      "error": { "source": "red", "scale": 0.96 }
     }
   },
   "solid": {
     "base": { "value": "#000F13", "role": "Near-black teal workspace and recessed surface" },
     "panel": { "value": "#001E26", "role": "Headers, toolbars, and surrounding panels" },
-    "accent": { "value": "#28C0B5", "role": "Vivid pastel seafoam interaction, focus, and active outline" },
+    "accent": { "value": "#00A591", "role": "Rich seafoam interaction, focus, and active outline" },
     "text": { "value": "#93A1A1", "role": "Primary text and primary-action hover" },
     "faintText": { "value": "#839496", "role": "Genuinely lower-emphasis labels and markers" },
     "warm": { "value": "#EEE8D5", "role": "Warm emphasis, headings, and notices" },
     "lightEdge": { "value": "#FDF6E3", "role": "Precise light selection edge" },
     "border": { "value": "#586E75", "role": "Strong structural border" },
-    "document": { "value": "#A0B256", "role": "Vivid pastel kelp document indicator" },
-    "warning": { "value": "#C9A244", "role": "Vivid pastel amber warning indicator" },
-    "error": { "value": "#E9897E", "role": "Vivid pastel coral error boundary and indicator" }
+    "document": { "value": "#45D072", "role": "Vivid green document indicator" },
+    "warning": { "value": "#EBE565", "role": "Bright yellow warning indicator" },
+    "error": { "value": "#E84A5F", "role": "Vivid rose error boundary and indicator" }
   },
   "overlay": {
     "separator": { "value": "#586E7566", "role": "Quiet structural separation" },
@@ -42,7 +41,7 @@
     "shadowStrong": { "value": "#000000CC", "role": "Strong shadow" },
     "backdrop": { "value": "#000000B8", "role": "Modal backdrop" },
     "grid": { "value": "#002B3630", "role": "Faint pixel grid" },
-    "guide": { "value": "#28C0B588", "role": "Symmetry guide" },
+    "guide": { "value": "#00A59188", "role": "Symmetry guide" },
     "cursor": { "value": "#FDF6E3AA", "role": "Brush cursor" }
   },
   "preview": {
@@ -87,25 +86,25 @@
   },
   "derived": {
     "textSelection": {
-      "value": "#28C0B526",
-      "source": "#28C0B5",
+      "value": "#00A59126",
+      "source": "#00A591",
       "alpha": 0.149,
       "background": "transparent-capable targets",
-      "use": "Readable pastel text selection, distinct from the original pixel-selection edge"
+      "use": "Readable seafoam text selection, distinct from the original pixel-selection edge"
     },
     "errorBackground": {
-      "value": "#E9897E26",
-      "source": "#E9897E",
+      "value": "#E84A5F26",
+      "source": "#E84A5F",
       "alpha": 0.149,
       "background": "base or panel",
       "use": "Obsidian error surface with readable warm text"
     },
     "errorBackgroundHover": {
-      "value": "#E9897E2E",
-      "source": "#E9897E",
+      "value": "#E84A5F2E",
+      "source": "#E84A5F",
       "alpha": 0.18,
       "background": "base or panel",
-      "use": "Obsidian error surface hover without an opaque pastel wash"
+      "use": "Obsidian error surface hover without an opaque red wash"
     }
   }
 }

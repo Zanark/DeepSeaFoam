@@ -9,7 +9,7 @@
 
 The code editor and output surfaces are near-black teal (`#000F13`). Tool windows and shell structure use `#001E26`. Visual Studio colors use `AARRGGBB`, not the palette's `RRGGBBAA`.
 
-Version 0.4.1 corrects the overly light 0.4.0 signals with vibrant pastel seafoam (`#28C0B5`), kelp (`#A0B256`), amber (`#C9A244`), and coral (`#E9897E`) for accent, document, warning, and error roles. Native semantic tokens and core-backed syntax inherit those richer colors; the four Solarized heritage syntax colors and neutral surfaces remain unchanged. Text selection derives from `#28C0B526`, written as `2628C0B5` in this format, retaining 14.90% alpha.
+Version 0.4.2 derives accent seafoam (`#00A591`), vivid document green (`#45D072`), bright warning yellow (`#EBE565`), and error rose (`#E84A5F`) from the approved terminal group. Role-specific proportional shades retain terminal-style intensity, a little darker and richer, not pale pastels. Native semantic tokens and core-backed syntax inherit these signals; the four Solarized heritage syntax colors and neutral surfaces remain unchanged. Text selection derives from `#00A59126`, written as `2600A591` in this format, retaining 14.90% alpha.
 
 ## Build and install
 

@@ -4,9 +4,9 @@
 
 `DeepSeaFoam.json` is one object for the `schemes` array in Windows Terminal's `settings.json`. It combines the near-black teal base (`#000F13`) with brighter `#9CC2C3` text, an orange `#F34B00` cursor, and `#003748` selection.
 
-The [19-color terminal extension](../../README.md#higher-contrast-terminals) preserves the supplied **Solarized Dark Higher Contrast** scheme's colors except its background. Richer ANSI colors and distinct bright variants are shared with VS Code's integrated terminal; they do not alter the core UI palette.
+The [19-color terminal extension](../../README.md#higher-contrast-terminals) preserves the supplied **Solarized Dark Higher Contrast** scheme's colors except its background. Richer ANSI colors and distinct bright variants are shared with VS Code's integrated terminal.
 
-The **0.4.1 vibrant-pastel correction does not change this scheme's content**, just as 0.4.0 left it untouched: all 19 terminal colors and both terminals' `#000F13` backgrounds are unchanged from 0.3.0. Core-signal and UI-selection adjustments apply outside this separate terminal palette.
+Version **0.4.2 uses four terminal entries as direct sources for slightly deeper, richer core signals**, but does not change this scheme's content: all 19 terminal colors and both terminals' `#000F13` backgrounds are unchanged from 0.3.0, as they were in 0.4.0 and 0.4.1. The derived UI shades and selection adjustments remain separate from the actual terminal palette.
 
 ## Install
 

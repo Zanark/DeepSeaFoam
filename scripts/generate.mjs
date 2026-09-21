@@ -1,7 +1,7 @@
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { rgb, hsl, pastelVariant, composite, contrast } from "./colors.mjs";
+import { rgb, hsl, shadeColor, composite, contrast } from "./colors.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const palette = JSON.parse(await readFile(path.join(root, "palette", "deepseafoam.json"), "utf8"));
@@ -752,14 +752,19 @@ function validateSource() {
   if (solid("base") !== "#000F13" || solid("panel") !== "#001E26") {
     throw new Error("Defining DeepSeaFoam surface invariant changed");
   }
-  const adaptation = palette.pastelAdaptation;
-  if (adaptation?.space !== "oklch" ||
-      Object.keys(adaptation.originals ?? {}).sort().join(",") !== "accent,document,error,warning") {
-    throw new Error("The pastel adaptation must describe the four chromatic core roles");
+  const adaptation = palette.signalAdaptation;
+  if (adaptation?.space !== "oklch" || adaptation.method !== "proportional-shade" ||
+      adaptation.sourceGroup !== "terminal" ||
+      Object.keys(adaptation.roles ?? {}).sort().join(",") !== "accent,document,error,warning") {
+    throw new Error("The signal adaptation must shade terminal references for the four chromatic core roles");
   }
-  for (const [name, original] of Object.entries(adaptation.originals)) {
-    if (solid(name) !== pastelVariant(original, adaptation.lightness, adaptation.chroma)) {
-      throw new Error(`The ${name} pastel differs from its recorded OKLCH derivation`);
+  for (const [name, mapping] of Object.entries(adaptation.roles)) {
+    if (!mapping || !Object.hasOwn(palette.terminal, mapping.source) ||
+        Object.keys(mapping).sort().join(",") !== "scale,source") {
+      throw new Error(`Invalid terminal reference for ${name}`);
+    }
+    if (solid(name) !== shadeColor(terminal(mapping.source), mapping.scale)) {
+      throw new Error(`The ${name} signal differs from its recorded terminal shade`);
     }
   }
   if (overlay("guide") !== `${solid("accent")}88` ||

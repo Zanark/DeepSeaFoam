@@ -1,31 +1,45 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { rgb, hsl, oklch, pastelVariant, composite, contrast } from "./colors.mjs";
+import { rgb, hsl, oklch, pastelVariant, shadeColor, composite, contrast } from "./colors.mjs";
 
 const palette = JSON.parse(await readFile(new URL("../palette/deepseafoam.json", import.meta.url), "utf8"));
 const colors = Object.fromEntries(Object.entries(palette.solid).map(([name, entry]) => [name, entry.value]));
 
-test("the four pastel roles reproduce their recorded hue-preserving conversion", () => {
-  const { originals, lightness, chroma } = palette.pastelAdaptation;
-  for (const [name, source] of Object.entries(originals)) {
-    assert.equal(pastelVariant(source, lightness, chroma), colors[name]);
+test("interface signals reproduce their recorded terminal shade references", () => {
+  assert.equal(palette.signalAdaptation.sourceGroup, "terminal");
+  for (const [name, { source: role, scale }] of Object.entries(palette.signalAdaptation.roles)) {
+    const source = palette.terminal[role].value;
+    assert.equal(shadeColor(source, scale), colors[name]);
     const oldColor = oklch(source), newColor = oklch(colors[name]);
-    assert.ok(newColor.l > oldColor.l);
-    assert.ok(Math.abs(newColor.l - lightness) < .003);
-    assert.ok(Math.abs(newColor.c - chroma) < .003);
+    assert.ok(newColor.l < oldColor.l);
+    assert.ok(Math.abs(newColor.l - oldColor.l * scale) < .003);
+    assert.ok(Math.abs(newColor.c - oldColor.c * scale) < .003);
+    assert.ok(newColor.c >= oldColor.c * .87, `${name} must retain terminal-like color strength`);
     const hueDistance = Math.abs(newColor.h - oldColor.h);
     assert.ok(Math.min(hueDistance, 360 - hueDistance) < 2);
   }
 });
 
-test("the richer revision is darker and more chromatic than the rejected pale palette", () => {
-  const pale = { accent: "#78C8C0", document: "#B2BF84", warning: "#CEB47C", error: "#E6A49C" };
-  for (const [name, value] of Object.entries(pale)) {
-    const previous = oklch(value), current = oklch(colors[name]);
-    assert.ok(previous.l - current.l >= .04, `${name} must not return to the pale lightness`);
-    assert.ok(current.c - previous.c >= .03, `${name} must retain its restored color intensity`);
+test("shading retains saturated channels and handles neutral colors without tinting", () => {
+  assert.equal(rgb(colors.accent)[0], 0);
+  assert.equal(shadeColor("#00B39E", 1), "#00B39E");
+  const [r, g, b] = rgb(shadeColor("#808080", .94));
+  assert.equal(r, g);
+  assert.equal(g, b);
+  assert.ok(r < 128);
+  assert.throws(() => shadeColor("#00B39E", 0), /Shade scale/);
+  assert.throws(() => shadeColor("#00B39E", 1.1), /Shade scale/);
+  assert.throws(() => shadeColor("#00B39E", NaN), /Shade scale/);
+});
+
+test("warning stays distinctly bright instead of forcing equal lightness across roles", () => {
+  const warning = oklch(colors.warning);
+  for (const name of ["accent", "document", "error"]) {
+    assert.ok(warning.l - oklch(colors[name]).l >= .12);
   }
+  assert.ok(warning.l > .88);
+  assert.equal(palette.signalAdaptation.roles.warning.source, "brightYellow");
 });
 
 test("color conversions reject ambiguous input and out-of-gamut pastels", () => {
@@ -45,16 +59,16 @@ test("opaque colors round-trip through OKLCH without a hue shift", () => {
 });
 
 test("HSL and RGB aliases follow the new canonical colors", () => {
-  assert.deepEqual(hsl(colors.accent), { h: 175.658, s: 65.517, l: 45.49 });
-  assert.deepEqual(rgb(colors.error), [233, 137, 126]);
+  assert.deepEqual(hsl(colors.accent), { h: 172.727, s: 100, l: 32.353 });
+  assert.deepEqual(rgb(colors.error), [232, 74, 95]);
   assert.deepEqual(hsl("#000000"), { h: 0, s: 0, l: 0 });
   assert.deepEqual(hsl("#FFFFFF"), { h: 0, s: 0, l: 100 });
 });
 
 test("selection uses alpha-last compositing and retains ordinary text contrast", () => {
   const selection = palette.derived.textSelection.value;
-  assert.equal(composite(selection, colors.base), "#06292B");
-  assert.equal(composite(selection, colors.panel), "#06363B");
+  assert.equal(composite(selection, colors.base), "#002526");
+  assert.equal(composite(selection, colors.panel), "#003236");
   for (const surface of [colors.base, colors.panel]) {
     assert.ok(contrast(colors.text, composite(selection, surface)) >= 4.5);
   }
@@ -62,7 +76,7 @@ test("selection uses alpha-last compositing and retains ordinary text contrast",
   assert.equal(composite("#FFFFFFff", colors.base), "#FFFFFF");
 });
 
-test("pastel fills use dark ink while tinted error surfaces keep warm text", () => {
+test("signal fills use dark ink while tinted error surfaces keep warm text", () => {
   for (const name of ["accent", "document", "warning", "error"]) {
     assert.ok(contrast(colors.base, colors[name]) >= 4.5);
     assert.ok(contrast(colors[name], colors.panel) >= 4.5);
@@ -76,7 +90,7 @@ test("pastel fills use dark ink while tinted error surfaces keep warm text", () 
   }
 });
 
-test("generated exports use the canonical pastel aliases and readable diagnostics", async () => {
+test("generated exports use the canonical signal aliases and readable diagnostics", async () => {
   const theme = JSON.parse(await readFile(new URL("../targets/vscode/themes/deepseafoam-color-theme.json", import.meta.url), "utf8"));
   const invalid = theme.tokenColors.find((entry) => entry.name === "Invalid").settings;
   assert.deepEqual(invalid, { foreground: colors.base, background: colors.error });

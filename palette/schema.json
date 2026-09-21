@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "DeepSeaFoam palette",
   "type": "object",
-  "required": ["name", "version", "solid", "overlay", "preview", "heritage", "terminal", "derived", "pastelAdaptation"],
+  "required": ["name", "version", "solid", "overlay", "preview", "heritage", "terminal", "derived", "signalAdaptation"],
   "properties": {
     "name": { "const": "DeepSeaFoam" },
     "version": { "type": "string" },
@@ -12,19 +12,26 @@
     "heritage": { "$ref": "#/$defs/colorMap" },
     "terminal": { "$ref": "#/$defs/colorMap" },
     "derived": { "$ref": "#/$defs/colorMap" },
-    "pastelAdaptation": {
+    "signalAdaptation": {
       "type": "object",
-      "required": ["sourceVersion", "space", "lightness", "chroma", "originals"],
+      "required": ["space", "method", "sourceGroup", "roles"],
       "properties": {
-        "sourceVersion": { "type": "string" },
         "space": { "const": "oklch" },
-        "lightness": { "type": "number", "minimum": 0, "maximum": 1 },
-        "chroma": { "type": "number", "minimum": 0 },
-        "originals": {
+        "method": { "const": "proportional-shade" },
+        "sourceGroup": { "const": "terminal" },
+        "roles": {
           "type": "object",
           "required": ["accent", "document", "warning", "error"],
           "propertyNames": { "enum": ["accent", "document", "warning", "error"] },
-          "additionalProperties": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }
+          "additionalProperties": {
+            "type": "object",
+            "required": ["source", "scale"],
+            "additionalProperties": false,
+            "properties": {
+              "source": { "type": "string" },
+              "scale": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+            }
+          }
         }
       }
     }

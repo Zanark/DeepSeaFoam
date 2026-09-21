@@ -4,16 +4,16 @@
  */
 
 body {
-  --accent-h: 175.658;
-  --accent-s: 65.517%;
-  --accent-l: 45.49%;
+  --accent-h: 172.727;
+  --accent-s: 100%;
+  --accent-l: 32.353%;
   --background-primary: #000F13;
   --background-primary-alt: #000F13;
   --background-secondary: #001E26;
   --background-secondary-alt: #001E26;
   --background-modifier-border: #586E75;
-  --background-modifier-border-hover: #28C0B5;
-  --background-modifier-border-focus: #28C0B5;
+  --background-modifier-border-hover: #00A591;
+  --background-modifier-border-focus: #00A591;
   --background-modifier-hover: #586E7533;
   --background-modifier-active-hover: #586E7533;
   --background-modifier-form-field: #000F13;
@@ -26,19 +26,19 @@ body {
   --text-on-accent: #000F13;
   --text-on-accent-inverted: #000F13;
   --text-error: #EEE8D5;
-  --text-warning: #C9A244;
-  --text-success: #A0B256;
-  --text-accent: #28C0B5;
+  --text-warning: #EBE565;
+  --text-success: #45D072;
+  --text-accent: #00A591;
   --text-accent-hover: #EEE8D5;
   --interactive-normal: #000F13;
   --interactive-hover: #93A1A1;
-  --interactive-accent: #28C0B5;
+  --interactive-accent: #00A591;
   --interactive-accent-hover: #93A1A1;
-  --interactive-accent-hsl: 175.658, 65.517%, 45.49%;
-  --interactive-success: #A0B256;
-  --background-modifier-error: #E9897E26;
-  --background-modifier-error-hover: #E9897E2E;
-  --background-modifier-error-rgb: 233, 137, 126;
+  --interactive-accent-hsl: 172.727, 100%, 32.353%;
+  --interactive-success: #45D072;
+  --background-modifier-error: #E84A5F26;
+  --background-modifier-error-hover: #E84A5F2E;
+  --background-modifier-error-rgb: 232, 74, 95;
   --scrollbar-bg: transparent;
   --scrollbar-thumb-bg: #586E7566;
   --scrollbar-active-thumb-bg: #586E75;
@@ -46,38 +46,38 @@ body {
   --tab-text-color: #93A1A1;
   --tab-text-color-focused-active: #EEE8D5;
   --tab-text-color-focused-active-current: #EEE8D5;
-  --tab-outline-color: #28C0B5;
+  --tab-outline-color: #00A591;
   --titlebar-background: #001E26;
   --titlebar-background-focused: #001E26;
   --titlebar-text-color: #93A1A1;
   --titlebar-text-color-focused: #EEE8D5;
   --divider-color: #586E7566;
-  --divider-color-hover: #28C0B5;
+  --divider-color-hover: #00A591;
   --nav-item-color: #93A1A1;
   --nav-item-color-hover: #EEE8D5;
-  --nav-item-color-active: #28C0B5;
+  --nav-item-color-active: #00A591;
   --nav-item-background-hover: #586E7533;
   --nav-item-background-active: #000F13;
   --nav-indentation-guide-color: #586E7566;
-  --link-color: #28C0B5;
+  --link-color: #00A591;
   --link-color-hover: #EEE8D5;
   --link-external-color: #268BD2;
-  --link-unresolved-color: #C9A244;
-  --tag-color: #28C0B5;
+  --link-unresolved-color: #EBE565;
+  --tag-color: #00A591;
   --tag-background: #000F13;
   --tag-background-hover: #586E7533;
   --code-normal: #93A1A1;
   --code-background: #000F13;
   --code-comment: #586E75;
   --code-function: #EEE8D5;
-  --code-important: #E9897E;
-  --code-keyword: #A0B256;
+  --code-important: #E84A5F;
+  --code-keyword: #45D072;
   --code-operator: #6C71C4;
   --code-property: #268BD2;
   --code-punctuation: #839496;
-  --code-string: #28C0B5;
+  --code-string: #00A591;
   --code-tag: #268BD2;
-  --code-value: #C9A244;
+  --code-value: #EBE565;
   --blockquote-border-color: #586E75;
   --blockquote-color: #93A1A1;
   --heading-color: #EEE8D5;
@@ -87,19 +87,19 @@ body {
   --h4-color: #93A1A1;
   --h5-color: #839496;
   --h6-color: #839496;
-  --checkbox-color: #28C0B5;
+  --checkbox-color: #00A591;
   --checkbox-color-hover: #93A1A1;
   --checkbox-border-color: #586E75;
-  --checkbox-border-color-hover: #28C0B5;
+  --checkbox-border-color-hover: #00A591;
   --graph-line: #586E75;
   --graph-node: #93A1A1;
   --graph-node-focused: #FDF6E3;
-  --graph-node-tag: #28C0B5;
-  --graph-node-attachment: #C9A244;
-  --graph-node-unresolved: #E9897E;
+  --graph-node-tag: #00A591;
+  --graph-node-attachment: #EBE565;
+  --graph-node-unresolved: #E84A5F;
   --graph-node-fill: #001E26;
-  --graph-node-fill-highlight: #28C0B5;
-  --graph-node-fill-unresolved: #E9897E;
+  --graph-node-fill-highlight: #00A591;
+  --graph-node-fill-unresolved: #E84A5F;
 }
 
 .theme-dark {
@@ -107,7 +107,7 @@ body {
 }
 
 ::selection {
-  background: #28C0B526;
+  background: #00A59126;
   color: #EEE8D5;
 }
 
@@ -116,7 +116,7 @@ body {
 }
 
 .workspace-tab-header.is-active::after {
-  background-color: #28C0B5;
+  background-color: #00A591;
 }
 
 .workspace-leaf-content,
@@ -137,7 +137,7 @@ body {
 input:focus-visible,
 button:focus-visible,
 .clickable-icon:focus-visible {
-  outline: 2px solid #28C0B5;
+  outline: 2px solid #00A591;
   outline-offset: 2px;
 }
 

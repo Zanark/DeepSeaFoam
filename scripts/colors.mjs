@@ -56,6 +56,16 @@ export function hsl(value) {
   return { h: round(hue), s: round(delta ? delta / (1 - Math.abs(2 * lightness - 1)) * 100 : 0), l: round(lightness * 100) };
 }
 
+export function shadeColor(value, scale) {
+  if (!Number.isFinite(scale) || scale <= 0 || scale > 1) {
+    throw new Error("Shade scale must be greater than zero and at most one");
+  }
+  const original = oklch(value);
+  const chroma = original.c < .000001 ? 0 : original.c * scale;
+  // Scaling all OKLab coordinates preserves chromaticity rather than adding white or gray.
+  return pastelVariant(value, original.l * scale, chroma);
+}
+
 export function composite(value, background) {
   if (!/^#[0-9a-f]{8}$/i.test(value)) throw new Error(`Expected alpha-last RGBA hex: ${value}`);
   const alpha = parseInt(value.slice(7), 16) / 255;

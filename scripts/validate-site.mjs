@@ -68,7 +68,7 @@ for (const icon of icons) {
   }
   if (icon.license) await access(path.join(site, "icons", icon.license));
 }
-const logoUrl = "mark.svg?v=seaweed-foam-vivid";
+const logoUrl = "mark.svg?v=seaweed-foam-terminal";
 if (!html.includes(`rel="icon" href="${logoUrl}"`) ||
     [...html.matchAll(/<img\b[^>]*src="([^"]+)"/g)].filter((match) => match[1] === logoUrl).length !== 3 ||
     !manifest.icons.some((icon) => icon.src === logoUrl && icon.type === "image/svg+xml") ||
