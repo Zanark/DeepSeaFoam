@@ -65,7 +65,9 @@ function dive() {
 function updateScene(now = 0) {
   frame = 0;
   if (scrollBubbles && now >= nextBubbleTime) {
-    bubblesAt(Math.random() * innerWidth, innerHeight + 18, 3);
+    const viewport = window.visualViewport;
+    bubblesAt((viewport?.offsetLeft ?? 0) + Math.random() * (viewport?.width ?? innerWidth),
+      (viewport?.offsetTop ?? 0) + (viewport?.height ?? innerHeight) + 18, 3);
     nextBubbleTime = now + 160;
   }
   scrollBubbles = false;
@@ -121,8 +123,12 @@ document.addEventListener("keydown", (event) => {
 // Navigation or scrolling should never wait for an opening sequence.
 document.addEventListener("click", (event) => {
   if (event.target instanceof Element && event.target.closest("a")) finishDive();
-  if (event.detail > 0) bubblesAt(event.clientX, event.clientY, 7, true);
 });
+window.addEventListener("pointerdown", (event) => {
+  if (event.isPrimary === false || event.button !== 0) return;
+  finishDive();
+  bubblesAt(event.clientX, event.clientY, 7, true);
+}, { passive: true });
 window.addEventListener("wheel", () => {
   finishDive();
   queueBubbles();

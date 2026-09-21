@@ -208,17 +208,34 @@ test("replay returns to the top and respects paused motion", () => {
   assert.equal(s.document.body.classList.contains("is-diving"), false);
 });
 
-test("pointer clicks emit at their viewport coordinates, not keyboard activation", () => {
+test("primary pointer presses emit immediately without compatibility-click duplication", () => {
   const s = scene({ hash: "#main" });
   const field = s.el(".bubble-field");
-  s.document.fire("click", { detail: 1, clientX: 230, clientY: 410 });
+  s.window.fire("pointerdown", { pointerType: "touch", button: 0, isPrimary: true, clientX: 230, clientY: 410 });
   assert.equal(field.childElementCount, 7);
   for (const bubble of field.children) {
     assert.match(bubble.style.cssText, /left:230px;top:410px;/);
     assert.match(bubble.style.cssText, /--rise:-458px/);
   }
   s.document.fire("click", { detail: 0, clientX: 0, clientY: 0 });
+  s.document.fire("click", { detail: 1, clientX: 230, clientY: 410 });
+  s.window.fire("pointerdown", { button: 0, isPrimary: false, clientX: 100, clientY: 100 });
+  s.window.fire("pointerdown", { button: 2, isPrimary: true, clientX: 100, clientY: 100 });
   assert.equal(field.childElementCount, 7);
+});
+
+test("scroll bubbles start below the visible mobile viewport", () => {
+  const s = scene({ hash: "#main" });
+  s.window.visualViewport = { width: 390, height: 650, offsetLeft: 8, offsetTop: 36 };
+  s.window.fire("touchmove");
+  s.flush();
+  const bubbles = s.el(".bubble-field").children;
+  assert.equal(bubbles.length, 3);
+  for (const bubble of bubbles) {
+    assert.match(bubble.style.cssText, /top:704px/);
+    const x = Number(bubble.style.cssText.match(/left:([\d.]+)px/)[1]);
+    assert.ok(x >= 8 && x <= 398);
+  }
 });
 
 test("wheel, touch and scroll coalesce into bounded upward bursts, including page edges", () => {
@@ -250,7 +267,7 @@ test("bubble population is capped and clicks still respond when the pool is full
   const s = scene({ hash: "#main" });
   const field = s.el(".bubble-field");
   for (let i = 0; i < 100; i++) {
-    s.document.fire("click", { detail: 1, clientX: i, clientY: 500 });
+    s.window.fire("pointerdown", { button: 0, clientX: i, clientY: 500 });
     assert.ok(field.childElementCount <= 64);
   }
   assert.equal(field.childElementCount, 64);
@@ -266,7 +283,7 @@ test("bubble population is capped and clicks still respond when the pool is full
 test("finished and cancelled bubble animations remove only their own particles", () => {
   const s = scene({ hash: "#main" });
   const field = s.el(".bubble-field");
-  s.document.fire("click", { detail: 1, clientX: 100, clientY: 200 });
+  s.window.fire("pointerdown", { button: 0, clientX: 100, clientY: 200 });
   for (const type of ["animationend", "animationcancel"]) {
     const bubble = field.firstElementChild;
     field.fire(type, { target: bubble });
@@ -280,7 +297,7 @@ test("finished and cancelled bubble animations remove only their own particles",
 test("pause and reduced motion clear particles and suppress new emissions", () => {
   const s = scene({ hash: "#main" });
   const field = s.el(".bubble-field");
-  const click = () => s.document.fire("click", { detail: 1, clientX: 100, clientY: 200 });
+  const click = () => s.window.fire("pointerdown", { button: 0, clientX: 100, clientY: 200 });
   click();
   s.window.fire("scroll");
   s.el("#motion-toggle").fire("click");
@@ -304,7 +321,7 @@ test("pause and reduced motion clear particles and suppress new emissions", () =
 test("hidden pages and page departure discard particles without a return backlog", () => {
   const s = scene({ hash: "#main" });
   const field = s.el(".bubble-field");
-  const click = () => s.document.fire("click", { detail: 1, clientX: 100, clientY: 200 });
+  const click = () => s.window.fire("pointerdown", { button: 0, clientX: 100, clientY: 200 });
   click();
   s.window.fire("scroll");
   s.document.hidden = true;

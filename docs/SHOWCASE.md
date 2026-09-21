@@ -49,13 +49,13 @@ flowchart LR
   O --> B["Shared body state classes"]
   B --> C
   B --> N["nautilus.js: drift controller"]
-  B --> W["water.js: pointer wakes"]
+  B --> W["water.js: pointer and touch wakes"]
   classDef default fill:#2d333b,stroke:#6d5dfc,color:#e6edf3
   style Data fill:#161b22,stroke:#30363d,color:#e6edf3
   linkStyle default stroke:#8b949e
 ```
 
-The modules load independently from HTML; shared body classes coordinate motion rather than making palette loading a prerequisite. The diagram shows that state contract, not a JavaScript import chain. ([site/index.html:14–22](../site/index.html#L14-L22), `syncMotion`, [site/ocean.js:94–106](../site/ocean.js#L94-L106), `mountNautilus`, [site/nautilus.js:166–170](../site/nautilus.js#L166-L170), `mountWater`, [site/water.js:95–97](../site/water.js#L95-L97))
+The modules load independently from HTML; shared body classes coordinate motion rather than making palette loading a prerequisite. The diagram shows that state contract, not a JavaScript import chain. ([site/index.html:14-22](../site/index.html#L14-L22), `syncMotion`, [site/ocean.js:96-108](../site/ocean.js#L96-L108), `mountNautilus`, [site/nautilus.js:166-170](../site/nautilus.js#L166-L170), `mountWater`, [site/water.js:113-115](../site/water.js#L113-L115))
 
 ### Components
 
@@ -64,7 +64,7 @@ The modules load independently from HTML; shared body classes coordinate motion 
 | Palette generation | `sitePalette` includes the three core groups; CSS also exposes the extension variables used by studies. Do not hand-edit generated assets. ([scripts/generate.mjs:700–740](../scripts/generate.mjs#L700-L740)) |
 | Palette UI | `loadPalette` fetches local JSON; `renderPalette` creates accessible copy buttons. Failure displays a README fallback; `copyValue` has a clipboard fallback. ([site/app.js:10–108](../site/app.js#L10-L108)) |
 | Scene controls | `dive`, `finishDive`, `syncMotion`, and `updateScene` own the intro, pause state, narrative depth, and bubble emissions. ([site/ocean.js:21–106](../site/ocean.js#L21-L106)) |
-| Pointer water | `WaterField` models damped directional pressure; `mountWater` renders a local light texture on a bounded Canvas2D grid behind content. This is stylized, not fluid-accuracy validation. ([site/water.js:24–71](../site/water.js#L24-L71), [site/water.js:114–185](../site/water.js#L114-L185)) |
+| Interactive water | `WaterField.wake` models directional pressure; `tap` creates a smooth depression and displaced rim. Both propagate through the same damped field. `mountWater` renders local-light refraction behind content. This is stylized, not fluid-accuracy validation. ([site/water.js:24-90](../site/water.js#L24-L90), [site/water.js:136-211](../site/water.js#L136-L211)) |
 | Nautilus | Pure model functions choose drift legs; `mountNautilus` owns one animation frame loop, observers, and cleanup. ([site/nautilus.js:35–117](../site/nautilus.js#L35-L117), [site/nautilus.js:127–294](../site/nautilus.js#L127-L294)) |
 | Creature reveals | Native checkboxes and CSS reveal/retract the angler and footer blobfish; no disclosure script or expanding card is required. ([site/index.html:380–413](../site/index.html#L380-L413), [site/index.html:453–484](../site/index.html#L453-L484), [site/ocean.css:328–361](../site/ocean.css#L328-L361)) |
 
@@ -106,8 +106,8 @@ flowchart TD
 
 The other effects have separate lifecycles:
 
-- **Intro and bubbles:** skip, Escape, Tab, navigation, and scrolling bypass the intro. Scroll emissions are frame-coalesced and rate-limited; at most 64 bubbles survive, and completed animations remove themselves. Pause, reduced motion, hiding, and departure clear them. (`finishDive`, `bubblesAt`, `syncMotion`, [site/ocean.js:23–106](../site/ocean.js#L23-L106), [site/ocean.js:118–168](../site/ocean.js#L118-L168))
-- **Water:** only eligible primary mouse/pen movement creates strokes. Pause, reduced motion, resize, blur, hiding, and navigation clear the transient field; rendering stops once the wake becomes negligible. (`move`, `tick`, `clear`, [site/water.js:95–120](../site/water.js#L95-L120), [site/water.js:165–243](../site/water.js#L165-L243))
+- **Intro and bubbles:** skip, Escape, Tab, navigation, pressing, and scrolling bypass the intro. A primary `pointerdown` emits at the contact point before finger release; subsequent compatibility clicks do not emit again. Scroll emissions use the visual viewport's bottom, are frame-coalesced/rate-limited, and share a 64-node cap. Pause, reduced motion, hiding, and departure clear them. (`finishDive`, `bubblesAt`, `updateScene`, [site/ocean.js:23-108](../site/ocean.js#L23-L108), [site/ocean.js:120-174](../site/ocean.js#L120-L174))
+- **Water:** fine-pointer mouse/pen movement and single-finger touch gestures create disturbances. `touchstart` injects a tap; passive `touchmove` continues directional wakes after native scrolling causes `pointercancel`. No pointer capture, `preventDefault`, or restrictive touch-action is needed. Multi-touch and cancelled contacts stop tracking; browser-chrome resizes reanchor the active contact rather than inventing a long stroke. Pause, reduced motion, blur, hiding, and navigation clear the field; rendering stops once it settles. (`startTouch`, `moveTouch`, `resize`, [site/water.js:113-134](../site/water.js#L113-L134), [site/water.js:187-307](../site/water.js#L187-L307))
 - **Native reveals:** click/tap or Space on the focused checkbox toggles each creature. Hover/focus alone does not reveal the angler. Blobfish kelp parts outward and the image rises within a fixed-height, responsive hideout; unchecking retracts it without changing section height. These controls work without JavaScript; reduced motion suppresses transitions rather than removing the controls. ([site/index.html:382–384](../site/index.html#L382-L384), [site/index.html:453–484](../site/index.html#L453-L484), [site/ocean.css:328–361](../site/ocean.css#L328-L361), [site/styles.css:1724–1735](../site/styles.css#L1724-L1735))
 
 The footer cover uses **20 instances of the same kelp SVG**, each sized with `width: clamp(200px, 40%, 336px)` and its natural aspect ratio. The fish itself has no CSS opacity reduction or filter, preserving its painted colors rather than dimming it to simulate concealment. When changing responsive sizes, inspect the whole sway cycle: a frond count alone does not establish concealment. ([site/index.html:460-479](../site/index.html#L460-L479), `.blobfish` / `.cover-kelp`, [site/ocean.css:331-350](../site/ocean.css#L331-L350))

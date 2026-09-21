@@ -50,6 +50,24 @@ export class WaterField {
     }
   }
 
+  tap(cx, cy, pressure) {
+    if (![cx, cy, pressure].every(Number.isFinite) || pressure < 0) {
+      throw new RangeError("Water taps require finite coordinates and nonnegative pressure");
+    }
+    if (pressure === 0) return;
+    for (let y = Math.max(1, Math.ceil(cy - 7)); y <= Math.min(this.height - 2, cy + 7); y++) {
+      for (let x = Math.max(1, Math.ceil(cx - 7)); x <= Math.min(this.width - 2, cx + 7); x++) {
+        const radius = ((x - cx) ** 2 + (y - cy) ** 2) / 49;
+        if (radius >= 1) continue;
+        // A smooth depression and displaced rim, with zero net volume in the continuous kernel.
+        const force = (4 * radius - 1) * (1 - radius) ** 2 * Math.min(pressure, .35);
+        const i = y * this.width + x;
+        this.previous[i] = this.current[i] -
+          clamp(this.current[i] - this.previous[i] + force, -.65, .65);
+      }
+    }
+  }
+
   step() {
     const { width: w, height: h, current: a, previous: b, loss } = this;
     let activity = 0;
@@ -90,9 +108,9 @@ export function mountWater(canvas) {
   const texture = new Image();
   let textureReady = false, field, light, paint;
   let frame = 0, lastTime = 0, accumulated = 0, quietSteps = 0;
-  let cursor = null, suspended = false;
+  let cursor = null, touchCursor = null, touchId = null, suspended = false;
   const strokes = [];
-  const blocked = () => suspended || document.hidden || reduced.matches || !fine.matches ||
+  const blocked = () => suspended || document.hidden || reduced.matches ||
     !body.classList.contains("ocean-ready") || body.classList.contains("motion-paused") ||
     body.classList.contains("is-diving");
 
@@ -100,13 +118,21 @@ export function mountWater(canvas) {
     cancelAnimationFrame(frame);
     frame = lastTime = accumulated = quietSteps = 0;
     cursor = null;
+    touchCursor = touchId = null;
     strokes.length = 0;
     field?.clear();
     context.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  function resize() {
+  function clearWake() {
+    const activeTouch = touchId;
     clear();
+    touchId = activeTouch;
+  }
+
+  function resize() {
+    // Mobile browser chrome can resize the viewport during a native scroll gesture.
+    clearWake();
     field = light = paint = undefined;
     canvas.width = canvas.height = 1;
   }
@@ -167,8 +193,12 @@ export function mountWater(canvas) {
     if (blocked()) { clear(); return; }
     for (const stroke of strokes) {
       const sx = (field.width - 2) / innerWidth, sy = (field.height - 2) / innerHeight;
-      field.wake(stroke.from.x * sx + 1, stroke.from.y * sy + 1,
-        stroke.to.x * sx + 1, stroke.to.y * sy + 1, stroke.pressure);
+      if (stroke.from) {
+        field.wake(stroke.from.x * sx + 1, stroke.from.y * sy + 1,
+          stroke.to.x * sx + 1, stroke.to.y * sy + 1, stroke.pressure);
+      } else {
+        field.tap(stroke.to.x * sx + 1, stroke.to.y * sy + 1, stroke.pressure);
+      }
     }
     if (strokes.length) quietSteps = 0;
     strokes.length = 0;
@@ -181,28 +211,56 @@ export function mountWater(canvas) {
       steps++;
     }
     if (steps) quietSteps = render() <= 1 ? quietSteps + steps : 0;
-    if (quietSteps >= 12) { clear(); return; }
+    if (quietSteps >= 12) { clearWake(); return; }
     frame = requestAnimationFrame(tick);
   }
 
-  function move(event) {
-    if (blocked() || !textureReady || event.isPrimary === false ||
-        (event.pointerType !== "mouse" && event.pointerType !== "pen")) return;
-    const point = { x: event.clientX, y: event.clientY, time: event.timeStamp, id: event.pointerId };
-    const previous = cursor;
-    cursor = point;
-    if (point.x < 0 || point.y < 0 || point.x > innerWidth || point.y > innerHeight) {
-      cursor = null;
-      return;
-    }
+  const inViewport = point => point.x >= 0 && point.y >= 0 && point.x <= innerWidth && point.y <= innerHeight;
+
+  function queue(from, to, pressure) {
+    prepare();
+    if (strokes.length === 24) strokes.shift();
+    strokes.push({ from, to, pressure });
+    if (!frame) frame = requestAnimationFrame(tick);
+  }
+
+  function stroke(previous, point) {
     if (!previous || previous.id !== point.id || point.time - previous.time > 160) return;
     const distance = Math.hypot(point.x - previous.x, point.y - previous.y);
     if (distance < .5) return;
     const speed = distance / Math.max(1, point.time - previous.time);
-    prepare();
-    if (strokes.length === 24) strokes.shift();
-    strokes.push({ from: previous, to: point, pressure: Math.min(.32, .16 * Math.sqrt(speed)) });
-    if (!frame) frame = requestAnimationFrame(tick);
+    queue(previous, point, Math.min(.32, .16 * Math.sqrt(speed)));
+  }
+
+  function move(event) {
+    if (blocked() || !textureReady || !fine.matches || event.isPrimary === false ||
+        (event.pointerType !== "mouse" && event.pointerType !== "pen")) return;
+    const point = { x: event.clientX, y: event.clientY, time: event.timeStamp, id: event.pointerId };
+    const previous = cursor;
+    cursor = inViewport(point) ? point : null;
+    if (cursor) stroke(previous, cursor);
+  }
+
+  const touchPoint = (touch, time) => ({ x: touch.clientX, y: touch.clientY, id: touch.identifier, time });
+  const endTouch = () => { touchCursor = touchId = null; };
+  function startTouch(event) {
+    endTouch();
+    cursor = null;
+    if (blocked() || !textureReady || event.touches.length !== 1) return;
+    const point = touchPoint(event.touches[0], event.timeStamp);
+    if (!inViewport(point)) return;
+    touchCursor = point;
+    touchId = point.id;
+    queue(null, point, .28);
+  }
+
+  function moveTouch(event) {
+    if (blocked() || event.touches.length !== 1) { endTouch(); return; }
+    const point = touchPoint(event.touches[0], event.timeStamp);
+    if (point.id !== touchId) return;
+    const previous = touchCursor;
+    touchCursor = inViewport(point) ? point : null;
+    if (touchCursor) stroke(previous, touchCursor);
   }
 
   const sync = () => { if (blocked()) clear(); };
@@ -212,6 +270,11 @@ export function mountWater(canvas) {
   const observer = new MutationObserver(sync);
   observer.observe(body, { attributes: true, attributeFilter: ["class"] });
   window.addEventListener("pointermove", move, { passive: true });
+  // Touch events continue after pointercancel hands a pan to the browser; never capture/prevent it.
+  window.addEventListener("touchstart", startTouch, { passive: true });
+  window.addEventListener("touchmove", moveTouch, { passive: true });
+  window.addEventListener("touchend", endTouch, { passive: true });
+  window.addEventListener("touchcancel", endTouch, { passive: true });
   document.addEventListener("pointerleave", leave);
   window.addEventListener("blur", clear);
   window.addEventListener("resize", resize);
@@ -232,6 +295,10 @@ export function mountWater(canvas) {
       clear();
       observer.disconnect();
       window.removeEventListener("pointermove", move);
+      window.removeEventListener("touchstart", startTouch);
+      window.removeEventListener("touchmove", moveTouch);
+      window.removeEventListener("touchend", endTouch);
+      window.removeEventListener("touchcancel", endTouch);
       document.removeEventListener("pointerleave", leave);
       window.removeEventListener("blur", clear);
       window.removeEventListener("resize", resize);

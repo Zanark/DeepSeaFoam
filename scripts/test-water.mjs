@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { WaterField } from "../site/water.js";
+import { WaterField, mountWater } from "../site/water.js";
 
 const field = () => new WaterField(96, 80);
 const advance = (water, count) => { for (let i = 0; i < count; i++) water.step(); };
@@ -75,6 +75,35 @@ test("ripples propagate beyond the brush rather than fading in place", () => {
   assert.ok(Math.abs(water.current[60 * 96 + 46]) > .0001);
 });
 
+test("a tap displaces a symmetric depression and rim that propagate and settle", () => {
+  const water = field();
+  water.tap(48, 40, .28);
+  water.step();
+  assert.ok(water.current[40 * 96 + 48] < 0);
+  assert.ok(water.current[40 * 96 + 53] > 0);
+  for (let dy = -15; dy <= 15; dy++) {
+    for (let dx = -15; dx <= 15; dx++) {
+      assert.ok(Math.abs(water.current[(40 + dy) * 96 + 48 + dx] -
+        water.current[(40 + dx) * 96 + 48 + dy]) < .00001);
+    }
+  }
+  advance(water, 45);
+  assert.ok(Math.abs(water.current[60 * 96 + 48]) > .0001);
+  advance(water, 1200);
+  assert.ok(water.activity < .0008);
+});
+
+test("tap input rejects invalid pressure and coordinates and bounds repeated impulses", () => {
+  const water = field();
+  for (const input of [[NaN, 40, .2], [48, Infinity, .2], [48, 40, -1]]) {
+    assert.throws(() => water.tap(...input), RangeError);
+  }
+  water.tap(48, 40, 0);
+  assert.ok(water.previous.every(value => value === 0));
+  for (let i = 0; i < 100; i++) water.tap(48, 40, 1000);
+  assert.ok(water.previous.every(value => Math.abs(value) <= .650001));
+});
+
 test("waves superpose and interfere in the same field", () => {
   const a = field(), b = field(), combined = field();
   a.wake(24, 34, 29, 34, .035);
@@ -114,4 +143,190 @@ test("sustained motion remains finite and settles below the idle threshold", () 
   assert.equal(water.activity, 0);
   assert.ok(water.current.every(value => value === 0));
   assert.ok(water.previous.every(value => value === 0));
+});
+
+class Events {
+  listeners = new Map();
+  addEventListener(type, callback, options) {
+    if (!this.listeners.has(type)) this.listeners.set(type, new Map());
+    this.listeners.get(type).set(callback, options);
+  }
+  removeEventListener(type, callback) { this.listeners.get(type)?.delete(callback); }
+  fire(type, event = {}) {
+    for (const callback of this.listeners.get(type)?.keys() ?? []) callback(event);
+  }
+}
+
+function surface(t, { fine = false, loaded = true } = {}) {
+  const window = new Events(), document = new Events();
+  const reduced = Object.assign(new Events(), { matches: false });
+  const pointer = Object.assign(new Events(), { matches: fine });
+  const classes = new Set(["ocean-ready"]);
+  document.hidden = false;
+  document.body = { classList: { contains: name => classes.has(name) } };
+  let pixels = new Uint8ClampedArray(4), observer, time = 1000, id = 0;
+  const frames = new Map();
+  const context = {
+    createImageData: (width, height) => ({ data: new Uint8ClampedArray(width * height * 4) }),
+    clearRect: () => pixels.fill(0),
+    putImageData: image => { pixels = image.data.slice(); }
+  };
+  const canvas = { width: 1, height: 1, getContext: () => context };
+  document.createElement = () => ({ getContext: () => ({
+    drawImage() {},
+    getImageData: (_, __, width, height) => ({ data: new Uint8ClampedArray(width * height * 4).fill(128) })
+  }) });
+  const globals = {
+    document, window, innerWidth: 390, innerHeight: 844,
+    matchMedia: query => query.includes("reduced-motion") ? reduced : pointer,
+    requestAnimationFrame: callback => { frames.set(++id, callback); return id; },
+    cancelAnimationFrame: key => frames.delete(key),
+    Image: class { set src(value) { if (loaded) this.onload(); } },
+    MutationObserver: class {
+      constructor(callback) { this.callback = callback; observer = this; }
+      observe() {}
+      disconnect() { this.disconnected = true; }
+    }
+  };
+  const originals = Object.fromEntries(Object.keys(globals).map(key =>
+    [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
+  for (const [key, value] of Object.entries(globals)) {
+    Object.defineProperty(globalThis, key, { value, writable: true, configurable: true });
+  }
+  let controller;
+  t.after(() => {
+    controller?.destroy();
+    for (const [key, descriptor] of Object.entries(originals)) {
+      if (descriptor) Object.defineProperty(globalThis, key, descriptor);
+      else delete globalThis[key];
+    }
+  });
+  controller = mountWater(canvas);
+  return {
+    window, document, reduced, pointer, classes, frames, canvas, controller,
+    mutate: () => observer.callback(),
+    disconnected: () => observer.disconnected,
+    alpha: () => pixels.reduce((total, value, index) => total + (index % 4 === 3 ? value : 0), 0),
+    touch(type, touches) { time += 16; window.fire(type, { touches, timeStamp: time }); },
+    flush(count = 1) {
+      for (let i = 0; i < count; i++) {
+        time += 1000 / 60;
+        const pending = [...frames.values()];
+        frames.clear();
+        for (const callback of pending) callback(time);
+      }
+    }
+  };
+}
+
+const finger = (x = 195, y = 420, identifier = 1) => ({ clientX: x, clientY: y, identifier });
+
+test("coarse touch taps and native pans produce water without taking over gestures", t => {
+  const s = surface(t);
+  s.touch("touchstart", [finger()]);
+  assert.equal(s.frames.size, 1);
+  s.flush(3);
+  assert.ok(s.alpha() > 0);
+  s.window.fire("pointercancel");
+  s.document.fire("pointerleave");
+  const before = s.alpha();
+  s.touch("touchmove", [finger(210, 385)]);
+  s.touch("touchmove", [finger(230, 350)]);
+  s.flush(3);
+  assert.notEqual(s.alpha(), before);
+  assert.ok(s.canvas.width * s.canvas.height <= 35964);
+  for (const type of ["touchstart", "touchmove", "touchend", "touchcancel"]) {
+    assert.ok([...s.window.listeners.get(type).values()].every(options => options.passive));
+  }
+  s.touch("touchend", []);
+  s.flush(1200);
+  assert.equal(s.alpha(), 0);
+  assert.equal(s.frames.size, 0);
+});
+
+test("pinch and cancelled gestures never invent single-finger wakes", t => {
+  const s = surface(t);
+  s.touch("touchstart", [finger(), finger(240, 420, 2)]);
+  s.touch("touchmove", [finger(100, 420), finger(280, 420, 2)]);
+  s.touch("touchend", [finger()]);
+  s.touch("touchmove", [finger(210, 420)]);
+  assert.equal(s.frames.size, 0);
+  s.touch("touchstart", [finger()]);
+  s.touch("touchcancel", []);
+  s.flush(1200);
+  s.touch("touchmove", [finger(240, 420)]);
+  assert.equal(s.frames.size, 0);
+});
+
+test("mobile viewport resizing reanchors an ongoing touch without jumping", t => {
+  const s = surface(t);
+  s.touch("touchstart", [finger()]);
+  s.flush(2);
+  globalThis.innerHeight = 740;
+  s.window.fire("resize");
+  assert.equal(s.alpha(), 0);
+  s.touch("touchmove", [finger(195, 360)]);
+  assert.equal(s.frames.size, 0, "the first post-resize point is only an anchor");
+  s.touch("touchmove", [finger(205, 330)]);
+  s.flush(2);
+  assert.ok(s.alpha() > 0);
+});
+
+test("a held finger can resume moving after its earlier wake has settled", t => {
+  const s = surface(t);
+  s.touch("touchstart", [finger()]);
+  s.flush(1200);
+  assert.equal(s.alpha(), 0);
+  assert.equal(s.frames.size, 0);
+  s.touch("touchmove", [finger(200, 380)]);
+  assert.equal(s.frames.size, 0);
+  s.touch("touchmove", [finger(210, 350)]);
+  s.flush(2);
+  assert.ok(s.alpha() > 0);
+});
+
+test("touch water honors motion, visibility and navigation state without a backlog", t => {
+  const s = surface(t);
+  for (const state of ["motion-paused", "is-diving"]) {
+    s.classes.add(state);
+    s.mutate();
+    s.touch("touchstart", [finger()]);
+    assert.equal(s.frames.size, 0);
+    s.classes.delete(state);
+  }
+  s.touch("touchstart", [finger()]);
+  s.flush(2);
+  s.reduced.matches = true;
+  s.reduced.fire("change");
+  assert.equal(s.alpha(), 0);
+  s.touch("touchstart", [finger()]);
+  assert.equal(s.frames.size, 0);
+  s.reduced.matches = false;
+  s.reduced.fire("change");
+  s.touch("touchstart", [finger()]);
+  s.document.hidden = true;
+  s.document.fire("visibilitychange");
+  s.touch("touchstart", [finger()]);
+  assert.equal(s.frames.size, 0);
+  s.document.hidden = false;
+  s.document.fire("visibilitychange");
+  s.touch("touchstart", [finger()]);
+  s.window.fire("pagehide");
+  s.touch("touchstart", [finger()]);
+  assert.equal(s.frames.size, 0);
+  s.window.fire("pageshow");
+  s.touch("touchmove", [finger(240, 420)]);
+  assert.equal(s.frames.size, 0);
+});
+
+test("touch water stays lazy until its texture loads and releases its listeners", t => {
+  const s = surface(t, { loaded: false });
+  s.touch("touchstart", [finger()]);
+  assert.equal(s.canvas.width, 1);
+  assert.equal(s.frames.size, 0);
+  s.controller.destroy();
+  assert.equal(s.disconnected(), true);
+  for (const target of [s.window, s.document, s.reduced, s.pointer]) {
+    assert.ok([...target.listeners.values()].every(listeners => listeners.size === 0));
+  }
 });
