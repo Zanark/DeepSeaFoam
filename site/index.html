@@ -14,12 +14,12 @@
     <link rel="icon" href="mark.svg?v=seaweed-foam-cluster" type="image/svg+xml" sizes="any">
     <link rel="manifest" href="site.webmanifest?v=seaweed-foam-cluster">
     <link rel="stylesheet" href="palette.css">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="ocean.css">
+    <link rel="stylesheet" href="styles.css?v=0.5.0">
+    <link rel="stylesheet" href="ocean.css?v=free-nautilus">
     <script src="app.js" type="module"></script>
     <script src="ocean.js?v=touch-water" type="module"></script>
     <script src="water.js?v=touch-water" type="module"></script>
-    <script src="nautilus.js" type="module"></script>
+    <script src="nautilus.js?v=free-nautilus" type="module"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the theme</a>
@@ -65,6 +65,22 @@
         <img class="kelp left" src="kelp.svg" alt="">
         <img class="kelp right" src="kelp.svg" alt="">
       </div>
+    </div>
+    <div class="nautilus-zone" aria-hidden="true">
+      <svg class="nautilus" viewBox="0 0 230 155" aria-hidden="true">
+        <defs><radialGradient id="shell-ivory" cx=".35" cy=".2" r=".85"><stop stop-color="#F1E4CC"/><stop offset=".65" stop-color="#CCB897"/><stop offset="1" stop-color="#735A47"/></radialGradient></defs>
+        <g class="nautilus-float">
+          <g fill="none" stroke="#CDB99F" stroke-width="2" stroke-linecap="round">
+            <path d="M145 77q26-18 59-7m-58 12q37-5 63 8m-63-2q20 5 50 28m-51-24q25 22 53 15m-55-12q10 22 38 37m-35-49q44 7 68-9"/>
+          </g>
+          <path d="M111 63q30-8 43 13l-5 23q-17 12-40-5Z" fill="#C0A591"/>
+          <path d="M127 108C97 130 45 115 35 81C23 41 59 15 96 23c40 8 54 52 31 85Z" fill="url(#shell-ivory)" stroke="#866B56" stroke-width="2"/>
+          <path d="m43 44 17 14-8-25Zm23-19 9 19 8-21Zm32 0-3 19 20-11Zm28 19-20 7 30 14Zm12 34-26-9 20 27Zm-18 35-14-27-2 34Zm-44 4 7-18-25 8ZM37 88l29-2-34-20Z" fill="#80553E" opacity=".8"/>
+          <path d="M127 106C98 117 61 95 62 66c1-23 26-30 41-14 14 16-3 35-15 25-8-7-4-16 4-14" fill="none" stroke="#6D5947" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M121 53q19 3 30 19l-10 2-16-9Z" fill="#EEE0C5"/>
+          <circle cx="146" cy="79" r="4" fill="#000F13"/><circle cx="147" cy="78" r="1.3" fill="#EEE8D5"/>
+        </g>
+      </svg>
     </div>
     <div class="bubble-field" aria-hidden="true"></div>
     <div class="dive-entry" aria-hidden="true">
@@ -126,7 +142,7 @@
           </div>
           <dl class="hero-facts" aria-label="Project facts">
             <div><dt>27</dt><dd>core values</dd></div>
-            <div><dt>5</dt><dd>native exports</dd></div>
+            <div><dt>12</dt><dd>app targets</dd></div>
             <div><dt>0</dt><dd>runtime dependencies</dd></div>
           </dl>
           <a class="descent-cue" href="#identity"><span></span> SCROLL INTO THE QUIET <b aria-hidden="true">↓</b></a>
@@ -200,23 +216,6 @@
         </div>
       </section>
 
-      <div class="nautilus-zone" role="img" aria-label="A chambered nautilus wanders gently with the current">
-        <svg class="nautilus" viewBox="0 0 230 155" aria-hidden="true">
-          <defs><radialGradient id="shell-ivory" cx=".35" cy=".2" r=".85"><stop stop-color="#F1E4CC"/><stop offset=".65" stop-color="#CCB897"/><stop offset="1" stop-color="#735A47"/></radialGradient></defs>
-          <g class="nautilus-float">
-            <g fill="none" stroke="#CDB99F" stroke-width="2" stroke-linecap="round">
-              <path d="M145 77q26-18 59-7m-58 12q37-5 63 8m-63-2q20 5 50 28m-51-24q25 22 53 15m-55-12q10 22 38 37m-35-49q44 7 68-9"/>
-            </g>
-            <path d="M111 63q30-8 43 13l-5 23q-17 12-40-5Z" fill="#C0A591"/>
-            <path d="M127 108C97 130 45 115 35 81C23 41 59 15 96 23c40 8 54 52 31 85Z" fill="url(#shell-ivory)" stroke="#866B56" stroke-width="2"/>
-            <path d="m43 44 17 14-8-25Zm23-19 9 19 8-21Zm32 0-3 19 20-11Zm28 19-20 7 30 14Zm12 34-26-9 20 27Zm-18 35-14-27-2 34Zm-44 4 7-18-25 8ZM37 88l29-2-34-20Z" fill="#80553E" opacity=".8"/>
-            <path d="M127 106C98 117 61 95 62 66c1-23 26-30 41-14 14 16-3 35-15 25-8-7-4-16 4-14" fill="none" stroke="#6D5947" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M121 53q19 3 30 19l-10 2-16-9Z" fill="#EEE0C5"/>
-            <circle cx="146" cy="79" r="4" fill="#000F13"/><circle cx="147" cy="78" r="1.3" fill="#EEE8D5"/>
-          </g>
-        </svg>
-      </div>
-
       <section class="surface-decision" id="identity" aria-labelledby="surface-title">
         <div class="section-intro section-shell">
           <p class="eyebrow"><span></span> 01 / Below the surface</p>
@@ -272,6 +271,13 @@
               purposeful accents: our mist text and warm emphasis are its base1 and base2.
               DeepSeaFoam keeps that family resemblance, then gives the workspace more depth
               and the signals the vividness of a well-loved terminal.</p>
+            <h3 id="photo-reference">A view that started the feeling.</h3>
+            <p>Our photographic inspiration is
+              <a href="https://www.pexels.com/photo/bay-with-orange-seashore-under-white-and-gray-clouds-8567869/">Bay with Orange Seashore Under White and Gray Clouds</a>,
+              photographed by <a href="https://www.pexels.com/@jj-perks-868548/">JJ Perks</a>.
+              <a href="https://images.pexels.com/photos/8567869/pexels-photo-8567869.jpeg">View the original, 7952 &times; 5304 pixels</a>
+              on Pexels. The full-resolution photograph opens only when you follow the link;
+              it is not loaded into this page.</p>
           </div>
           <div class="design-evidence">
             <blockquote cite="https://ethanschoonover.com/solarized/#features">
@@ -311,7 +317,7 @@
 
       <section class="applications" id="applications" aria-labelledby="applications-title">
         <div class="section-intro section-shell">
-          <p class="eyebrow"><span></span> One identity, native formats</p>
+          <p class="eyebrow"><span></span> One identity, app-specific formats</p>
           <h2 id="applications-title">Your tools can feel related without pretending to be identical.</h2>
           <p>
             Each export maps semantic roles to what the host actually exposes.
@@ -342,6 +348,41 @@
           <a class="app-card app-firefox" href="https://github.com/Zanark/DeepSeaFoam/tree/main/targets/firefox">
             <div class="app-card-top"><span>05</span><img src="icons/firefox.svg" width="48" height="48" loading="lazy" alt=""></div>
             <div><h3>Firefox</h3><p>Browser chrome only. Websites remain themselves.</p></div>
+            <span class="app-link">Explore export <b>↗</b></span>
+          </a>
+          <a class="app-card app-discord" href="https://github.com/Zanark/DeepSeaFoam/tree/main/targets/discord">
+            <div class="app-card-top"><span>06</span><img src="icons/discord.svg" width="48" height="48" loading="lazy" alt=""></div>
+            <div><h3>Discord</h3><p>Optional custom CSS for modified clients. Unofficial, not a native Discord import.</p></div>
+            <span class="app-link">Read compatibility notes <b>↗</b></span>
+          </a>
+          <a class="app-card app-telegram" href="https://github.com/Zanark/DeepSeaFoam/tree/main/targets/telegram">
+            <div class="app-card-top"><span>07</span><img src="icons/telegram.svg" width="48" height="48" loading="lazy" alt=""></div>
+            <div><h3>Telegram Desktop</h3><p>Chat surfaces, message bubbles, navigation and controls. Desktop theme format.</p></div>
+            <span class="app-link">Explore export <b>↗</b></span>
+          </a>
+          <a class="app-card app-slack" href="https://github.com/Zanark/DeepSeaFoam/tree/main/targets/slack">
+            <div class="app-card-top"><span>08</span><img src="icons/slack.svg" width="48" height="48" loading="lazy" alt=""></div>
+            <div><h3>Slack</h3><p>Native custom-color preset. Slack controls the remaining surfaces.</p></div>
+            <span class="app-link">Explore export <b>↗</b></span>
+          </a>
+          <a class="app-card app-chrome" href="https://github.com/Zanark/DeepSeaFoam/tree/main/targets/chromium">
+            <div class="app-card-top"><span>09</span><img src="icons/chrome.svg" width="48" height="48" loading="lazy" alt=""></div>
+            <div><h3>Chrome &amp; Edge</h3><p>Chromium browser theme. No website CSS, scripts or permissions.</p></div>
+            <span class="app-link">Explore export <b>↗</b></span>
+          </a>
+          <a class="app-card app-jetbrains" href="https://github.com/Zanark/DeepSeaFoam/tree/main/targets/jetbrains">
+            <div class="app-card-top"><span>10</span><img src="icons/jetbrains.svg" width="48" height="48" loading="lazy" alt=""></div>
+            <div><h3>JetBrains IDEs</h3><p>IDE chrome and editor colors in a theme-only plugin.</p></div>
+            <span class="app-link">Explore export <b>↗</b></span>
+          </a>
+          <a class="app-card app-sublime-text" href="https://github.com/Zanark/DeepSeaFoam/tree/main/targets/sublime-text">
+            <div class="app-card-top"><span>11</span><img src="icons/sublime-text.svg" width="48" height="48" loading="lazy" alt=""></div>
+            <div><h3>Sublime Text</h3><p>Editor and syntax color scheme, paired with the built-in Adaptive UI.</p></div>
+            <span class="app-link">Explore export <b>↗</b></span>
+          </a>
+          <a class="app-card app-alacritty" href="https://github.com/Zanark/DeepSeaFoam/tree/main/targets/alacritty">
+            <div class="app-card-top"><span>12</span><img src="icons/alacritty.svg" width="48" height="48" loading="lazy" alt=""></div>
+            <div><h3>Alacritty</h3><p>TOML colors matching our higher-contrast terminal palette.</p></div>
             <span class="app-link">Explore export <b>↗</b></span>
           </a>
         </div>
@@ -419,7 +460,7 @@
         <div class="section-shell">
           <p class="eyebrow"><span></span> Bring the quiet with you</p>
           <h2>Make your workstation feel like one place.</h2>
-          <p>Download the complete bundle or choose the native package for the tool you use first.</p>
+          <p>Download the complete bundle or choose the export for the tool you use first.</p>
           <div class="hero-actions centered">
             <a class="button button-primary" href="https://github.com/Zanark/DeepSeaFoam/releases/latest">
               Download the latest release
@@ -443,7 +484,7 @@
         </div>
         <div class="footer-links">
           <div><strong>Project</strong><a href="https://github.com/Zanark/DeepSeaFoam">Repository</a><a href="https://github.com/Zanark/DeepSeaFoam/releases">Releases</a></div>
-          <div><strong>Reference</strong><a href="https://github.com/Zanark/SpriteCanvas">SpriteCanvas</a><a href="https://ethanschoonover.com/solarized/">Solarized</a><a href="icons/NOTICE.txt">Application icon credits</a><a href="artwork-NOTICE.txt">Blobfish artwork</a></div>
+          <div><strong>Reference</strong><a href="https://github.com/Zanark/SpriteCanvas">SpriteCanvas</a><a href="https://ethanschoonover.com/solarized/">Solarized</a><a href="#photo-reference">Photographic inspiration</a><a href="icons/NOTICE.txt">Application icon credits</a><a href="artwork-NOTICE.txt">Blobfish artwork</a></div>
         </div>
       </div>
       <div class="footer-bottom section-shell">

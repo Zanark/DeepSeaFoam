@@ -319,12 +319,17 @@
   }
   .copy-toast { bottom: 85px; }
 
-  .nautilus-zone { position: relative; height: 220px; overflow: hidden; pointer-events: none; }
+  .nautilus-zone { position: fixed; inset: 0; z-index: 6; overflow: hidden; pointer-events: none; contain: layout paint; }
   .nautilus {
     position: absolute; top: 50%; left: 50%;
-    width: clamp(120px, 16vw, 190px); max-width: 90%;
+    width: clamp(120px, 16vw, 190px); max-width: 90%; max-height: 80%;
     transform: translate(-50%, -50%); transform-origin: 50% 50%;
   }
+  .nautilus-zone:not([data-nautilus-state]) .nautilus,
+  .nautilus-zone[data-nautilus-state="static"] .nautilus {
+    top: 75%; left: 80%; max-width: 35%; max-height: 40%;
+  }
+  .is-diving .nautilus-zone { visibility: hidden; }
   .blobfish-zone { position: relative; height: clamp(340px, 38vw, 430px); margin-top: 28px; overflow: hidden; }
   .blobfish-hideout { position: relative; width: min(840px, 100%); height: 100%; margin-inline: auto; }
   .blobfish-toggle { position: absolute; inset: 0; display: block; cursor: pointer; border-radius: 12px; }

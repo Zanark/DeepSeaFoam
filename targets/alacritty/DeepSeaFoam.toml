@@ -1,0 +1,61 @@
+# Generated from palette/deepseafoam.json. Import this color fragment; keep your existing configuration.
+
+[colors.primary]
+background = "#000F13"
+foreground = "#9CC2C3"
+
+[colors.cursor]
+text = "#000F13"
+cursor = "#F34B00"
+
+[colors.vi_mode_cursor]
+text = "#000F13"
+cursor = "#F34B00"
+
+[colors.selection]
+text = "#9CC2C3"
+background = "#003748"
+
+[colors.search.matches]
+foreground = "#000F13"
+background = "#EDAE29"
+
+[colors.search.focused_match]
+foreground = "#000F13"
+background = "#FFF96E"
+
+[colors.hints.start]
+foreground = "#000F13"
+background = "#EDAE29"
+
+[colors.hints.end]
+foreground = "#000F13"
+background = "#259286"
+
+[colors.line_indicator]
+foreground = "#9CC2C3"
+background = "#001E26"
+
+[colors.footer_bar]
+foreground = "#9CC2C3"
+background = "#001E26"
+
+[colors.normal]
+black = "#002831"
+red = "#F54F65"
+green = "#6CBE6C"
+yellow = "#EDAE29"
+blue = "#2176C7"
+magenta = "#C61C6F"
+cyan = "#259286"
+white = "#EAE3CB"
+
+[colors.bright]
+black = "#006488"
+red = "#F5858C"
+green = "#51EF84"
+yellow = "#FFF96E"
+blue = "#178EC8"
+magenta = "#E24D8E"
+cyan = "#00B39E"
+white = "#FCF4DC"

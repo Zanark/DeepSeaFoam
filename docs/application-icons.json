@@ -35,6 +35,62 @@
       "source": "https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/firefox/firefox.svg",
       "sha256": "3f3742d1e78c0db6c2d3531250f70c30675ee5310de32fa89befaf738c54efd0",
       "license": "LICENSE-browser-logos.txt"
+    },
+    {
+      "id": "discord",
+      "file": "discord.svg",
+      "source": "https://raw.githubusercontent.com/gilbarbara/logos/a5b65275e761a8347a99eded1101c6b130a06e52/logos/discord-icon.svg",
+      "sha256": "3e33e7256ff99a760707b6c1d9a5f002119d7174e659bbb13af44787cf918122",
+      "license": "LICENSE-logos.txt",
+      "retrieved": "2026-09-22"
+    },
+    {
+      "id": "telegram",
+      "file": "telegram.svg",
+      "source": "https://raw.githubusercontent.com/gilbarbara/logos/a5b65275e761a8347a99eded1101c6b130a06e52/logos/telegram.svg",
+      "sha256": "9744d0980f9276493d459b6dd0aac472687b38f4896ea8c68f42d7d492306575",
+      "license": "LICENSE-logos.txt",
+      "retrieved": "2026-09-22"
+    },
+    {
+      "id": "slack",
+      "file": "slack.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/7330accdbc47e2dc0c19789a48533c4a3c50fe58/icons/slack/slack-original.svg",
+      "sha256": "5ff275ef6df5aca7ac8ed3cf95d003015b4b153f99c570bdcaf9d1674bd6aa5c",
+      "license": "LICENSE-devicon.txt",
+      "retrieved": "2026-09-22"
+    },
+    {
+      "id": "chrome",
+      "file": "chrome.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/7330accdbc47e2dc0c19789a48533c4a3c50fe58/icons/chrome/chrome-original.svg",
+      "sha256": "29e1a66ae7d2dea3d9c92c64a7b9a78f36cf9aecaf24c790eb5988eafdd6a156",
+      "license": "LICENSE-devicon.txt",
+      "retrieved": "2026-09-22"
+    },
+    {
+      "id": "jetbrains",
+      "file": "jetbrains.svg",
+      "source": "https://raw.githubusercontent.com/devicons/devicon/7330accdbc47e2dc0c19789a48533c4a3c50fe58/icons/jetbrains/jetbrains-original.svg",
+      "sha256": "bdb59bef1e6569cdefdc5ade07443dd1e5702f73866a08f7ca91b056834cbfa5",
+      "license": "LICENSE-devicon.txt",
+      "retrieved": "2026-09-22"
+    },
+    {
+      "id": "sublime-text",
+      "file": "sublime-text.svg",
+      "source": "https://raw.githubusercontent.com/gilbarbara/logos/a5b65275e761a8347a99eded1101c6b130a06e52/logos/sublimetext-icon.svg",
+      "sha256": "e0885363bb05bc3e7c1484644e58b0efcd1a286b61d39f8fbc7b8c3be6353b76",
+      "license": "LICENSE-logos.txt",
+      "retrieved": "2026-09-22"
+    },
+    {
+      "id": "alacritty",
+      "file": "alacritty.svg",
+      "source": "https://raw.githubusercontent.com/alacritty/alacritty/d692748d3f61253ebe9f5094320120d22f6a046f/extra/logo/alacritty-simple.svg",
+      "sha256": "9d9cf883f2c2251ca9820d1744fc6f64afde59c181d8333adf2943e6ea19727c",
+      "license": "LICENSE-alacritty.txt",
+      "retrieved": "2026-09-22"
     }
   ]
 }

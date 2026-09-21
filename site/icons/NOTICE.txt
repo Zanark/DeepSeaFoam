@@ -1,9 +1,12 @@
 Application marks identify the supported products, not DeepSeaFoam or an endorsement.
-Microsoft, Obsidian and Mozilla retain their respective trademark rights.
+All product names and marks belong to their respective owners.
 
 VS Code / Visual Studio: Devicon; see LICENSE-devicon.txt.
 Windows Terminal: Microsoft; see LICENSE-terminal.txt.
 Firefox: Browser Logos collection; see LICENSE-browser-logos.txt.
+Chrome / JetBrains / Slack: Devicon; see LICENSE-devicon.txt.
+Discord / Telegram / Sublime Text: SVG Logos collection; see LICENSE-logos.txt.
+Alacritty: official project mark; see LICENSE-alacritty.txt.
 Obsidian: official, unmodified mark; https://obsidian.md/brand
 Obsidian's guidelines require contacting its owner for commercial use.
 

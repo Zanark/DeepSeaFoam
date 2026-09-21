@@ -46,9 +46,14 @@ const palette = JSON.parse(paletteText);
 const canonical = JSON.parse(await readFile(path.join(root, "palette", "deepseafoam.json"), "utf8"));
 const manifest = JSON.parse(manifestText);
 const { icons } = JSON.parse(await readFile(path.join(root, "docs", "application-icons.json"), "utf8"));
-const appIds = ["vscode", "visual-studio", "obsidian", "terminal", "firefox"];
+const appIds = ["vscode", "visual-studio", "obsidian", "terminal", "firefox",
+  "discord", "telegram", "slack", "chrome", "jetbrains", "sublime-text", "alacritty"];
 if (icons.length !== appIds.length || icons.some((icon, index) => icon.id !== appIds[index])) {
-  throw new Error("Application icon provenance must cover all five cards exactly once");
+  throw new Error("Application icon provenance must cover all twelve cards exactly once");
+}
+if ((html.match(/class="app-card app-/g) ?? []).length !== appIds.length ||
+    !html.includes(`<dt>${appIds.length}</dt><dd>app targets</dd>`)) {
+  throw new Error("The application cards and displayed target count must agree");
 }
 for (const icon of icons) {
   if (!/^[a-z-]+\.svg$/.test(icon.file)) throw new Error(`Invalid icon filename: ${icon.file}`);
@@ -90,13 +95,22 @@ if (bubbles.length < 14 || bubbles.some(([, , y, radius]) => Number(y) - Number(
   throw new Error("The foam logo needs a dense lower-half bubble cluster and reflected larger bubbles");
 }
 
-const { blobfish } = JSON.parse(await readFile(path.join(root, "docs", "showcase-artwork.json"), "utf8"));
+const { blobfish, photographicInspiration } = JSON.parse(await readFile(path.join(root, "docs", "showcase-artwork.json"), "utf8"));
 const fishBytes = await readFile(path.join(site, "blobfish.webp"));
 if (blobfish.file !== "blobfish.webp" || createHash("sha256").update(fishBytes).digest("hex") !== blobfish.sha256 ||
     fishBytes.length !== blobfish.bytes || fishBytes.toString("ascii", 0, 4) !== "RIFF" ||
     fishBytes.toString("ascii", 8, 16) !== "WEBPVP8X" || !(fishBytes[20] & 0x10) ||
     fishBytes.readUIntLE(24, 3) + 1 !== blobfish.width || fishBytes.readUIntLE(27, 3) + 1 !== blobfish.height) {
   throw new Error("The supplied blobfish derivative must retain its recorded size, alpha and artwork hash");
+}
+for (const key of ["page", "photographerPage", "original"]) {
+  if (!html.includes(`href="${photographicInspiration[key]}"`)) {
+    throw new Error(`Missing photographic inspiration reference: ${key}`);
+  }
+}
+if (!html.includes(`${photographicInspiration.width} &times; ${photographicInspiration.height}`) ||
+    /<(?:img|source)\b[^>]+(?:src|srcset)=["']https?:/i.test(html)) {
+  throw new Error("Credit the original photo dimensions without automatically loading external images");
 }
 
 const colorCount = palette.groups.reduce((total, group) => total + group.colors.length, 0);
@@ -127,7 +141,7 @@ for (const marker of [
   '<canvas class="water-surface" aria-hidden="true"></canvas>',
   '<script src="ocean.js?v=touch-water" type="module"></script>',
   '<script src="water.js?v=touch-water" type="module"></script>',
-  '<script src="nautilus.js" type="module"></script>',
+  '<script src="nautilus.js?v=free-nautilus" type="module"></script>',
   'class="nautilus-zone"',
   'class="blobfish-zone"',
   'class="angler-zone"',
@@ -143,7 +157,7 @@ for (const marker of [
   }
 }
 
-const depthOrder = ['class="nautilus-zone"', 'id="identity"', 'id="palette"', 'id="applications"', 'class="angler-zone"', '<footer>', 'class="blobfish-zone"']
+const depthOrder = ['id="identity"', 'id="palette"', 'id="applications"', 'class="angler-zone"', '<footer>', 'class="blobfish-zone"']
   .map((marker) => html.indexOf(marker));
 if (depthOrder.some((position, index) => position < 0 || (index > 0 && position <= depthOrder[index - 1])) ||
     /<(?:details|summary)\b/.test(html)) {
@@ -158,6 +172,12 @@ for (const retired of ["Beneath the everyday", 'class="principle-grid"', 'class=
 }
 if (css.includes("nautilus-pass") || css.includes("nautilus-bob")) {
   throw new Error("Nautilus drift must not compete with the retired fixed-loop animations");
+}
+if (html.indexOf('class="nautilus-zone"') > html.indexOf("<main") ||
+    !html.includes('class="nautilus-zone" aria-hidden="true"') ||
+    !/\.nautilus-zone\s*\{[^}]*position:\s*fixed;[^}]*z-index:\s*6;[^}]*pointer-events:\s*none/.test(css) ||
+    !html.includes('href="ocean.css?v=free-nautilus"')) {
+  throw new Error("Nautilus must occupy a pointer-transparent root foreground layer, not a section");
 }
 const hideout = html.match(/<section class="blobfish-zone"[\s\S]*?<\/section>/)?.[0] ?? "";
 if (!hideout.includes('src="blobfish.webp"') || (hideout.match(/class="cover-kelp"/g)?.length ?? 0) < 20 ||
@@ -217,9 +237,9 @@ const totalBytes = (await Promise.all(assets.map(async (file) => (await stat(fil
   .reduce((total, size) => total + size, 0);
 
 // Include the transparent supplied illustration, drift module, product SVGs and all notices.
-const budget = 200 * 1024;
+const budget = 256 * 1024;
 if (totalBytes > budget) {
-  throw new Error(`Website exceeds the 200 KiB asset budget: ${totalBytes} bytes`);
+  throw new Error(`Website exceeds the 256 KiB asset budget: ${totalBytes} bytes`);
 }
 
 console.log(`Validated static website: ${totalBytes} bytes across ${assets.length} files.`);

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<idea-plugin>
+  <id>io.github.zanark.deepseafoam</id>
+  <name>DeepSeaFoam</name>
+  <version>0.5.0</version>
+  <vendor url="https://github.com/Zanark/DeepSeaFoam">Zanark</vendor>
+  <description>DeepSeaFoam dark UI theme and editor color scheme. Theme resources only; no application code.</description>
+  <idea-version since-build="253"/>
+  <depends>com.intellij.modules.platform</depends>
+  <extensions defaultExtensionNs="com.intellij">
+    <themeProvider id="e78984a4-848f-477c-b0b3-fb331c8b144c" path="/DeepSeaFoam.theme.json"/>
+  </extensions>
+</idea-plugin>

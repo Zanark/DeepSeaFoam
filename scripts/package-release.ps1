@@ -13,6 +13,9 @@ if ([string]::IsNullOrWhiteSpace($Version)) {
 if ($Version -notmatch '^\d+\.\d+\.\d+([-.][0-9A-Za-z.-]+)?$') {
     throw "Version '$Version' is not a supported release version."
 }
+if ($Version -ne $package.version) {
+    throw "Release version must match the generated package version ($($package.version))."
+}
 
 $dist = Join-Path $repoRoot "dist"
 if (Test-Path $dist) {
@@ -25,6 +28,13 @@ try {
     npm test
     if ($LASTEXITCODE -ne 0) {
         throw "Theme validation failed."
+    }
+    foreach ($xmlPath in @(
+        "targets\visual-studio\DeepSeaFoam.vstheme",
+        "targets\jetbrains\resources\META-INF\plugin.xml",
+        "targets\jetbrains\resources\DeepSeaFoam.xml"
+    )) {
+        $null = [xml](Get-Content -Raw (Join-Path $repoRoot $xmlPath))
     }
 
     Push-Location (Join-Path $repoRoot "targets\vscode")
@@ -52,12 +62,31 @@ try {
         Move-Item $firefoxGenerated $firefoxAsset
     }
 
-    Copy-Item `
-        (Join-Path $repoRoot "targets\windows-terminal\DeepSeaFoam.json") `
-        (Join-Path $dist "DeepSeaFoam-WindowsTerminal-$Version.json")
-    Copy-Item `
-        (Join-Path $repoRoot "targets\visual-studio\DeepSeaFoam.vstheme") `
-        (Join-Path $dist "DeepSeaFoam-VisualStudio-$Version.vstheme")
+    $singleFiles = @(
+        @{ Target = "windows-terminal"; Name = "WindowsTerminal"; Extension = "json" },
+        @{ Target = "visual-studio"; Name = "VisualStudio"; Extension = "vstheme" },
+        @{ Target = "discord"; Name = "Discord"; Extension = "theme.css" },
+        @{ Target = "telegram"; Name = "TelegramDesktop"; Extension = "tdesktop-theme" },
+        @{ Target = "slack"; Name = "Slack"; Extension = "txt" },
+        @{ Target = "sublime-text"; Name = "SublimeText"; Extension = "sublime-color-scheme" },
+        @{ Target = "alacritty"; Name = "Alacritty"; Extension = "toml" }
+    )
+    foreach ($asset in $singleFiles) {
+        Copy-Item `
+            (Join-Path $repoRoot "targets\$($asset.Target)\DeepSeaFoam.$($asset.Extension)") `
+            (Join-Path $dist "DeepSeaFoam-$($asset.Name)-$Version.$($asset.Extension)")
+    }
+
+    Compress-Archive `
+        -Path (Join-Path $repoRoot "targets\chromium\*") `
+        -DestinationPath (Join-Path $dist "DeepSeaFoam-Chromium-$Version.zip") `
+        -CompressionLevel Optimal
+    [System.IO.Compression.ZipFile]::CreateFromDirectory(
+        (Join-Path $repoRoot "targets\jetbrains\resources"),
+        (Join-Path $dist "DeepSeaFoam-JetBrains-$Version.jar"),
+        [System.IO.Compression.CompressionLevel]::Optimal,
+        $false
+    )
 
     $obsidianRoot = Join-Path $dist "_obsidian"
     $obsidianTheme = Join-Path $obsidianRoot "DeepSeaFoam"

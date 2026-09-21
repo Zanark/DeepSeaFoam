@@ -1,0 +1,181 @@
+/**
+ * @name DeepSeaFoam
+ * @author Zanark
+ * @description Unofficial DeepSeaFoam recolor for existing modified Discord desktop clients.
+ * @version 0.5.0
+ * @source https://github.com/Zanark/DeepSeaFoam
+ */
+
+/* Generated from palette/deepseafoam.json.
+ * Not a native Discord import or a marketplace-approved theme.
+ * Client modifications may violate Discord's terms and are not account-risk-free.
+ * Semantic colors only; no external resources or media transformations.
+ */
+
+.theme-dark,
+.visual-refresh.theme-dark,
+.visual-refresh .theme-dark,
+.theme-darker,
+.visual-refresh.theme-darker,
+.visual-refresh .theme-darker,
+.theme-midnight,
+.visual-refresh.theme-midnight,
+.visual-refresh .theme-midnight {
+  --background-base-low: #000F13 !important;
+  --background-base-lower: #001E26 !important;
+  --background-base-lowest: #000F13 !important;
+  --background-surface-high: #001E26 !important;
+  --background-surface-higher: #001E26 !important;
+  --background-surface-highest: #122E36 !important;
+  --app-frame-background: #000F13 !important;
+  --app-frame-border: #586E7566 !important;
+  --chat-background: #000F13 !important;
+  --chat-background-default: #000F13 !important;
+  --custom-channel-members-bg: #001E26 !important;
+  --background-primary: #000F13 !important;
+  --background-secondary: #001E26 !important;
+  --background-secondary-alt: #001E26 !important;
+  --background-tertiary: #000F13 !important;
+  --background-accent: #001E26 !important;
+  --background-floating: #001E26 !important;
+  --background-nested-floating: #001E26 !important;
+  --bg-base-primary: #000F13 !important;
+  --bg-base-secondary: #001E26 !important;
+  --bg-base-tertiary: #000F13 !important;
+  --bg-surface-raised: #001E26 !important;
+  --bg-surface-overlay: #001E26 !important;
+  --modal-background: #001E26 !important;
+  --modal-footer-background: #001E26 !important;
+  --card-background-default: #001E26 !important;
+  --card-primary-bg: #001E26 !important;
+  --background-code: #000F13 !important;
+  --text-default: #93A1A1 !important;
+  --text-primary: #93A1A1 !important;
+  --text-normal: #93A1A1 !important;
+  --text-strong: #EEE8D5 !important;
+  --text-secondary: #839496 !important;
+  --text-tertiary: #839496 !important;
+  --text-muted: #839496 !important;
+  --text-subtle: #839496 !important;
+  --chat-text-muted: #839496 !important;
+  --header-primary: #EEE8D5 !important;
+  --header-secondary: #93A1A1 !important;
+  --header-muted: #839496 !important;
+  --text-link: #EEE8D5 !important;
+  --text-brand: #00A591 !important;
+  --channels-default: #839496 !important;
+  --channel-icon: #839496 !important;
+  --icon-primary: #93A1A1 !important;
+  --icon-secondary: #839496 !important;
+  --icon-tertiary: #839496 !important;
+  --interactive-normal: #93A1A1 !important;
+  --interactive-hover: #EEE8D5 !important;
+  --interactive-active: #EEE8D5 !important;
+  --interactive-muted: #839496 !important;
+  --interactive-icon-default: #93A1A1 !important;
+  --interactive-icon-hover: #EEE8D5 !important;
+  --interactive-icon-active: #EEE8D5 !important;
+  --interactive-text-hover: #EEE8D5 !important;
+  --interactive-text-active: #EEE8D5 !important;
+  --background-modifier-hover: #586E7533 !important;
+  --background-modifier-active: #586E7533 !important;
+  --background-modifier-selected: #00A59126 !important;
+  --background-modifier-accent: #586E7566 !important;
+  --background-mod-muted: #586E7533 !important;
+  --background-mod-subtle: #586E7533 !important;
+  --background-mod-normal: #586E7533 !important;
+  --background-mod-strong: #00A59126 !important;
+  --interactive-background-hover: #586E7533 !important;
+  --interactive-background-active: #586E7533 !important;
+  --interactive-background-selected: #00A59126 !important;
+  --background-message-hover: #586E7533 !important;
+  --message-background-hover: #586E7533 !important;
+  --background-mentioned: #00A59126 !important;
+  --background-mentioned-hover: #003236 !important;
+  --message-mentioned-background-default: #00A59126 !important;
+  --message-mentioned-background-hover: #003236 !important;
+  --background-message-highlight: #00A59126 !important;
+  --background-message-highlight-hover: #003236 !important;
+  --message-highlight-background-default: #00A59126 !important;
+  --message-highlight-background-hover: #003236 !important;
+  --mention-background: #00A59126 !important;
+  --mention-foreground: #EEE8D5 !important;
+  --message-reacted-background-default: #00A59126 !important;
+  --message-reacted-text-default: #EEE8D5 !important;
+  --brand-500: #00A591 !important;
+  --brand-500-hsl: 172.727 100% 32.353% !important;
+  --brand-experiment: #00A591 !important;
+  --brand-experiment-500: #00A591 !important;
+  --bg-brand: #00A591 !important;
+  --background-brand: #00A591 !important;
+  --control-brand-foreground: #00A591 !important;
+  --control-brand-foreground-new: #00A591 !important;
+  --control-primary-background-default: #00A591 !important;
+  --control-primary-background-hover: #93A1A1 !important;
+  --control-primary-background-active: #EEE8D5 !important;
+  --button-filled-brand-background: #00A591 !important;
+  --button-filled-brand-background-hover: #93A1A1 !important;
+  --button-filled-brand-background-active: #EEE8D5 !important;
+  --button-filled-brand-text: #000F13 !important;
+  --control-secondary-background-default: #001E26 !important;
+  --control-secondary-background-hover: #122E36 !important;
+  --control-secondary-background-active: #003236 !important;
+  --control-secondary-text-default: #93A1A1 !important;
+  --button-secondary-background: #001E26 !important;
+  --button-secondary-background-hover: #122E36 !important;
+  --button-secondary-background-active: #003236 !important;
+  --button-secondary-text: #93A1A1 !important;
+  --button-danger-background: #E84A5F !important;
+  --button-danger-background-hover: #E84A5F !important;
+  --button-danger-background-active: #E84A5F !important;
+  --button-danger-text: #000F13 !important;
+  --input-background-default: #000F13 !important;
+  --input-background: #000F13 !important;
+  --channeltextarea-background: #001E26 !important;
+  --deprecated-text-input-bg: #000F13 !important;
+  --input-text-default: #93A1A1 !important;
+  --input-placeholder-text-default: #839496 !important;
+  --channel-text-area-placeholder: #839496 !important;
+  --input-border-default: #586E75 !important;
+  --input-border: #586E75 !important;
+  --deprecated-text-input-border: #586E75 !important;
+  --border-faint: #586E7566 !important;
+  --border-subtle: #586E7566 !important;
+  --border-muted: #586E75 !important;
+  --border-normal: #586E75 !important;
+  --border-strong: #586E75 !important;
+  --divider-subtle: #586E7566 !important;
+  --focus-primary: #00A591 !important;
+  --scrollbar-auto-thumb: #586E75 !important;
+  --scrollbar-thin-thumb: #586E75 !important;
+  --scrollbar-auto-scrollbar-color-thumb: #586E75 !important;
+  --scrollbar-auto-track: #000F13 !important;
+  --scrollbar-thin-track: #000F13 !important;
+  --scrollbar-auto-scrollbar-color-track: #000F13 !important;
+  --status-online: #45D072 !important;
+  --status-positive: #45D072 !important;
+  --status-speaking: #45D072 !important;
+  --status-idle: #EBE565 !important;
+  --status-dnd: #E84A5F !important;
+  --status-danger: #E84A5F !important;
+  --status-offline: #839496 !important;
+  --text-positive: #45D072 !important;
+  --text-feedback-positive: #45D072 !important;
+  --text-warning: #EBE565 !important;
+  --text-feedback-warning: #EBE565 !important;
+  --text-danger: #EEE8D5 !important;
+  --text-feedback-critical: #EEE8D5 !important;
+  --control-primary-text-default: #000F13 !important;
+  --control-primary-icon-default: #000F13 !important;
+  --control-primary-text-hover: #000F13 !important;
+  --control-primary-icon-hover: #000F13 !important;
+  --control-primary-text-active: #000F13 !important;
+  --control-primary-icon-active: #000F13 !important;
+}
+
+.theme-dark ::selection,
+.theme-darker ::selection,
+.theme-midnight ::selection {
+  color: #EEE8D5;
+  background-color: #002526;
+}

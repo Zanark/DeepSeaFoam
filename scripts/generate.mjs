@@ -2,6 +2,8 @@ import { readFile, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { rgb, hsl, shadeColor, composite, contrast } from "./colors.mjs";
+import { addChatThemes } from "./chat-themes.mjs";
+import { addDesktopThemes } from "./desktop-themes.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const palette = JSON.parse(await readFile(path.join(root, "palette", "deepseafoam.json"), "utf8"));
@@ -674,6 +676,10 @@ const vsTheme = `<?xml version="1.0" encoding="utf-8"?>
 
 add("targets/visual-studio/DeepSeaFoam.vstheme", vsTheme);
 
+const exportContext = { palette, add, json, solid, overlay, derived, heritage, terminal, syntaxRules: vscodeTheme.tokenColors };
+addChatThemes(exportContext);
+addDesktopThemes(exportContext);
+
 const activeGroups = ["solid", "overlay", "preview"];
 const swatchGroups = [...activeGroups, "terminal"];
 const swatchDirectory = (group) => group === "terminal" ? "docs/terminal-swatches" : "docs/swatches";
@@ -857,13 +863,9 @@ if (checkOnly) {
     throw new Error(mismatches.join("\n"));
   }
 
-  for (const relativePath of [
-    "targets/vscode/package.json",
-    "targets/vscode/themes/deepseafoam-color-theme.json",
-    "targets/obsidian/manifest.json",
-    "targets/windows-terminal/DeepSeaFoam.json",
-    "targets/firefox/manifest.json"
-  ]) {
+  for (const relativePath of [...outputs.keys()].filter(
+    file => file.endsWith(".json") || file.endsWith(".sublime-color-scheme")
+  )) {
     JSON.parse(await readFile(path.join(root, relativePath), "utf8"));
   }
 

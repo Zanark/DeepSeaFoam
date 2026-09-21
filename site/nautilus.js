@@ -1,8 +1,11 @@
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 const radians = Math.PI / 180;
 const RESPONSE = 1.1;
-const MAX_SPEED = 28;
-const MAX_RATE = .22;
+export const SPEED_MULTIPLIER = 3;
+const MIN_SPEED = 10 * SPEED_MULTIPLIER;
+const MAX_SPEED = 28 * SPEED_MULTIPLIER;
+const MAX_RATE = .22 * SPEED_MULTIPLIER;
+const AXES = ["x", "y"];
 export const MAX_STEP_MS = 50;
 
 function boundsFor(width, height, fishWidth, fishHeight) {
@@ -17,7 +20,7 @@ function boundsFor(width, height, fishWidth, fishHeight) {
   // Reserve the rotated rectangle, not just the unrotated SVG's dimensions.
   return {
     x: Math.max(0, (horizontal - fishHeight * Math.sin(angle)) / 2),
-    y: Math.min(10, Math.max(0, (vertical - fishWidth * Math.sin(angle)) / 2)),
+    y: Math.max(0, (vertical - fishWidth * Math.sin(angle)) / 2),
     angle: angle / radians,
     visible: width > 0 && height > 0 && fishWidth > 0 && fishHeight > 0
   };
@@ -33,10 +36,15 @@ function random(state) {
 }
 
 function chooseLeg(state) {
-  let direction = random(state) < .5 ? -1 : 1;
-  if (Math.abs(state.position) > .85) direction = -Math.sign(state.position);
+  const heading = random(state) * Math.PI * 2;
+  const direction = { x: Math.cos(heading), y: Math.sin(heading) };
+  for (const axis of AXES) {
+    if (Math.abs(state[axis].position) > .85) {
+      direction[axis] = -Math.sign(state[axis].position) * Math.abs(direction[axis]);
+    }
+  }
   const duration = 4 + random(state) * 6;
-  const speed = 10 + random(state) * (MAX_SPEED - 10);
+  const speed = MIN_SPEED + random(state) * (MAX_SPEED - MIN_SPEED);
   state.leg = { id: state.leg.id + 1, direction, duration, speed };
   state.remaining = duration;
 }
@@ -47,12 +55,27 @@ export function createDrift({ width, height, fishWidth, fishHeight, seed = 1 }) 
   const state = {
     bounds: boundsFor(width, height, fishWidth, fishHeight),
     seed: (seed >>> 0) || 1,
-    position: 0, velocity: 0, acceleration: 0, time: 0, remaining: 0,
+    x: { position: 0, velocity: 0, acceleration: 0 },
+    y: { position: 0, velocity: 0, acceleration: 0 },
+    time: 0, remaining: 0,
     phase: 0, leg: { id: 0 }
   };
   state.phase = random(state) * Math.PI * 2;
   chooseLeg(state);
   return state;
+}
+
+function advanceAxis(axis, target, dt) {
+  // Exact critically damped velocity filter; turns preserve velocity and acceleration.
+  const offset = axis.velocity - target;
+  const slope = axis.acceleration + RESPONSE * offset;
+  const decay = Math.exp(-RESPONSE * dt);
+  return {
+    position: axis.position + target * dt + offset * (1 - decay) / RESPONSE +
+      slope * (1 - decay * (1 + RESPONSE * dt)) / (RESPONSE * RESPONSE),
+    velocity: target + (offset + slope * dt) * decay,
+    acceleration: (axis.acceleration - RESPONSE * slope * dt) * decay
+  };
 }
 
 export function stepDrift(state, elapsedMs) {
@@ -65,21 +88,16 @@ export function stepDrift(state, elapsedMs) {
   let remaining = Math.min(elapsedMs, MAX_STEP_MS) / 1000;
   while (remaining > 1e-9) {
     if (next.remaining <= 1e-9 ||
-        (Math.abs(next.position) > 1 && Math.sign(next.position) === next.leg.direction)) {
+        AXES.some(axis => Math.abs(next[axis].position) > 1 &&
+          next[axis].position * next.leg.direction[axis] > 0)) {
       chooseLeg(next);
     }
     const dt = Math.min(remaining, next.remaining);
-    const target = next.leg.direction *
-      Math.min(MAX_RATE, next.leg.speed / Math.max(110, next.bounds.x));
-    // Exact critically damped velocity filter. A new target changes neither
-    // velocity nor acceleration abruptly, including when the edge asks for a turn.
-    const offset = next.velocity - target;
-    const slope = next.acceleration + RESPONSE * offset;
-    const decay = Math.exp(-RESPONSE * dt);
-    next.position += target * dt + offset * (1 - decay) / RESPONSE +
-      slope * (1 - decay * (1 + RESPONSE * dt)) / (RESPONSE * RESPONSE);
-    next.velocity = target + (offset + slope * dt) * decay;
-    next.acceleration = (next.acceleration - RESPONSE * slope * dt) * decay;
+    for (const axis of AXES) {
+      const target = next.leg.direction[axis] *
+        Math.min(MAX_RATE, next.leg.speed / Math.max(110, next.bounds[axis]));
+      next[axis] = advanceAxis(next[axis], target, dt);
+    }
     next.time += dt;
     next.remaining -= dt;
     remaining -= dt;
@@ -87,39 +105,52 @@ export function stepDrift(state, elapsedMs) {
   return next;
 }
 
+function axisPose(axis, bound) {
+  const position = Math.tanh(axis.position);
+  const scale = bound * (1 - position * position);
+  return {
+    position: bound * position,
+    velocity: scale * axis.velocity,
+    acceleration: scale * (axis.acceleration - 2 * position * axis.velocity * axis.velocity)
+  };
+}
+
 export function driftPose(state) {
-  const { bounds, time, phase, position, velocity, acceleration } = state;
-  // Soft confinement avoids edge collisions, clamping, and position wrapping.
-  const horizontal = Math.tanh(position);
-  const scale = bounds.x * (1 - horizontal * horizontal);
+  const { bounds, time, phase } = state;
+  // Both axes use soft confinement, rather than wrapping or bouncing at the screen edges.
+  const x = axisPose(state.x, bounds.x), y = axisPose(state.y, bounds.y);
   const t = Math.min(1, time / 4);
   const fade = t * t * t * (10 + t * (-15 + 6 * t));
   return {
-    x: bounds.x * horizontal,
-    y: bounds.y * fade * (.6 * Math.sin(time * .55 + phase) + .4 * Math.sin(time * .83)),
+    x: x.position,
+    y: y.position,
     angle: bounds.angle * fade *
       (.65 * Math.sin(time * .37 + phase) + .35 * Math.sin(time * .61)),
-    vx: scale * velocity,
-    ax: scale * (acceleration - 2 * horizontal * velocity * velocity)
+    vx: x.velocity, vy: y.velocity,
+    ax: x.acceleration, ay: y.acceleration
   };
 }
 
 export function resizeDrift(state, { width, height, fishWidth, fishHeight }) {
   const bounds = boundsFor(width, height, fishWidth, fishHeight);
   if (Object.keys(bounds).every(key => bounds[key] === state.bounds[key])) return state;
-  const pose = driftPose(state);
-  const position = bounds.x ? Math.atanh(clamp(pose.x / bounds.x, -.95, .95)) : 0;
-  const horizontal = Math.tanh(position);
-  const scale = bounds.x * (1 - horizontal * horizontal);
-  const velocity = scale ? clamp(pose.vx / scale, -MAX_RATE, MAX_RATE) : 0;
-  const acceleration = scale ? clamp(pose.ax / scale +
-    2 * horizontal * velocity * velocity, -.2, .2) : 0;
-  return { ...state, bounds, position, velocity, acceleration };
+  const next = { ...state, bounds };
+  for (const axis of AXES) {
+    const pose = axisPose(state[axis], state.bounds[axis]);
+    const position = bounds[axis] ? Math.atanh(clamp(pose.position / bounds[axis], -.95, .95)) : 0;
+    const normalized = Math.tanh(position);
+    const scale = bounds[axis] * (1 - normalized * normalized);
+    const velocity = scale ? clamp(pose.velocity / scale, -MAX_RATE, MAX_RATE) : 0;
+    const acceleration = scale ? clamp(pose.acceleration / scale +
+      2 * normalized * velocity * velocity, -.2 * SPEED_MULTIPLIER, .2 * SPEED_MULTIPLIER) : 0;
+    next[axis] = { position, velocity, acceleration };
+  }
+  return next;
 }
 
 const controllers = new WeakMap();
 
-// CSS contract: a positioned zone and an absolutely positioned SVG at left/top
+// CSS contract: a fixed foreground zone and an absolutely positioned SVG at left/top
 // 50%, with transform: translate(-50%, -50%), transform-origin: 50% 50%, and a
 // responsive size that fits the zone. No transform animation/transition on the
 // SVG or .nautilus-float. JS owns only the SVG's transform and the zone's
@@ -145,11 +176,23 @@ export function mountNautilus(zone) {
   const reduced = win.matchMedia("(prefers-reduced-motion: reduce)");
   const originalTransform = fish.style.transform;
   const originalState = zone.getAttribute("data-nautilus-state");
+  const viewport = win.visualViewport;
+  const originalViewport = Object.fromEntries(["left", "top", "width", "height"]
+    .map(name => [name, zone.style[name]]));
+  function fitViewport() {
+    if (!viewport) return;
+    for (const [name, value] of Object.entries({
+      left: viewport.offsetLeft, top: viewport.offsetTop, width: viewport.width, height: viewport.height
+    })) {
+      if (zone.style[name] !== `${value}px`) zone.style[name] = `${value}px`;
+    }
+  }
   const seed = Math.floor(Math.random() * 4294967296) || 1;
   const dimensions = () => ({
     width: zone.clientWidth, height: zone.clientHeight,
     fishWidth: fish.clientWidth, fishHeight: fish.clientHeight
   });
+  fitViewport();
   let model = createDrift({ ...dimensions(), seed });
   let frame = null, lastTime = null, suspended = false, destroyed = false;
   let focused = typeof doc.hasFocus !== "function" || doc.hasFocus();
@@ -166,7 +209,7 @@ export function mountNautilus(zone) {
   const blocked = () => destroyed || suspended || !focused || !visible || reduced.matches ||
     doc.hidden || (doc.visibilityState && doc.visibilityState !== "visible") ||
     !body.classList.contains("ocean-ready") || body.classList.contains("motion-paused") ||
-    body.classList.contains("page-hidden") || !model.bounds.visible ||
+    body.classList.contains("page-hidden") || body.classList.contains("is-diving") || !model.bounds.visible ||
     !(model.bounds.x || model.bounds.y || model.bounds.angle);
 
   function stop() {
@@ -214,6 +257,7 @@ export function mountNautilus(zone) {
 
   function resize() {
     if (destroyed) return;
+    fitViewport();
     model = resizeDrift(model, dimensions());
     visible = inViewport();
     if (!reduced.matches) render();
@@ -232,6 +276,10 @@ export function mountNautilus(zone) {
   }
 
   listen(win, "resize", resize);
+  if (viewport) {
+    listen(viewport, "resize", resize);
+    listen(viewport, "scroll", resize);
+  }
   listen(win, "blur", () => { focused = false; sync(); });
   listen(win, "focus", () => { focused = true; checkVisibility(); });
   listen(doc, "visibilitychange", checkVisibility);
@@ -283,6 +331,7 @@ export function mountNautilus(zone) {
       stop();
       for (const cleanup of cleanups) cleanup();
       fish.style.transform = originalTransform;
+      for (const [name, value] of Object.entries(originalViewport)) zone.style[name] = value;
       if (originalState === null) zone.removeAttribute("data-nautilus-state");
       else zone.setAttribute("data-nautilus-state", originalState);
       controllers.delete(zone);

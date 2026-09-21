@@ -868,6 +868,10 @@
     line-height: 1.85;
   }
 
+  .design-story-copy h3:not(:first-child) {
+    margin-top: 32px;
+  }
+
   .design-evidence {
     display: grid;
     align-content: start;
@@ -1206,7 +1210,7 @@
   .application-grid {
     display: grid;
     margin-top: 82px;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-auto-rows: 300px;
     gap: 12px;
   }
@@ -1229,17 +1233,6 @@
     z-index: 2;
     border-color: var(--dsf-solid-accent);
     transform: translateY(-5px);
-  }
-
-  .app-vscode,
-  .app-visual-studio {
-    grid-column: span 3;
-  }
-
-  .app-obsidian,
-  .app-terminal,
-  .app-firefox {
-    grid-column: span 2;
   }
 
   .app-card-top {
@@ -1563,14 +1556,6 @@
     .application-grid {
       grid-template-columns: 1fr;
       grid-auto-rows: 270px;
-    }
-
-    .app-vscode,
-    .app-visual-studio,
-    .app-obsidian,
-    .app-terminal,
-    .app-firefox {
-      grid-column: auto;
     }
 
     .design-story {

@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createDrift, driftPose, MAX_STEP_MS, mountNautilus, resizeDrift, stepDrift } from "../site/nautilus.js";
+import { createDrift, driftPose, MAX_STEP_MS, SPEED_MULTIPLIER, mountNautilus, resizeDrift, stepDrift } from "../site/nautilus.js";
 
-const dimensions = { width: 900, height: 210, fishWidth: 230, fishHeight: 155 };
+const dimensions = { width: 900, height: 800, fishWidth: 230, fishHeight: 155 };
 const create = (seed = 42, size = dimensions) => createDrift({ ...size, seed });
 const advance = (state, count, dt = 1000 / 60) => {
   for (let i = 0; i < count; i++) state = stepDrift(state, dt);
@@ -13,7 +13,7 @@ test("model is deterministic, starts centered, and never mutates its inputs", ()
   const start = create();
   const before = structuredClone(start);
   const first = advance(start, 900);
-  assert.deepEqual(driftPose(start), { x: 0, y: 0, angle: 0, vx: 0, ax: 0 });
+  assert.deepEqual(driftPose(start), { x: 0, y: 0, angle: 0, vx: 0, vy: 0, ax: 0, ay: 0 });
   assert.deepEqual(start, before);
   assert.deepEqual(first, advance(create(), 900));
   assert.notDeepEqual(first, advance(create(77), 900));
@@ -22,32 +22,52 @@ test("model is deterministic, starts centered, and never mutates its inputs", ()
   assert.notEqual(driftPose(first).angle, 0);
 });
 
-test("random legs vary duration and speed, reverse, and can keep the same direction", () => {
+test("random headings cover every direction, repeat quadrants and make substantial vertical journeys", () => {
   let state = create();
   const legs = [state.leg];
-  let left = false, right = false;
+  let left = false, right = false, up = false, down = false, diagonal = false;
+  let top = 0, bottom = 0;
   for (let i = 0; i < 30000; i++) {
     const next = stepDrift(state, 50);
     if (next.leg.id !== state.leg.id) legs.push(next.leg);
     left ||= driftPose(next).vx < -2;
     right ||= driftPose(next).vx > 2;
+    up ||= driftPose(next).vy < -2;
+    down ||= driftPose(next).vy > 2;
+    diagonal ||= Math.abs(driftPose(next).vx) > 4 && Math.abs(driftPose(next).vy) > 4;
+    top = Math.min(top, driftPose(next).y);
+    bottom = Math.max(bottom, driftPose(next).y);
     state = next;
   }
   assert.ok(legs.length > 150);
-  assert.ok(legs.some((leg, index) => index && leg.direction === legs[index - 1].direction));
-  assert.ok(legs.some((leg, index) => index && leg.direction !== legs[index - 1].direction));
+  const quadrant = leg => `${Math.sign(leg.direction.x)},${Math.sign(leg.direction.y)}`;
+  assert.ok(legs.some((leg, index) => index && quadrant(leg) === quadrant(legs[index - 1])));
+  assert.equal(new Set(legs.map(quadrant)).size, 4);
   assert.ok(new Set(legs.map(leg => leg.duration.toFixed(1))).size > 20);
   assert.ok(new Set(legs.map(leg => leg.speed.toFixed(1))).size > 20);
-  assert.ok(left && right);
+  assert.ok(left && right && up && down && diagonal);
+  assert.ok(top < -100 && bottom > 100, `${top} to ${bottom} must be more than a small bob`);
   assert.ok(legs.every(leg => leg.duration >= 4 && leg.duration <= 10 &&
-    leg.speed >= 10 && leg.speed <= 28));
+    leg.speed >= 30 && leg.speed <= 84));
+});
+
+test("the requested threefold speed applies to actual motion before soft-edge slowing", () => {
+  assert.equal(SPEED_MULTIPLIER, 3);
+  const start = create(42, { ...dimensions, width: 2000, height: 1600 });
+  const originalSpeed = { ...start, leg: { ...start.leg, speed: start.leg.speed / 3 } };
+  const fast = advance(start, 60), slow = advance(originalSpeed, 60);
+  for (const axis of ["x", "y"]) {
+    for (const key of ["position", "velocity", "acceleration"]) {
+      assert.ok(Math.abs(fast[axis][key] - slow[axis][key] * 3) < 1e-10, `${axis}.${key}`);
+    }
+  }
 });
 
 test("position, speed, and acceleration stay bounded with irregular frame intervals", () => {
   for (const size of [
     dimensions,
-    { width: 320, height: 190, fishWidth: 200, fishHeight: 135 },
-    { width: 1900, height: 400, fishWidth: 230, fishHeight: 155 },
+    { width: 320, height: 844, fishWidth: 120, fishHeight: 81 },
+    { width: 1900, height: 1080, fishWidth: 230, fishHeight: 155 },
     { width: 80, height: 54, fishWidth: 80, fishHeight: 54 }
   ]) {
     let state = create(2026, size);
@@ -61,11 +81,11 @@ test("position, speed, and acceleration stay bounded with irregular frame interv
       assert.ok(Math.abs(pose.x) <= next.bounds.x);
       assert.ok(Math.abs(pose.y) <= next.bounds.y + 1e-10);
       assert.ok(Math.abs(pose.angle) <= next.bounds.angle + 1e-10);
-      assert.ok(Math.abs(pose.vx) <= 28 + 1e-10);
-      assert.ok(Math.abs(pose.ax) <= 36);
+      assert.ok(Math.hypot(pose.vx, pose.vy) <= 84 + 1e-10);
+      assert.ok(Math.hypot(pose.ax, pose.ay) <= 108);
       const elapsed = Math.min(dt, MAX_STEP_MS) / 1000;
-      assert.ok(Math.abs(pose.x - previous.x) <= 28 * elapsed + 1e-8);
-      assert.ok(Math.abs(pose.vx - previous.vx) <= 36 * elapsed + 1e-8);
+      assert.ok(Math.hypot(pose.x - previous.x, pose.y - previous.y) <= 84 * elapsed + 1e-8);
+      assert.ok(Math.hypot(pose.vx - previous.vx, pose.vy - previous.vy) <= 108 * elapsed + 1e-8);
       const angle = Math.abs(pose.angle) * Math.PI / 180;
       const halfWidth = (size.fishWidth * Math.cos(angle) + size.fishHeight * Math.sin(angle)) / 2;
       const halfHeight = (size.fishHeight * Math.cos(angle) + size.fishWidth * Math.sin(angle)) / 2;
@@ -80,26 +100,42 @@ test("the continuous filter has consistent travel at different ordinary frame ra
   const a = advance(create(), 480, 1000 / 120);
   const b = advance(create(), 240, 1000 / 60);
   const c = advance(create(), 80, 50);
-  for (const key of ["x", "y", "angle", "vx", "ax"]) {
+  for (const key of ["x", "y", "angle", "vx", "vy", "ax", "ay"]) {
     assert.ok(Math.abs(driftPose(a)[key] - driftPose(b)[key]) < 1e-8, key);
     assert.ok(Math.abs(driftPose(a)[key] - driftPose(c)[key]) < 1e-8, key);
   }
 });
 
 test("new random legs and soft-bound turns preserve velocity and acceleration continuity", () => {
-  for (const position of [.4, 1.01, -1.01]) {
+  for (const axis of ["x", "y"]) for (const position of [.4, 1.01, -1.01]) {
     const state = {
-      ...advance(create(), 300), position, velocity: .12, acceleration: .04,
-      remaining: 0, leg: { id: 4, direction: Math.sign(position), duration: 8, speed: 28 }
+      ...advance(create(), 300),
+      [axis]: { position, velocity: .12, acceleration: .04 },
+      remaining: Math.abs(position) > 1 ? 4 : 0,
+      leg: { id: 4, direction: { x: Math.sign(position), y: Math.sign(position) }, duration: 8, speed: 84 }
     };
     const before = driftPose(state);
-    const next = stepDrift(state, .0001);
-    const after = driftPose(next);
-    assert.equal(next.leg.id, 5);
-    assert.ok(Math.abs(after.x - before.x) < .00001);
-    assert.ok(Math.abs(after.vx - before.vx) < .00001);
-    assert.ok(Math.abs(after.ax - before.ax) < .00001);
-    if (Math.abs(position) > 1) assert.equal(next.leg.direction, -Math.sign(position));
+    let previousChange;
+    // Acceleration changes with finite jerk, even during a continuous turn.
+    // Reducing dt tenfold must reduce every change, not expose a fixed jump.
+    for (const elapsedMs of [.001, .0001, .00001]) {
+      const next = stepDrift(state, elapsedMs);
+      const after = driftPose(next);
+      const change = Object.fromEntries(["x", "y", "vx", "vy", "ax", "ay"]
+        .map(key => [key, Math.abs(after[key] - before[key])]));
+      assert.equal(next.leg.id, 5);
+      for (const key of Object.keys(change)) {
+        if (previousChange) assert.ok(change[key] <= previousChange[key] * .11 + 1e-12, key);
+        if (elapsedMs === .00001) assert.ok(change[key] < .00001, key);
+      }
+      const dt = elapsedMs / 1000;
+      for (const coordinate of ["x", "y"]) {
+        assert.ok(Math.abs(after[coordinate] - before[coordinate] - before[`v${coordinate}`] * dt) < 1e-8);
+        assert.ok(Math.abs(after[`v${coordinate}`] - before[`v${coordinate}`] - before[`a${coordinate}`] * dt) < 1e-8);
+      }
+      if (Math.abs(position) > 1) assert.equal(Math.sign(next.leg.direction[axis]), -Math.sign(position));
+      previousChange = change;
+    }
   }
 });
 
@@ -127,21 +163,23 @@ test("invalid elapsed time throws without changing the drift state", () => {
   }
 });
 
-test("resizing preserves a fitting horizontal pose and constrains a smaller zone", () => {
+test("resizing preserves fitting positions and velocities in both axes", () => {
   let state = advance(create(), 300);
   const before = structuredClone(state);
-  const wider = resizeDrift(state, { ...dimensions, width: 1100 });
-  assert.ok(Math.abs(driftPose(wider).x - driftPose(state).x) < 1e-8);
-  assert.ok(Math.abs(driftPose(wider).vx - driftPose(state).vx) < 1e-8);
+  const wider = resizeDrift(state, { ...dimensions, width: 1100, height: 1000 });
+  for (const key of ["x", "y", "vx", "vy"]) {
+    assert.ok(Math.abs(driftPose(wider)[key] - driftPose(state)[key]) < 1e-8, key);
+  }
   assert.deepEqual(state, before);
   assert.equal(resizeDrift(state, dimensions), state);
   for (const width of [320, 1200, 240, 0, 600, 320]) {
-    const size = { ...dimensions, width, fishWidth: Math.min(width, 200), fishHeight: 135 };
+    const size = { ...dimensions, width, height: Math.max(135, width), fishWidth: Math.min(width, 200), fishHeight: 135 };
     state = resizeDrift(state, size);
     state = advance(state, 500);
     const pose = driftPose(state);
     assert.ok(Math.abs(pose.x) <= state.bounds.x);
-    assert.ok(Number.isFinite(pose.vx) && Number.isFinite(pose.ax));
+    assert.ok(Math.abs(pose.y) <= state.bounds.y);
+    assert.ok([pose.vx, pose.vy, pose.ax, pose.ay].every(Number.isFinite));
   }
   for (const width of [-1, NaN, Infinity]) {
     assert.throws(() => create(1, { ...dimensions, width }), RangeError);
@@ -163,7 +201,7 @@ class Events {
   }
 }
 
-function scene({ reduced = false, ready = true, onscreen = true, observers = true, focused = true } = {}) {
+function scene({ reduced = false, ready = true, onscreen = true, observers = true, focused = true, viewport = false } = {}) {
   const win = new Events(), doc = new Events(), media = new Events();
   const frames = new Map();
   const mutations = [], intersections = [], resizes = [];
@@ -175,9 +213,10 @@ function scene({ reduced = false, ready = true, onscreen = true, observers = tru
     style: { transform: "", removeProperty(name) { this[name] = ""; } }
   };
   const attributes = new Map();
-  const rect = { top: onscreen ? 100 : 1000, left: 0, width: 900, height: 210 };
+  const rect = { top: onscreen ? 100 : 1000, left: 0, width: 900, height: 800 };
   const zone = {
-    ownerDocument: doc, clientWidth: 900, clientHeight: 210,
+    ownerDocument: doc, clientWidth: 900, clientHeight: 800,
+    style: { left: "", top: "", width: "", height: "" },
     querySelector: selector => selector === "svg.nautilus" ? fish : null,
     getAttribute: name => attributes.get(name) ?? null,
     setAttribute: (name, value) => attributes.set(name, value),
@@ -193,6 +232,9 @@ function scene({ reduced = false, ready = true, onscreen = true, observers = tru
     innerWidth: 1000, innerHeight: 800, matchMedia: () => media,
     requestAnimationFrame: callback => { frames.set(++id, callback); return id; },
     cancelAnimationFrame: key => frames.delete(key)
+  });
+  if (viewport) win.visualViewport = Object.assign(new Events(), {
+    width: 900, height: 800, offsetLeft: 0, offsetTop: 0
   });
   function observerType(collection) {
     return class {
@@ -312,7 +354,7 @@ test("user pause freezes the current pose and resume consumes no suspended time"
   s.controller.destroy();
 });
 
-test("reduced motion is a centered static fallback and reacts while paused", () => {
+test("reduced motion restores the static CSS fallback and reacts while paused", () => {
   const s = scene({ reduced: true });
   assert.equal(s.frames.size, 0);
   assert.equal(s.state, "static");
@@ -348,6 +390,7 @@ test("intersection, visibility, shared page-hidden, and focus suspend without po
     [() => { s.doc.visibilityState = "hidden"; s.doc.fire("visibilitychange"); },
       () => { s.doc.visibilityState = "visible"; s.doc.fire("visibilitychange"); }],
     [() => s.setClass("page-hidden", true), () => s.setClass("page-hidden", false)],
+    [() => s.setClass("is-diving", true), () => s.setClass("is-diving", false)],
     [() => s.win.fire("blur"), () => s.win.fire("focus")]
   ];
   for (const [hide, show] of pairs) {
@@ -380,7 +423,7 @@ test("without intersection or resize observers, scroll and resize are event-driv
   s.zone.clientWidth = 320;
   s.win.fire("resize");
   assert.equal(s.frames.size, 1);
-  s.rect.top = -500;
+  s.rect.top = -1000;
   s.win.fire("scroll");
   assert.equal(s.frames.size, 0);
   const pose = s.fish.style.transform;
@@ -433,4 +476,25 @@ test("resize observers constrain the pose without a second loop and collapsed zo
   s.resizes[0].fire([]);
   assert.equal(s.frames.size, 1);
   s.controller.destroy();
+});
+
+test("foreground bounds follow visual viewport resize and pan and restore styles on teardown", () => {
+  const s = scene({ viewport: true });
+  const viewport = s.win.visualViewport;
+  assert.deepEqual(s.zone.style, { left: "0px", top: "0px", width: "900px", height: "800px" });
+  s.setClass("motion-paused", true);
+  Object.assign(viewport, { width: 320, height: 600, offsetLeft: 20, offsetTop: 30 });
+  s.zone.clientWidth = 320;
+  s.zone.clientHeight = 600;
+  viewport.fire("resize");
+  assert.deepEqual(s.zone.style, { left: "20px", top: "30px", width: "320px", height: "600px" });
+  assert.equal(s.frames.size, 0);
+  viewport.offsetTop = 50;
+  viewport.fire("scroll");
+  assert.equal(s.zone.style.top, "50px");
+  s.setClass("motion-paused", false);
+  assert.equal(s.frames.size, 1);
+  s.controller.destroy();
+  assert.equal(viewport.listenerCount(), 0);
+  assert.deepEqual(s.zone.style, { left: "", top: "", width: "", height: "" });
 });

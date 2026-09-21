@@ -13,5 +13,17 @@
     "quality": 82,
     "bytes": 43364,
     "sha256": "771a7d901109d775396d97e67edd7ec6e177ed54ef3401a08db34383f514c7b0"
+  },
+  "photographicInspiration": {
+    "title": "Bay with Orange Seashore Under White and Gray Clouds",
+    "photographer": "JJ Perks",
+    "page": "https://www.pexels.com/photo/bay-with-orange-seashore-under-white-and-gray-clouds-8567869/",
+    "photographerPage": "https://www.pexels.com/@jj-perks-868548/",
+    "original": "https://images.pexels.com/photos/8567869/pexels-photo-8567869.jpeg",
+    "width": 7952,
+    "height": 5304,
+    "license": "https://www.pexels.com/license/",
+    "evidence": "Pexels photo-page ImageObject JSON-LD: contentUrl, creator, width and height; retrieved 2026-09-22",
+    "use": "Named by the project owner as visual inspiration. External reference only: no image bytes are bundled or loaded automatically, and palette values are not claimed to be pixel samples."
   }
 }
