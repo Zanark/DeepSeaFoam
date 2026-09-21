@@ -6,7 +6,7 @@
 
 The [19-color terminal extension](../../README.md#higher-contrast-terminals) preserves the supplied **Solarized Dark Higher Contrast** scheme's colors except its background. Richer ANSI colors and distinct bright variants are shared with VS Code's integrated terminal; they do not alter the core UI palette.
 
-The **0.4.0 pastel revision does not change this scheme's content**: all 19 terminal colors and both terminals' `#000F13` backgrounds are unchanged from 0.3.0. Pastel core signals and UI-selection adjustments apply outside this separate terminal palette.
+The **0.4.1 vibrant-pastel correction does not change this scheme's content**, just as 0.4.0 left it untouched: all 19 terminal colors and both terminals' `#000F13` backgrounds are unchanged from 0.3.0. Core-signal and UI-selection adjustments apply outside this separate terminal palette.
 
 ## Install
 

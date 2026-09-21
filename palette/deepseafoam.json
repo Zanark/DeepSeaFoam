@@ -1,7 +1,7 @@
 {
   "$schema": "./schema.json",
   "name": "DeepSeaFoam",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "A quiet workstation beneath deep water, with small seafoam-colored signals and warm light illuminating what matters.",
   "attribution": {
     "origin": "SpriteCanvas",
@@ -13,8 +13,8 @@
   "pastelAdaptation": {
     "sourceVersion": "0.3.0",
     "space": "oklch",
-    "lightness": 0.78,
-    "chroma": 0.08,
+    "lightness": 0.73,
+    "chroma": 0.12,
     "originals": {
       "accent": "#2AA198",
       "document": "#859900",
@@ -25,15 +25,15 @@
   "solid": {
     "base": { "value": "#000F13", "role": "Near-black teal workspace and recessed surface" },
     "panel": { "value": "#001E26", "role": "Headers, toolbars, and surrounding panels" },
-    "accent": { "value": "#78C8C0", "role": "Pastel seafoam interaction, focus, and active outline" },
+    "accent": { "value": "#28C0B5", "role": "Vivid pastel seafoam interaction, focus, and active outline" },
     "text": { "value": "#93A1A1", "role": "Primary text and primary-action hover" },
     "faintText": { "value": "#839496", "role": "Genuinely lower-emphasis labels and markers" },
     "warm": { "value": "#EEE8D5", "role": "Warm emphasis, headings, and notices" },
     "lightEdge": { "value": "#FDF6E3", "role": "Precise light selection edge" },
     "border": { "value": "#586E75", "role": "Strong structural border" },
-    "document": { "value": "#B2BF84", "role": "Pastel kelp document indicator" },
-    "warning": { "value": "#CEB47C", "role": "Pastel amber warning indicator" },
-    "error": { "value": "#E6A49C", "role": "Pastel coral error boundary and indicator" }
+    "document": { "value": "#A0B256", "role": "Vivid pastel kelp document indicator" },
+    "warning": { "value": "#C9A244", "role": "Vivid pastel amber warning indicator" },
+    "error": { "value": "#E9897E", "role": "Vivid pastel coral error boundary and indicator" }
   },
   "overlay": {
     "separator": { "value": "#586E7566", "role": "Quiet structural separation" },
@@ -42,7 +42,7 @@
     "shadowStrong": { "value": "#000000CC", "role": "Strong shadow" },
     "backdrop": { "value": "#000000B8", "role": "Modal backdrop" },
     "grid": { "value": "#002B3630", "role": "Faint pixel grid" },
-    "guide": { "value": "#78C8C088", "role": "Symmetry guide" },
+    "guide": { "value": "#28C0B588", "role": "Symmetry guide" },
     "cursor": { "value": "#FDF6E3AA", "role": "Brush cursor" }
   },
   "preview": {
@@ -87,22 +87,22 @@
   },
   "derived": {
     "textSelection": {
-      "value": "#78C8C026",
-      "source": "#78C8C0",
+      "value": "#28C0B526",
+      "source": "#28C0B5",
       "alpha": 0.149,
       "background": "transparent-capable targets",
       "use": "Readable pastel text selection, distinct from the original pixel-selection edge"
     },
     "errorBackground": {
-      "value": "#E6A49C26",
-      "source": "#E6A49C",
+      "value": "#E9897E26",
+      "source": "#E9897E",
       "alpha": 0.149,
       "background": "base or panel",
       "use": "Obsidian error surface with readable warm text"
     },
     "errorBackgroundHover": {
-      "value": "#E6A49C2E",
-      "source": "#E6A49C",
+      "value": "#E9897E2E",
+      "source": "#E9897E",
       "alpha": 0.18,
       "background": "base or panel",
       "use": "Obsidian error surface hover without an opaque pastel wash"

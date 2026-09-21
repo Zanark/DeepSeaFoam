@@ -4,9 +4,9 @@
 
 The Obsidian export uses the official `manifest.json` + `theme.css` structure. Note editing and reading surfaces are near-black teal (`#000F13`); sidebars, tabs, status bars, prompts, and menus use the panel color. Images, attachments, canvases, and authored document colors are not filtered or rewritten.
 
-Version 0.4.0 uses pastel seafoam (`#78C8C0`) for interaction, kelp (`#B2BF84`) for document-backed roles, amber (`#CEB47C`) for warnings, and coral (`#E6A49C`) for errors. Core-backed syntax follows these colors; the four separate Solarized heritage syntax colors and neutral surfaces remain unchanged.
+Version 0.4.1 corrects the overly light 0.4.0 signals with vibrant pastel seafoam (`#28C0B5`) for interaction, kelp (`#A0B256`) for document-backed roles, amber (`#C9A244`) for warnings, and coral (`#E9897E`) for errors. Core-backed syntax follows these richer colors; the four separate Solarized heritage syntax colors and neutral surfaces remain unchanged.
 
-Text selection uses `#78C8C026` (14.90% alpha). Error surfaces use translucent `#E6A49C26`, or `#E6A49C2E` on hover, to preserve warm text readability instead of placing it on opaque coral. HSL/RGB aliases are generated from the canonical colors.
+Text selection uses `#28C0B526` (unchanged 14.90% alpha). Error surfaces use translucent `#E9897E26`, or `#E9897E2E` on hover, to preserve warm text readability instead of placing it on opaque coral. HSL/RGB aliases are generated from the canonical colors.
 
 ## Install
 

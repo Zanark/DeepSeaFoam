@@ -11,11 +11,20 @@ test("the four pastel roles reproduce their recorded hue-preserving conversion",
   for (const [name, source] of Object.entries(originals)) {
     assert.equal(pastelVariant(source, lightness, chroma), colors[name]);
     const oldColor = oklch(source), newColor = oklch(colors[name]);
-    assert.ok(newColor.l > oldColor.l && newColor.c < oldColor.c);
+    assert.ok(newColor.l > oldColor.l);
     assert.ok(Math.abs(newColor.l - lightness) < .003);
     assert.ok(Math.abs(newColor.c - chroma) < .003);
     const hueDistance = Math.abs(newColor.h - oldColor.h);
     assert.ok(Math.min(hueDistance, 360 - hueDistance) < 2);
+  }
+});
+
+test("the richer revision is darker and more chromatic than the rejected pale palette", () => {
+  const pale = { accent: "#78C8C0", document: "#B2BF84", warning: "#CEB47C", error: "#E6A49C" };
+  for (const [name, value] of Object.entries(pale)) {
+    const previous = oklch(value), current = oklch(colors[name]);
+    assert.ok(previous.l - current.l >= .04, `${name} must not return to the pale lightness`);
+    assert.ok(current.c - previous.c >= .03, `${name} must retain its restored color intensity`);
   }
 });
 
@@ -36,16 +45,16 @@ test("opaque colors round-trip through OKLCH without a hue shift", () => {
 });
 
 test("HSL and RGB aliases follow the new canonical colors", () => {
-  assert.deepEqual(hsl(colors.accent), { h: 174, s: 42.105, l: 62.745 });
-  assert.deepEqual(rgb(colors.error), [230, 164, 156]);
+  assert.deepEqual(hsl(colors.accent), { h: 175.658, s: 65.517, l: 45.49 });
+  assert.deepEqual(rgb(colors.error), [233, 137, 126]);
   assert.deepEqual(hsl("#000000"), { h: 0, s: 0, l: 0 });
   assert.deepEqual(hsl("#FFFFFF"), { h: 0, s: 0, l: 100 });
 });
 
 test("selection uses alpha-last compositing and retains ordinary text contrast", () => {
   const selection = palette.derived.textSelection.value;
-  assert.equal(composite(selection, colors.base), "#122B2D");
-  assert.equal(composite(selection, colors.panel), "#12373D");
+  assert.equal(composite(selection, colors.base), "#06292B");
+  assert.equal(composite(selection, colors.panel), "#06363B");
   for (const surface of [colors.base, colors.panel]) {
     assert.ok(contrast(colors.text, composite(selection, surface)) >= 4.5);
   }

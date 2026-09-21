@@ -258,7 +258,7 @@
     aspect-ratio: .85;
     border: 1px solid #D0E5CF88;
     border-radius: 47% 53% 41% 59%;
-    box-shadow: inset 2px 3px 5px #EEE8D566, 0 0 12px #78C8C033;
+    box-shadow: inset 2px 3px 5px #EEE8D566, 0 0 12px #28C0B533;
     animation: entry-bubble 2.6s cubic-bezier(.16, .4, .5, 1) both;
   }
   .entry-bubbles i:nth-child(2) { left: 24%; width: 12px; animation-delay: .15s; }

@@ -10,13 +10,13 @@ DeepSeaFoam is a cross-application dark theme derived from [Ethan Schoonover's S
 
 - **Workspace / recessed surface:** `#000F13`
 - **Headers, toolbars, and panels:** `#001E26`
-- **Primary interaction accent:** `#78C8C0`
+- **Primary interaction accent:** `#28C0B5`
 
 The interface should recede behind the work. Cyan is a restrained signal, ivory supplies selective warmth, and errors remain clear exceptions. Application exports do not add ocean decoration, colored glow, gradients, or textures, and never recolor documents, artwork, images, videos, or exported content.
 
 Version **0.2.0** deliberately replaces the original pure-black workspace with near-black teal. This updates the cross-application design without changing the read-only SpriteCanvas origin. Shadow and backdrop overlays retain their transparent black; they are not workspace surfaces.
 
-Version **0.4.0** softens the four bright core signals into **pastel seafoam, kelp, amber, and coral**, preserving their original hues through a reproducible OKLCH derivation. Focus, document indicators, diagnostics, and core-backed syntax inherit those colors; selection and error fills are adapted for readability. Dark surfaces, neutral colors, and the separate higher-contrast terminal scheme remain unchanged. See the [0.4.0 release notes](docs/releases/v0.4.0.md).
+Version [**0.4.0**](docs/releases/v0.4.0.md) introduced pastel seafoam, kelp, amber, and coral. **0.4.1 corrects their overly light appearance** with lower lightness and richer chroma: bright, saturated signals with pastel softness, not pale or washed-out colors. Focus, document indicators, diagnostics, and core-backed syntax inherit the correction; selection and error fills retain their readability adaptations. Dark surfaces, neutral colors, and the separate higher-contrast terminal scheme remain unchanged. See the [0.4.1 release notes](docs/releases/v0.4.1.md).
 
 ## The underwater showcase
 
@@ -70,15 +70,15 @@ These are export files, not proof of runtime validation in every application ver
 | --- | --- | --- |
 | ![Near-black teal](docs/swatches/000f13.svg) | Base / recessed surface | `#000F13` |
 | ![Deep blue-green](docs/swatches/001e26.svg) | Panel surface | `#001E26` |
-| ![Pastel seafoam](docs/swatches/78c8c0.svg) | Primary accent | `#78C8C0` |
+| ![Vibrant pastel seafoam](docs/swatches/28c0b5.svg) | Primary accent | `#28C0B5` |
 | ![Soft gray](docs/swatches/93a1a1.svg) | Primary text | `#93A1A1` |
 | ![Distant gray](docs/swatches/839496.svg) | Secondary / faint text | `#839496` |
 | ![Warm ivory](docs/swatches/eee8d5.svg) | Warm emphasis | `#EEE8D5` |
 | ![Pale pearl](docs/swatches/fdf6e3.svg) | Light selection edge | `#FDF6E3` |
 | ![Submerged slate](docs/swatches/586e75.svg) | Strong border | `#586E75` |
-| ![Pastel kelp](docs/swatches/b2bf84.svg) | Document indicator | `#B2BF84` |
-| ![Pastel amber](docs/swatches/ceb47c.svg) | Warning indicator | `#CEB47C` |
-| ![Pastel coral](docs/swatches/e6a49c.svg) | Error indicator | `#E6A49C` |
+| ![Vibrant pastel kelp](docs/swatches/a0b256.svg) | Document indicator | `#A0B256` |
+| ![Vibrant pastel amber](docs/swatches/c9a244.svg) | Warning indicator | `#C9A244` |
+| ![Vibrant pastel coral](docs/swatches/e9897e.svg) | Error indicator | `#E9897E` |
 
 ## Transparent overlays
 
@@ -92,14 +92,14 @@ The values below use `#RRGGBBAA`, with alpha last. Their swatches are composited
 | ![Strong shadow](docs/swatches/000000cc.svg) | Strong shadows | `#000000CC` |
 | ![Modal backdrop](docs/swatches/000000b8.svg) | Modal backdrop | `#000000B8` |
 | ![Pixel grid](docs/swatches/002b3630.svg) | Pixel grid | `#002B3630` |
-| ![Symmetry guide](docs/swatches/78c8c088.svg) | Symmetry guide | `#78C8C088` |
+| ![Symmetry guide](docs/swatches/28c0b588.svg) | Symmetry guide | `#28C0B588` |
 | ![Brush cursor](docs/swatches/fdf6e3aa.svg) | Brush cursor | `#FDF6E3AA` |
 
 ## Higher-contrast terminals
 
 Version **0.3.0** adds a terminal-only extension inspired by the supplied **Solarized Dark Higher Contrast** scheme: brighter mist text, richer ANSI colors, warm whites, and an orange cursor. Windows Terminal and VS Code's integrated terminal share these exact 19 values. The reference background `#001E27` is deliberately replaced by DeepSeaFoam's `#000F13`; the rest of the reference's terminal colors are preserved.
 
-These are **not additions to the core UI palette**. The 0.3.0 terminal-only change left editor syntax, application chrome, diagnostics, and all 27 core values unchanged. The 0.4.0 pastel revision changes core-backed roles, not this extension: **all 19 terminal colors and both terminals' `#000F13` backgrounds are preserved**.
+These are **not additions to the core UI palette**. The 0.3.0 terminal-only change left editor syntax, application chrome, diagnostics, and all 27 core values unchanged. The 0.4.1 pastel correction changes core-backed roles, not this extension: **all 19 terminal colors and both terminals' `#000F13` backgrounds are preserved**.
 
 | Swatch | Terminal role | Value |
 | --- | --- | --- |
@@ -142,7 +142,7 @@ These colors keep image and transparency previews visually neutral. They are not
 
 [`palette/deepseafoam.json`](palette/deepseafoam.json) is the machine-readable source for all exports. The verified core inventory remains **11 interface solids + 8 overlays + 8 preview neutrals = 27 values**.
 
-Code editors and terminals require roles that SpriteCanvas never defined. The canonical source separates the retained Solarized **syntax heritage extension** from the **higher-contrast terminal extension**. The four heritage syntax colors stay unchanged in 0.4.0, while strings, keywords, numbers, and diagnostics mapped from the core inherit pastels. Pastel derivation metadata and derived UI selection/error colors are recorded in the canonical source.
+Code editors and terminals require roles that SpriteCanvas never defined. The canonical source separates the retained Solarized **syntax heritage extension** from the **higher-contrast terminal extension**. The four heritage syntax colors stay unchanged in 0.4.1, while strings, keywords, numbers, and diagnostics mapped from the core inherit the richer pastels. Pastel derivation metadata and derived UI selection/error colors are recorded in the canonical source.
 
 See [application mappings](docs/MAPPINGS.md) for the exact surface decisions, extension roles, and unsupported boundaries across all five targets.
 
@@ -169,6 +169,6 @@ npm run package:release
 
 ## Origin and attribution
 
-DeepSeaFoam originated in [SpriteCanvas](https://github.com/Zanark/SpriteCanvas). SpriteCanvas remains the read-only reference for the original surface hierarchy, interaction recipes, overlays, and neutral previews. Its original black workspace and saturated signal colors are historical provenance; the 0.2.0 base and 0.4.0 pastel revisions do not alter that origin.
+DeepSeaFoam originated in [SpriteCanvas](https://github.com/Zanark/SpriteCanvas). SpriteCanvas remains the read-only reference for the original surface hierarchy, interaction recipes, overlays, and neutral previews. Its original black workspace and signal colors are historical provenance; the 0.2.0 base, 0.4.0 pastels, and 0.4.1 color correction do not alter that origin.
 
 DeepSeaFoam is derived from [Solarized by Ethan Schoonover](https://ethanschoonover.com/solarized/). The retained heritage colors are identified explicitly in the canonical palette rather than silently restoring the full Solarized theme.
