@@ -34,6 +34,13 @@
     opacity: var(--water-light);
     transition: opacity 1.2s ease;
   }
+  .water-surface {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: calc(.35 + var(--water-light) * .65);
+  }
   .water-ceiling {
     position: absolute;
     top: -29%;

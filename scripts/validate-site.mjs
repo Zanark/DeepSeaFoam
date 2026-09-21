@@ -14,6 +14,7 @@ const requiredFiles = [
   "app.js",
   "ocean.css",
   "ocean.js",
+  "water.js",
   "kelp.svg",
   "water-light.svg",
   "mark.svg",
@@ -96,6 +97,8 @@ for (const marker of [
   'id="motion-toggle"',
   'id="skip-dive"',
   '<div class="bubble-field" aria-hidden="true">',
+  '<canvas class="water-surface" aria-hidden="true"></canvas>',
+  '<script src="water.js" type="module"></script>',
   'class="nautilus-zone"',
   'class="blobfish-zone"',
   'class="angler-zone"',
@@ -157,10 +160,10 @@ const assets = await listAssets(site);
 const totalBytes = (await Promise.all(assets.map(async (file) => (await stat(file)).size)))
   .reduce((total, size) => total + size, 0);
 
-// The complete budget includes unmodified third-party SVGs and their notices.
-const budget = 128 * 1024;
+// Count the water simulation, unmodified product SVGs, and their notices too.
+const budget = 144 * 1024;
 if (totalBytes > budget) {
-  throw new Error(`Website exceeds the 128 KiB asset budget: ${totalBytes} bytes`);
+  throw new Error(`Website exceeds the 144 KiB asset budget: ${totalBytes} bytes`);
 }
 
 console.log(`Validated static website: ${totalBytes} bytes across ${assets.length} files.`);
