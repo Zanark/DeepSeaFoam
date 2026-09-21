@@ -1124,7 +1124,7 @@
   }
 
   .control-row:last-child { border-bottom: 0; }
-  .control-row > span { color: var(--dsf-solid-faint-text); }
+  .control-row > span:first-child { color: var(--dsf-solid-faint-text); }
 
   .control-row .demo-control {
     display: inline-flex;

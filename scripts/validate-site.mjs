@@ -35,6 +35,9 @@ const [html, mainCss, oceanCss, paletteText, manifestText, logo] = await Promise
   readFile(path.join(site, "mark.svg"), "utf8")
 ]);
 const css = `${mainCss}\n${oceanCss}`;
+if (/\.control-row\s*>\s*span\s*\{[^}]*\bcolor\s*:/.test(css)) {
+  throw new Error("Interaction-study label colors must not override the demo controls");
+}
 
 const palette = JSON.parse(paletteText);
 const manifest = JSON.parse(manifestText);
