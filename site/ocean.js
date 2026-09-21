@@ -73,8 +73,9 @@ function updateScene(now = 0) {
   const progress = Math.max(0, Math.min(1, distance > 0 ? scrollY / distance : 0));
   body.style.setProperty("--depth-progress", progress.toFixed(3));
   // These are narrative depths, not physical measurements.
-  depthValue.firstChild.textContent = `${String(Math.round(progress * 3800)).padStart(4, "0")} `;
-  depthZone.textContent = progress < .22 ? "THE SUNLIT ZONE" : progress < .65 ? "THE TWILIGHT ZONE" : "THE MIDNIGHT ZONE";
+  const depth = Math.round(progress * 2000);
+  depthValue.firstChild.textContent = `${String(depth).padStart(4, "0")} `;
+  depthZone.textContent = depth < 200 ? "THE SUNLIT ZONE" : depth < 1000 ? "THE TWILIGHT ZONE" : "THE MIDNIGHT ZONE";
   world.style.setProperty("--water-light", (1 - progress * .85).toFixed(3));
   world.style.setProperty("--descent", progress.toFixed(3));
   world.style.setProperty("--look-x", `${isStill() ? 0 : pointerX}px`);

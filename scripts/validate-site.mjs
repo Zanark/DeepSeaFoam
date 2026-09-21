@@ -68,14 +68,23 @@ for (const marker of [
   'id="motion-toggle"',
   'id="skip-dive"',
   '<div class="bubble-field" aria-hidden="true">',
-  '<details class="angler-discovery">',
-  '<details class="blobfish-discovery">',
+  'class="nautilus-zone"',
+  'class="blobfish-zone"',
+  'class="angler-zone"',
+  'type="checkbox" id="angler-awake"',
   "https://github.com/Zanark/DeepSeaFoam/releases/latest"
 ]) {
   const source = marker === "prefers-reduced-motion" ? css : html;
   if (!source.includes(marker)) {
     throw new Error(`Website is missing required marker: ${marker}`);
   }
+}
+
+const depthOrder = ['class="nautilus-zone"', 'id="identity"', 'id="palette"', 'class="blobfish-zone"', 'id="applications"', 'class="angler-zone"']
+  .map((marker) => html.indexOf(marker));
+if (depthOrder.some((position, index) => position < 0 || (index > 0 && position <= depthOrder[index - 1])) ||
+    /<(?:details|summary)\b/.test(html)) {
+  throw new Error("Creature encounters must be separated along the descent, without collapsible sections");
 }
 
 if (/@import\s|url\(\s*['"]?https?:/i.test(css)) {

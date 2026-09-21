@@ -188,6 +188,23 @@
         </div>
       </section>
 
+      <div class="nautilus-zone" role="img" aria-label="A chambered nautilus drifts shell-first through the upper water">
+        <svg class="nautilus" viewBox="0 0 230 155" aria-hidden="true">
+          <defs><radialGradient id="shell-ivory" cx=".35" cy=".2" r=".85"><stop stop-color="#F1E4CC"/><stop offset=".65" stop-color="#CCB897"/><stop offset="1" stop-color="#735A47"/></radialGradient></defs>
+          <g class="nautilus-float">
+            <g fill="none" stroke="#CDB99F" stroke-width="2" stroke-linecap="round">
+              <path d="M145 77q26-18 59-7m-58 12q37-5 63 8m-63-2q20 5 50 28m-51-24q25 22 53 15m-55-12q10 22 38 37m-35-49q44 7 68-9"/>
+            </g>
+            <path d="M111 63q30-8 43 13l-5 23q-17 12-40-5Z" fill="#C0A591"/>
+            <path d="M127 108C97 130 45 115 35 81C23 41 59 15 96 23c40 8 54 52 31 85Z" fill="url(#shell-ivory)" stroke="#866B56" stroke-width="2"/>
+            <path d="m43 44 17 14-8-25Zm23-19 9 19 8-21Zm32 0-3 19 20-11Zm28 19-20 7 30 14Zm12 34-26-9 20 27Zm-18 35-14-27-2 34Zm-44 4 7-18-25 8ZM37 88l29-2-34-20Z" fill="#80553E" opacity=".8"/>
+            <path d="M127 106C98 117 61 95 62 66c1-23 26-30 41-14 14 16-3 35-15 25-8-7-4-16 4-14" fill="none" stroke="#6D5947" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M121 53q19 3 30 19l-10 2-16-9Z" fill="#EEE0C5"/>
+            <circle cx="146" cy="79" r="4" fill="#000F13"/><circle cx="147" cy="78" r="1.3" fill="#EEE8D5"/>
+          </g>
+        </svg>
+      </div>
+
       <section class="surface-decision" id="identity" aria-labelledby="surface-title">
         <div class="section-intro section-shell">
           <p class="eyebrow"><span></span> 01 / Below the surface</p>
@@ -288,6 +305,21 @@
         </div>
       </section>
 
+      <div class="blobfish-zone" role="img" aria-label="Deeper down, a grumpy blobfish peeks through foreground seaweed">
+        <div class="blobfish-hideout">
+          <svg class="blobfish" viewBox="0 0 180 120" aria-hidden="true">
+            <path d="M34 83C14 63 42 19 91 16s69 31 59 62c17 11 20 27-12 20-27 22-60 17-76 0-36 8-36-3-28-15Z" fill="#BC9989"/>
+            <path d="M35 74 21 87l29-1m97-12 14 13-29-1" fill="#997A70"/>
+            <path d="M57 61q10-9 20 0m33 0q10-9 20 0" fill="none" stroke="#735C58" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="68" cy="65" r="3" fill="#001E26"/><circle cx="120" cy="65" r="3" fill="#001E26"/>
+            <path d="M85 59c-10 18-14 30 7 30s16-10 7-30" fill="#AD8276"/>
+            <path d="M74 101q19-14 39 0" fill="none" stroke="#735C58" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          <img class="cover-kelp cover-left" src="kelp.svg" alt="">
+          <img class="cover-kelp cover-right" src="kelp.svg" alt="">
+        </div>
+      </div>
+
       <section class="hierarchy section-shell" aria-labelledby="hierarchy-title">
         <div class="hierarchy-copy">
           <p class="eyebrow"><span></span> Hierarchy in practice</p>
@@ -382,14 +414,11 @@
         </div>
       </section>
 
-      <section class="abyss-encounter section-shell" aria-labelledby="abyss-title">
-        <div class="encounter-copy">
-          <p class="eyebrow"><span></span> 03 / A light in the midnight zone</p>
-          <h2 id="abyss-title">Not every light<br>is a notification.</h2>
-          <p>Stay a moment. There is someone down here.</p>
-        </div>
-        <details class="angler-discovery">
-          <summary>
+      <section class="angler-zone" aria-label="A hidden anglerfish in the deepest water">
+        <div class="angler-discovery">
+          <input class="visually-hidden" type="checkbox" id="angler-awake" autocomplete="off">
+          <label class="angler-toggle" for="angler-awake">
+            <span class="visually-hidden">Reveal the anglerfish</span>
             <svg class="angler" viewBox="0 0 380 280" aria-hidden="true">
               <defs>
                 <radialGradient id="lure-halo"><stop stop-color="#EEE8D5" stop-opacity=".5"/><stop offset=".2" stop-color="#2AA198" stop-opacity=".25"/><stop offset="1" stop-color="#2AA198" stop-opacity="0"/></radialGradient>
@@ -412,33 +441,12 @@
                   <circle cx="274" cy="77" r="66" fill="url(#lure-halo)"/>
                   <circle class="lure-bulb" cx="274" cy="77" r="7" fill="#FDF6E3"/>
                   <circle cx="272" cy="75" r="2" fill="#FFF"/>
+                  <circle class="lure-focus" cx="274" cy="77" r="18" fill="none" stroke="#2AA198" stroke-width="2"/>
                 </g>
               </g>
             </svg>
-            <span class="lure-hint"><span class="before-discovery">Follow the little light <b aria-hidden="true">↗</b></span><span class="after-discovery">Hello, little night light.</span></span>
-          </summary>
-          <div class="creature-note">
-            <span>FIELD NOTE / 001</span>
-            <h3>You found the night shift.</h3>
-            <p>One tiny anglerfish. An unreasonable amount of atmosphere.<br>Even in the abyss, a little warm light goes a long way.</p>
-          </div>
-        </details>
-        <details class="blobfish-discovery">
-          <summary>Something is sulking on the seabed.</summary>
-          <div class="creature-note">
-            <svg class="blobfish" viewBox="0 0 180 120" role="img" aria-label="A small, grumpy pink blobfish">
-              <path d="M34 83C14 63 42 19 91 16s69 31 59 62c17 11 20 27-12 20-27 22-60 17-76 0-36 8-36-3-28-15Z" fill="#BC9989"/>
-              <path d="M35 74 21 87l29-1m97-12 14 13-29-1" fill="#997A70"/>
-              <path d="M57 61q10-9 20 0m33 0q10-9 20 0" fill="none" stroke="#735C58" stroke-width="4" stroke-linecap="round"/>
-              <circle cx="68" cy="65" r="3" fill="#001E26"/><circle cx="120" cy="65" r="3" fill="#001E26"/>
-              <path d="M85 59c-10 18-14 30 7 30s16-10 7-30" fill="#AD8276"/>
-              <path d="M74 101q19-14 39 0" fill="none" stroke="#735C58" stroke-width="3" stroke-linecap="round"/>
-            </svg>
-            <span>FIELD NOTE / 002</span>
-            <h3>No thoughts. Just depth.</h3>
-            <p>You found the blobfish. It has declined all meetings.</p>
-          </div>
-        </details>
+          </label>
+        </div>
       </section>
 
       <section class="final-cta">

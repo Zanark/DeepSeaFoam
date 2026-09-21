@@ -310,47 +310,28 @@
   }
   .copy-toast { bottom: 85px; }
 
-  .abyss-encounter {
-    display: grid;
-    min-height: 600px;
-    padding: 100px 40px 120px;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: 30px;
-  }
-  .encounter-copy h2 {
-    margin: 25px 0;
-    color: var(--dsf-solid-warm);
-    font-family: var(--display);
-    font-size: clamp(2.5rem, 4.5vw, 4rem);
-    letter-spacing: -.06em;
-    line-height: 1.05;
-    font-weight: 470;
-  }
-  .encounter-copy > p:last-child { max-width: 290px; font-size: .9rem; }
-  .encounter-copy .eyebrow { font-size: .58rem; letter-spacing: .12em; }
-  .angler-discovery { position: relative; min-width: 0; text-align: center; }
-  .angler-discovery summary { list-style: none; cursor: pointer; border-radius: 50%; }
-  .angler-discovery summary::-webkit-details-marker { display: none; }
-  .angler-discovery summary:focus-visible { outline: none; }
-  .angler-discovery summary:focus-visible .lure-hint { outline: 2px solid var(--dsf-solid-accent); outline-offset: 8px; }
-  .angler { width: min(430px, 100%); margin: auto; overflow: visible; }
+  .nautilus-zone { position: relative; height: 220px; overflow: hidden; pointer-events: none; }
+  .nautilus { position: absolute; top: 35px; left: 0; width: clamp(120px, 16vw, 190px); max-width: none; animation: nautilus-pass 38s linear -12s infinite; }
+  .nautilus-float { transform-origin: center; animation: nautilus-bob 4.5s ease-in-out infinite alternate; }
+  .blobfish-zone { height: 300px; pointer-events: none; }
+  .blobfish-hideout { position: relative; width: 260px; height: 260px; margin-left: clamp(12px, 12vw, 180px); overflow: hidden; }
+  .blobfish { position: absolute; z-index: 1; width: 175px; left: 45px; bottom: 35px; filter: saturate(.65) brightness(.8); }
+  .cover-kelp { position: absolute; z-index: 2; bottom: -145px; left: 10px; width: 130px; max-width: none; transform-origin: 50% 100%; animation: kelp-sway 8s ease-in-out -4s infinite alternate; }
+  .cover-right { left: auto; right: -5px; width: 150px; bottom: -160px; scale: -1 1; animation-delay: -9s; }
+  .angler-zone { display: flex; justify-content: flex-end; min-height: 320px; padding: 0 clamp(16px, 10vw, 180px); }
+  .angler-discovery { position: relative; width: min(380px, 100%); }
+  .angler-toggle { display: block; cursor: pointer; }
+  .angler { width: 100%; overflow: visible; }
   .angler-drift { animation: angler-drift 9s ease-in-out infinite alternate; transform-origin: center; }
   .fish-body { opacity: 0; }
-  .angler-discovery[open] .fish-body { opacity: 1; transition: opacity 1.2s ease; }
+  #angler-awake:checked + .angler-toggle .fish-body { opacity: 1; transition: opacity 1.2s ease; }
+  .lure-focus { opacity: 0; }
+  #angler-awake:focus-visible + .angler-toggle .lure-focus { opacity: 1; }
   .angler-lure { animation: lure-breathe 4s ease-in-out infinite alternate; }
   .lure-bulb { filter: drop-shadow(0 0 5px #EEE8D5) drop-shadow(0 0 14px #2AA198); }
-  .lure-hint { display: block; width: fit-content; margin-inline: auto; color: var(--dsf-solid-faint-text); font: .65rem var(--mono); letter-spacing: .06em; }
-  .lure-hint b { color: var(--dsf-solid-accent); }
-  .after-discovery, .angler-discovery[open] .before-discovery { display: none; }
-  .angler-discovery[open] .after-discovery { display: inline; }
-  .creature-note { padding: 28px 15px 0; }
-  .creature-note > span { color: var(--dsf-solid-accent); font: .55rem var(--mono); letter-spacing: .16em; }
-  .creature-note h3 { margin: 10px 0; color: var(--dsf-solid-warm); font-size: 1.3rem; font-weight: 500; }
-  .creature-note p { font-size: .8rem; }
-  .blobfish-discovery { grid-column: 1 / -1; justify-self: center; max-width: 320px; margin-top: 35px; text-align: center; }
-  .blobfish-discovery summary { padding: 12px; color: var(--dsf-solid-faint-text); font: .65rem var(--mono); cursor: pointer; }
-  .blobfish { width: 180px; margin: 0 auto 18px; }
+  body:not(.ocean-ready) .nautilus { animation: none; transform: translateX(calc(50vw - 50%)); }
+  @keyframes nautilus-pass { from { transform: translateX(100vw); } to { transform: translateX(-100%); } }
+  @keyframes nautilus-bob { to { transform: translateY(-10px) rotate(3deg); } }
 
   @keyframes surface-drift {
     to { transform: perspective(450px) rotateX(-48deg) scale(1.3) translate(2%, 3%); }
@@ -381,7 +362,6 @@
     .depth-gauge { left: 12px; }
     .depth-gauge > div { display: none; }
     .depth-track { height: 70px; }
-    .abyss-encounter { padding-inline: 40px; }
   }
   @media (max-width: 780px) {
     .site-header { width: calc(100% - 40px); }
@@ -408,10 +388,6 @@
     .water-ceiling { top: -14%; height: 50%; }
     .water-light { opacity: calc(var(--water-light) * .85); }
     .reading-shade { background: linear-gradient(90deg, transparent, #00070B99 15% 85%, transparent); }
-    .abyss-encounter { grid-template-columns: 1fr; padding: 90px 24px; gap: 10px; text-align: center; }
-    .encounter-copy .eyebrow { justify-content: center; }
-    .encounter-copy > p:last-child { margin-inline: auto; }
-    .angler { width: 300px; }
     .depth-gauge { display: none; }
     .dive-controls { bottom: 12px; right: 12px; }
     .dive-controls button { min-height: 36px; padding: 6px 10px; font-size: .6rem; }
@@ -427,5 +403,6 @@
     .ocean-world, .kelp-bed { transform: none !important; }
     .water-ceiling { animation: none; }
     .angler-drift { animation: none; }
+    .nautilus { animation: none; transform: translateX(calc(50vw - 50%)); }
   }
 }

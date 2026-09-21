@@ -149,7 +149,7 @@ test("scrolling ends the dive and updates bounded narrative depth", () => {
   s.window.fire("scroll");
   s.flush();
   assert.equal(s.document.body.classList.contains("is-diving"), false);
-  assert.equal(s.el("#depth-value").firstChild.textContent, "3800 ");
+  assert.equal(s.el("#depth-value").firstChild.textContent, "2000 ");
   assert.equal(s.el("#depth-zone").textContent, "THE MIDNIGHT ZONE");
   assert.equal(s.el(".ocean-world").properties.get("--water-light"), "0.150");
   assert.equal(s.frames.size, 0);
@@ -164,6 +164,21 @@ test("hidden pages pause their scenery and finish any opening", () => {
   s.document.hidden = false;
   s.document.fire("visibilitychange");
   assert.equal(s.document.body.classList.contains("page-hidden"), false);
+});
+
+test("narrative depth zones change at 200 and 1000 metres", () => {
+  const s = scene({ hash: "#main" });
+  for (const [scroll, depth, zone] of [
+    [0, "0000", "SUNLIT"], [398, "0199", "SUNLIT"],
+    [400, "0200", "TWILIGHT"], [1998, "0999", "TWILIGHT"],
+    [2000, "1000", "MIDNIGHT"], [4000, "2000", "MIDNIGHT"]
+  ]) {
+    s.globals.scrollY = scroll;
+    s.window.fire("scroll");
+    s.flush();
+    assert.equal(s.el("#depth-value").firstChild.textContent, `${depth} `);
+    assert.equal(s.el("#depth-zone").textContent, `THE ${zone} ZONE`);
+  }
 });
 
 test("parallax is event-driven, coalesced, and disabled for still scenes", () => {
