@@ -320,13 +320,39 @@
   .copy-toast { bottom: 85px; }
 
   .nautilus-zone { position: relative; height: 220px; overflow: hidden; pointer-events: none; }
-  .nautilus { position: absolute; top: 35px; left: 0; width: clamp(120px, 16vw, 190px); max-width: none; animation: nautilus-pass 38s linear -12s infinite; }
-  .nautilus-float { transform-origin: center; animation: nautilus-bob 4.5s ease-in-out infinite alternate; }
-  .blobfish-zone { height: 300px; pointer-events: none; }
-  .blobfish-hideout { position: relative; width: 260px; height: 260px; margin-left: clamp(12px, 12vw, 180px); overflow: hidden; }
-  .blobfish { position: absolute; z-index: 1; width: 175px; left: 45px; bottom: 35px; filter: saturate(.65) brightness(.8); }
-  .cover-kelp { position: absolute; z-index: 2; bottom: -145px; left: 10px; width: 130px; max-width: none; transform-origin: 50% 100%; animation: kelp-sway 8s ease-in-out -4s infinite alternate; }
-  .cover-right { left: auto; right: -5px; width: 150px; bottom: -160px; scale: -1 1; animation-delay: -9s; }
+  .nautilus {
+    position: absolute; top: 50%; left: 50%;
+    width: clamp(120px, 16vw, 190px); max-width: 90%;
+    transform: translate(-50%, -50%); transform-origin: 50% 50%;
+  }
+  .blobfish-zone { position: relative; height: clamp(340px, 38vw, 430px); margin-top: 28px; overflow: hidden; }
+  .blobfish-hideout { position: relative; width: min(840px, 100%); height: 100%; margin-inline: auto; }
+  .blobfish-toggle { position: absolute; inset: 0; display: block; cursor: pointer; border-radius: 12px; }
+  .blobfish {
+    position: absolute; z-index: 1; width: clamp(230px, 56%, 420px); height: auto;
+    left: 50%; bottom: 52px;
+    transform: translate(-50%, 85px) scale(.88);
+    transition: transform 1.6s cubic-bezier(.22, .61, .36, 1);
+  }
+  .blobfish-cover { position: absolute; z-index: 2; inset: 0; pointer-events: none; }
+  .cover-kelp {
+    position: absolute; bottom: -50%; left: var(--x); width: clamp(200px, 40%, 336px); max-width: none;
+    transform-origin: 50% 100%; translate: -50% 0; rotate: var(--lean);
+    animation: kelp-sway 8s ease-in-out var(--lag) infinite alternate;
+    transition: translate 1.6s cubic-bezier(.22, .61, .36, 1), rotate 1.6s ease;
+  }
+  .cover-kelp:nth-child(even) { scale: -1 1; animation-duration: 9.5s; }
+  .blobfish-hint {
+    position: absolute; z-index: 3; bottom: 15px; width: 100%; text-align: center;
+    color: var(--dsf-solid-text); font: .65rem var(--mono); transition: opacity .4s ease;
+  }
+  #blobfish-awake:checked + .blobfish-toggle .blobfish { transform: translate(-50%, -45px); }
+  #blobfish-awake:checked + .blobfish-toggle .cover-kelp { translate: calc(-50% + var(--part) * clamp(150px, 24vw, 230px)) 80px; rotate: calc(var(--lean) + var(--part) * 12deg); }
+  #blobfish-awake:checked + .blobfish-toggle .blobfish-hint { opacity: 0; }
+  #blobfish-awake:focus-visible + .blobfish-toggle::after {
+    content: ""; position: absolute; z-index: 4; inset: 4px; pointer-events: none;
+    border: 2px solid var(--dsf-solid-light-edge); border-radius: 8px;
+  }
   .angler-zone { display: flex; justify-content: flex-end; min-height: 320px; padding: 0 clamp(16px, 10vw, 180px); }
   .angler-discovery { position: relative; width: min(380px, 100%); }
   .angler-toggle { display: block; cursor: pointer; }
@@ -338,9 +364,6 @@
   #angler-awake:focus-visible + .angler-toggle .lure-focus { opacity: 1; }
   .angler-lure { animation: lure-breathe 4s ease-in-out infinite alternate; }
   .lure-bulb { filter: drop-shadow(0 0 5px #EEE8D5) drop-shadow(0 0 14px var(--dsf-solid-accent)); }
-  body:not(.ocean-ready) .nautilus { animation: none; transform: translateX(calc(50vw - 50%)); }
-  @keyframes nautilus-pass { from { transform: translateX(100vw); } to { transform: translateX(-100%); } }
-  @keyframes nautilus-bob { to { transform: translateY(-10px) rotate(3deg); } }
 
   @keyframes surface-drift {
     to { transform: perspective(450px) rotateX(-48deg) scale(1.3) translate(2%, 3%); }
@@ -377,13 +400,12 @@
     .hero { width: calc(100% - 48px); padding-top: 90px; gap: 70px; }
     .hero-copy h1 { margin-inline: 0; font-size: clamp(3.3rem, 10vw, 5rem); }
     .hero-copy h1 em { line-height: 1.05; }
-    .hero .eyebrow { font-size: .51rem; letter-spacing: .12em; }
     .hero-lede { max-width: 430px; font-size: .92rem; }
     .hero-facts div, .hero-facts div:first-child { padding-inline: 12px; }
     .surface-decision, .palette-section, .applications, .final-cta { width: calc(100% - 32px); border-radius: 8px; }
     .surface-decision .section-shell, .palette-section .section-shell,
     .applications .section-shell, .final-cta .section-shell, .surface-stage { width: calc(100% - 32px); }
-    .principles, .hierarchy, .extension-note, .footer-grid { max-width: calc(100% - 64px); }
+    .principles, .hierarchy, .footer-grid { max-width: calc(100% - 64px); }
     .kelp-middle { opacity: .6; }
     .kelp-middle .kelp { height: 88%; }
     .kelp-middle .left { left: -150px; }
@@ -414,6 +436,5 @@
     .ocean-world, .kelp-bed { transform: none !important; }
     .water-ceiling { animation: none; }
     .angler-drift { animation: none; }
-    .nautilus { animation: none; transform: translateX(calc(50vw - 50%)); }
   }
 }

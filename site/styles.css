@@ -149,7 +149,6 @@
 
   .section-intro h2,
   .hierarchy h2,
-  .extension-note h2,
   .final-cta h2 {
     max-width: 850px;
     margin-top: 20px;
@@ -295,6 +294,27 @@
   .button-secondary:hover {
     border-color: var(--dsf-solid-accent);
     color: var(--dsf-solid-warm);
+  }
+
+  .button-applications {
+    background: var(--dsf-solid-document);
+    color: var(--dsf-solid-base);
+  }
+
+  .button-applications:hover {
+    background: var(--dsf-solid-text);
+  }
+
+  .hero-browse {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 11px;
+    max-width: 100%;
+  }
+
+  .hero-browse .button {
+    padding-inline: 14px;
+    font-size: .82rem;
   }
 
   .hero-actions {
@@ -829,57 +849,58 @@
     padding: 150px 0 165px;
   }
 
-  .principle-grid {
+  .design-story {
     display: grid;
-    margin-top: 80px;
-    grid-template-columns: repeat(4, 1fr);
-    border-top: 1px solid var(--border-quiet);
-    border-left: 1px solid var(--border-quiet);
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(32px, 6vw, 80px);
+    margin-top: 55px;
   }
 
-  .principle-grid article {
-    position: relative;
-    min-height: 325px;
-    padding: 28px 26px;
-    border-right: 1px solid var(--border-quiet);
-    border-bottom: 1px solid var(--border-quiet);
-    transition: background .25s var(--ease-out), transform .25s var(--ease-out);
-  }
-
-  .principle-grid article:hover {
-    z-index: 1;
-    background: var(--dsf-solid-panel);
-    transform: translateY(-5px);
-  }
-
-  .principle-number {
-    color: var(--dsf-solid-faint-text);
-    font-family: var(--mono);
-    font-size: .58rem;
-  }
-
-  .principle-grid svg {
-    width: 42px;
-    margin: 58px 0 28px;
-    fill: none;
-    stroke: var(--dsf-solid-accent);
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1.25;
-  }
-
-  .principle-grid h3 {
+  .design-story h3 {
     color: var(--dsf-solid-warm);
     font-family: var(--display);
-    font-size: 1.2rem;
-    font-weight: 620;
+    font-size: 1.45rem;
+    font-weight: 560;
   }
 
-  .principle-grid p {
-    margin-top: 12px;
-    color: var(--dsf-solid-text);
-    font-size: .86rem;
+  .design-story-copy p {
+    margin-top: 22px;
+    line-height: 1.85;
+  }
+
+  .design-evidence {
+    display: grid;
+    align-content: start;
+    gap: 32px;
+  }
+
+  .design-evidence blockquote {
+    margin: 0;
+    padding-left: 24px;
+    border-left: 2px solid var(--dsf-solid-accent);
+  }
+
+  .design-evidence blockquote p {
+    color: var(--dsf-solid-warm);
+    font-family: var(--display);
+    font-size: 1.05rem;
+    line-height: 1.65;
+  }
+
+  .design-evidence cite {
+    display: block;
+    margin-top: 13px;
+    font-size: .76rem;
+    font-style: normal;
     line-height: 1.7;
+  }
+
+  .research-note {
+    max-width: 92ch;
+    margin-top: 42px;
+    color: var(--dsf-solid-text);
+    font-size: .82rem;
+    line-height: 1.8;
   }
 
   .palette-section {
@@ -1051,42 +1072,6 @@
     margin-top: 27px;
     line-height: 1.8;
   }
-
-  .hierarchy-copy ul {
-    margin: 45px 0 0;
-    padding: 0;
-    list-style: none;
-    border-top: 1px solid var(--border-quiet);
-  }
-
-  .hierarchy-copy li {
-    display: grid;
-    min-height: 54px;
-    align-items: center;
-    grid-template-columns: 25px 120px 1fr;
-    border-bottom: 1px solid var(--border-quiet);
-    font-size: .74rem;
-  }
-
-  .hierarchy-copy li strong {
-    color: var(--dsf-solid-warm);
-    font-weight: 620;
-  }
-
-  .hierarchy-copy li span {
-    color: var(--dsf-solid-faint-text);
-  }
-
-  .signal {
-    width: 8px;
-    height: 8px;
-    border-radius: 2px;
-  }
-
-  .signal.accent { background: var(--dsf-solid-accent); }
-  .signal.warm { background: var(--dsf-solid-warm); }
-  .signal.warning { background: var(--dsf-solid-warning); }
-  .signal.error { background: var(--dsf-solid-error); }
 
   .control-study {
     overflow: hidden;
@@ -1311,72 +1296,6 @@
     font-size: .9rem;
   }
 
-  .extension-note {
-    display: grid;
-    padding: 145px 0;
-    grid-template-columns: .7fr 1.3fr;
-    gap: 10vw;
-    align-items: start;
-  }
-
-  .extension-label {
-    display: grid;
-    gap: 12px;
-    padding-top: 8px;
-    font-family: var(--mono);
-    font-size: .61rem;
-  }
-
-  .extension-label span {
-    color: var(--dsf-solid-accent);
-    letter-spacing: .13em;
-  }
-
-  .extension-label b {
-    color: var(--dsf-solid-faint-text);
-    font-weight: 400;
-  }
-
-  .extension-note h2 {
-    max-width: 700px;
-    margin-top: 0;
-    font-size: clamp(2.5rem, 4.5vw, 4.7rem);
-  }
-
-  .extension-note > div:last-child > p {
-    max-width: 690px;
-    margin-top: 27px;
-    line-height: 1.8;
-  }
-
-  .heritage-strip {
-    display: grid;
-    margin-top: 45px;
-    grid-template-columns: repeat(4, 1fr);
-    border-top: 1px solid var(--border-quiet);
-    border-left: 1px solid var(--border-quiet);
-  }
-
-  .heritage-strip span {
-    display: flex;
-    min-height: 76px;
-    align-items: center;
-    gap: 10px;
-    padding: 15px;
-    border-right: 1px solid var(--border-quiet);
-    border-bottom: 1px solid var(--border-quiet);
-    color: var(--dsf-solid-text);
-    font-family: var(--mono);
-    font-size: .59rem;
-  }
-
-  .heritage-strip i {
-    width: 9px;
-    height: 9px;
-    border-radius: 2px;
-    background: var(--heritage);
-  }
-
   .final-cta {
     position: relative;
     overflow: hidden;
@@ -1532,10 +1451,6 @@
       margin-inline: auto;
     }
 
-    .principle-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
     .hierarchy {
       grid-template-columns: 1fr;
     }
@@ -1658,10 +1573,9 @@
       grid-column: auto;
     }
 
-    .extension-note {
-      padding: 110px 0;
+    .design-story {
       grid-template-columns: 1fr;
-      gap: 50px;
+      gap: 40px;
     }
 
     .footer-grid {
@@ -1738,14 +1652,6 @@
       padding: 20px;
     }
 
-    .principle-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .principle-grid article {
-      min-height: 280px;
-    }
-
     .swatch-grid {
       grid-template-columns: 1fr;
     }
@@ -1753,10 +1659,6 @@
     .color-swatch {
       grid-template-rows: 85px 1fr;
       min-height: 160px;
-    }
-
-    .hierarchy-copy li {
-      grid-template-columns: 22px 95px 1fr;
     }
 
     .control-row {
@@ -1773,10 +1675,6 @@
 
     .demo-input code {
       width: 100%;
-    }
-
-    .heritage-strip {
-      grid-template-columns: repeat(2, 1fr);
     }
 
     .final-cta {
@@ -1812,12 +1710,11 @@
 
   @supports (animation-timeline: view()) {
     .section-intro,
-    .principle-grid,
+    .design-story,
     .palette-group,
     .hierarchy-copy,
     .control-study,
-    .application-grid,
-    .extension-note > div {
+    .application-grid {
       animation: enter-section linear both;
       animation-range: entry 5% entry 30%;
       animation-timeline: view();

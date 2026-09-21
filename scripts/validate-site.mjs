@@ -15,6 +15,9 @@ const requiredFiles = [
   "ocean.css",
   "ocean.js",
   "water.js",
+  "nautilus.js",
+  "blobfish.webp",
+  "artwork-NOTICE.txt",
   "kelp.svg",
   "water-light.svg",
   "mark.svg",
@@ -68,7 +71,7 @@ for (const icon of icons) {
   }
   if (icon.license) await access(path.join(site, "icons", icon.license));
 }
-const logoUrl = "mark.svg?v=seaweed-foam-terminal";
+const logoUrl = "mark.svg?v=seaweed-foam-cluster";
 if (!html.includes(`rel="icon" href="${logoUrl}"`) ||
     [...html.matchAll(/<img\b[^>]*src="([^"]+)"/g)].filter((match) => match[1] === logoUrl).length !== 3 ||
     !manifest.icons.some((icon) => icon.src === logoUrl && icon.type === "image/svg+xml") ||
@@ -79,6 +82,21 @@ if (!logo.includes('id="seaweed"') || !logo.includes('id="foam"') ||
     logo.indexOf('id="seaweed"') > logo.indexOf('id="foam"') ||
     !logo.includes(`id="seaweed" fill="${canonical.solid.accent.value}"`)) {
   throw new Error("The logo must draw canonical seafoam seaweed behind its foam bubbles");
+}
+const foam = logo.match(/<g id="foam"[^>]*>([\s\S]*?)<\/g>/)?.[1] ?? "";
+const bubbles = [...foam.matchAll(/<circle\b[^>]*cx="([\d.]+)"[^>]*cy="([\d.]+)"[^>]*r="([\d.]+)"/g)];
+if (bubbles.length < 14 || bubbles.some(([, , y, radius]) => Number(y) - Number(radius) < 32) ||
+    !logo.includes('id="foam-reflections"')) {
+  throw new Error("The foam logo needs a dense lower-half bubble cluster and reflected larger bubbles");
+}
+
+const { blobfish } = JSON.parse(await readFile(path.join(root, "docs", "showcase-artwork.json"), "utf8"));
+const fishBytes = await readFile(path.join(site, "blobfish.webp"));
+if (blobfish.file !== "blobfish.webp" || createHash("sha256").update(fishBytes).digest("hex") !== blobfish.sha256 ||
+    fishBytes.length !== blobfish.bytes || fishBytes.toString("ascii", 0, 4) !== "RIFF" ||
+    fishBytes.toString("ascii", 8, 16) !== "WEBPVP8X" || !(fishBytes[20] & 0x10) ||
+    fishBytes.readUIntLE(24, 3) + 1 !== blobfish.width || fishBytes.readUIntLE(27, 3) + 1 !== blobfish.height) {
+  throw new Error("The supplied blobfish derivative must retain its recorded size, alpha and artwork hash");
 }
 
 const colorCount = palette.groups.reduce((total, group) => total + group.colors.length, 0);
@@ -108,10 +126,14 @@ for (const marker of [
   '<div class="bubble-field" aria-hidden="true">',
   '<canvas class="water-surface" aria-hidden="true"></canvas>',
   '<script src="water.js" type="module"></script>',
+  '<script src="nautilus.js" type="module"></script>',
   'class="nautilus-zone"',
   'class="blobfish-zone"',
   'class="angler-zone"',
   'type="checkbox" id="angler-awake"',
+  'type="checkbox" id="blobfish-awake"',
+  'class="button button-applications" href="#applications"',
+  'class="hero-lede hero-poem"',
   "https://github.com/Zanark/DeepSeaFoam/releases/latest"
 ]) {
   const source = marker === "prefers-reduced-motion" ? css : html;
@@ -120,11 +142,35 @@ for (const marker of [
   }
 }
 
-const depthOrder = ['class="nautilus-zone"', 'id="identity"', 'id="palette"', 'class="blobfish-zone"', 'id="applications"', 'class="angler-zone"']
+const depthOrder = ['class="nautilus-zone"', 'id="identity"', 'id="palette"', 'id="applications"', 'class="angler-zone"', '<footer>', 'class="blobfish-zone"']
   .map((marker) => html.indexOf(marker));
 if (depthOrder.some((position, index) => position < 0 || (index > 0 && position <= depthOrder[index - 1])) ||
     /<(?:details|summary)\b/.test(html)) {
   throw new Error("Creature encounters must be separated along the descent, without collapsible sections");
+}
+if (!/<section class="palette-section"[\s\S]*?<\/section>\s*<section class="applications"/.test(html) ||
+    !/\.button-applications\s*\{[^}]*background:\s*var\(--dsf-solid-document\)/.test(css)) {
+  throw new Error("Applications must follow the palette directly and use a document-green hero link");
+}
+for (const retired of ["Beneath the everyday", 'class="principle-grid"', 'class="extension-note"', 'class="signal accent"']) {
+  if (html.includes(retired)) throw new Error(`Retired showcase content remains: ${retired}`);
+}
+if (css.includes("nautilus-pass") || css.includes("nautilus-bob")) {
+  throw new Error("Nautilus drift must not compete with the retired fixed-loop animations");
+}
+const hideout = html.match(/<section class="blobfish-zone"[\s\S]*?<\/section>/)?.[0] ?? "";
+if (!hideout.includes('src="blobfish.webp"') || (hideout.match(/class="cover-kelp"/g)?.length ?? 0) < 20 ||
+    !hideout.includes('for="blobfish-awake"')) {
+  throw new Error("The bottom hideout needs the supplied artwork, dense kelp and a native reveal control");
+}
+for (const source of ["ethanschoonover.com/solarized/#features", "mgn-357-night-time-lookout", "10.1080/00140139.2013.790485", "WCAG22/Understanding/contrast-minimum.html"]) {
+  if (!html.includes(source)) throw new Error(`Missing design-evidence citation: ${source}`);
+}
+if (!html.includes("None of these sources tests DeepSeaFoam")) {
+  throw new Error("Research context must not imply this palette has been clinically validated");
+}
+for (const [, target] of html.matchAll(/href="#([^"]+)"/g)) {
+  if (!html.includes(`id="${target}"`)) throw new Error(`Broken page navigation: #${target}`);
 }
 
 for (const [depth, minimum] of [["far", 6], ["middle", 4], ["near", 2]]) {
@@ -169,10 +215,10 @@ const assets = await listAssets(site);
 const totalBytes = (await Promise.all(assets.map(async (file) => (await stat(file)).size)))
   .reduce((total, size) => total + size, 0);
 
-// Count the water simulation, unmodified product SVGs, and their notices too.
-const budget = 144 * 1024;
+// Include the transparent supplied illustration, drift module, product SVGs and all notices.
+const budget = 200 * 1024;
 if (totalBytes > budget) {
-  throw new Error(`Website exceeds the 144 KiB asset budget: ${totalBytes} bytes`);
+  throw new Error(`Website exceeds the 200 KiB asset budget: ${totalBytes} bytes`);
 }
 
 console.log(`Validated static website: ${totalBytes} bytes across ${assets.length} files.`);

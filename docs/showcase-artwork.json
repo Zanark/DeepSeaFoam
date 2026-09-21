@@ -1,0 +1,17 @@
+{
+  "blobfish": {
+    "file": "blobfish.webp",
+    "source": "User-supplied illustration; original artist and license not supplied",
+    "sourceSha256": "b1ac7e83f1ee0c041426aa0744e262a63ac5c50f6ebb4968e8da1b67b21ee024",
+    "sourceSize": [1536, 1024],
+    "sourceHasTransparency": true,
+    "processing": "Keep center-connected alpha foreground and its soft fringe, remove detached specks, crop with padding, resize with Lanczos, encode WebP",
+    "script": "scripts/prepare-blobfish.py",
+    "crop": [6, 118, 1529, 938],
+    "width": 640,
+    "height": 345,
+    "quality": 82,
+    "bytes": 43364,
+    "sha256": "771a7d901109d775396d97e67edd7ec6e177ed54ef3401a08db34383f514c7b0"
+  }
+}

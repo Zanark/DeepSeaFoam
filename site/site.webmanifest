@@ -8,7 +8,7 @@
   "theme_color": "#001E26",
   "icons": [
     {
-      "src": "mark.svg?v=seaweed-foam-terminal",
+      "src": "mark.svg?v=seaweed-foam-cluster",
       "sizes": "any",
       "type": "image/svg+xml"
     }
