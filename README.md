@@ -14,7 +14,7 @@ The interface should recede behind the work. Cyan is a restrained signal, ivory 
 
 ## The underwater showcase
 
-The [website](https://zanark.github.io/DeepSeaFoam/) is a cinematic interpretation of the theme: a brief surface-crossing descent, refracted light, drifting particles, and layered kelp with out-of-focus foreground fronds. Scroll deeper and the light fades. Follow the tiny light in the midnight zone to meet its resident.
+The [website](https://zanark.github.io/DeepSeaFoam/) is a cinematic interpretation of the theme: a brief surface-crossing descent, refracted light, drifting particles, and layered kelp with out-of-focus foreground fronds. Scroll deeper and the light fades. Click the tiny light in the midnight zone to reveal the otherwise invisible anglerfish. Investigate what is sulking on the seabed to find the hidden blobfish.
 
 This scenery belongs **only to the showcase**, not the canonical palette or application exports. Exact-color swatches and interface studies remain unfiltered. All artwork is original local SVG/CSS; there is no video, WebGL, external image service, audio, or runtime dependency. The site stays within a 100 KiB source budget. **Pause motion** freezes animation; reduced-motion preferences skip the descent automatically. **Skip descent**, Escape, or scrolling also bypasses the opening. The page and anglerfish discovery remain usable without JavaScript.
 

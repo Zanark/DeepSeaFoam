@@ -53,6 +53,7 @@ for (const marker of [
   'id="motion-toggle"',
   'id="skip-dive"',
   '<details class="angler-discovery">',
+  '<details class="blobfish-discovery">',
   "https://github.com/Zanark/DeepSeaFoam/releases/latest"
 ]) {
   const source = marker === "prefers-reduced-motion" ? css : html;
