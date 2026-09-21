@@ -2,7 +2,7 @@
 
 ## Scope
 
-`DeepSeaFoam.json` is one object for the `schemes` array in Windows Terminal's `settings.json`. The terminal background is black, the cursor is pale pearl, and selection uses `#165651`: the recorded opaque composite of `#2AA19888` over black.
+`DeepSeaFoam.json` is one object for the `schemes` array in Windows Terminal's `settings.json`. The terminal background is near-black teal (`#000F13`), the cursor is pale pearl, and selection uses `#0D3B3B`: the recorded opaque composite of `#2AA1984D` over that base. The selection shares the text-selection overlay and retains readable ordinary foreground text.
 
 ANSI blue, magenta, orange-related, and violet roles are an explicit Solarized heritage extension. Bright variants reuse approved colors rather than inventing a neon ramp.
 
@@ -21,4 +21,4 @@ Select the previous scheme and remove the `DeepSeaFoam` object from `schemes`. R
 
 ## Limitations
 
-Shell prompts and applications may emit fixed RGB colors that bypass the 16-color ANSI palette. Windows Terminal exposes a terminal surface, not separate black content and blue-green application panels, so `#001E26` is not forced into the text buffer.
+Shell prompts and applications may emit fixed RGB colors that bypass the 16-color ANSI palette. Windows Terminal exposes a terminal surface, not separate working areas and application panels, so `#001E26` is not forced into the text buffer.

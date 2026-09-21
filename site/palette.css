@@ -1,6 +1,6 @@
 /* Generated from palette/deepseafoam.json. */
 :root {
-  --dsf-solid-base: #000000;
+  --dsf-solid-base: #000F13;
   --dsf-solid-panel: #001E26;
   --dsf-solid-accent: #2AA198;
   --dsf-solid-text: #93A1A1;
@@ -34,6 +34,6 @@
   --dsf-heritage-magenta: #D33682;
   --dsf-heritage-violet: #6C71C4;
   --dsf-heritage-blue: #268BD2;
-  --dsf-derived-text-selection: #2AA19855;
-  --dsf-derived-terminal-selection-on-black: #165651;
+  --dsf-derived-text-selection: #2AA1984D;
+  --dsf-derived-terminal-selection-on-base: #0D3B3B;
 }

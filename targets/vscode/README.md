@@ -2,7 +2,7 @@
 
 ## Scope
 
-`package.json` and `themes/deepseafoam-color-theme.json` form a normal VS Code color-theme extension. The editor is black, surrounding workbench surfaces are `#001E26`, and focus remains cyan. Syntax colors use the explicitly documented heritage extension because the original SpriteCanvas UI did not define programming-language roles.
+`package.json` and `themes/deepseafoam-color-theme.json` form a normal VS Code color-theme extension. The editor is near-black teal (`#000F13`), surrounding workbench surfaces are `#001E26`, and focus remains cyan. Syntax colors use the explicitly documented heritage extension because the original SpriteCanvas UI did not define programming-language roles.
 
 ## Preview without installation
 

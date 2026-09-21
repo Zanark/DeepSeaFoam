@@ -7,7 +7,7 @@
 - legacy Visual Studio 2022 environment, editor, language-service, output, and tree-view categories;
 - the Visual Studio 2026 dark-theme `FallbackId` and semantic `Shell` / `ShellInternal` tokens.
 
-The code editor and output surfaces are black. Tool windows and shell structure use `#001E26`. Visual Studio colors use `AARRGGBB`, not the palette's `RRGGBBAA`.
+The code editor and output surfaces are near-black teal (`#000F13`). Tool windows and shell structure use `#001E26`. Visual Studio colors use `AARRGGBB`, not the palette's `RRGGBBAA`.
 
 ## Build and install
 

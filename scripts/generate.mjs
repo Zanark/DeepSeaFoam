@@ -29,6 +29,16 @@ function rgba(value) {
   };
 }
 
+function composite(value, background) {
+  const alpha = parseInt(value.slice(7, 9), 16) / 255;
+  const channels = [1, 3, 5].map((start) => {
+    const foreground = parseInt(value.slice(start, start + 2), 16);
+    const behind = parseInt(background.slice(start, start + 2), 16);
+    return Math.round(foreground * alpha + behind * (1 - alpha)).toString(16).padStart(2, "0");
+  });
+  return `#${channels.join("").toUpperCase()}`;
+}
+
 const vscodePackage = {
   name: "deepseafoam-theme",
   displayName: "DeepSeaFoam",
@@ -517,7 +527,7 @@ const terminalScheme = {
   background: solid("base"),
   foreground: solid("text"),
   cursorColor: solid("lightEdge"),
-  selectionBackground: derived("terminalSelectionOnBlack"),
+  selectionBackground: derived("terminalSelectionOnBase"),
   black: solid("base"),
   red: solid("error"),
   green: solid("document"),
@@ -764,8 +774,19 @@ function validateSource() {
     }
   }
 
-  if (solid("base") !== "#000000" || solid("panel") !== "#001E26" || solid("accent") !== "#2AA198") {
+  if (solid("base") !== "#000F13" || solid("panel") !== "#001E26" || solid("accent") !== "#2AA198") {
     throw new Error("Defining DeepSeaFoam surface or accent invariant changed");
+  }
+
+  const selection = palette.derived.terminalSelectionOnBase;
+  if (selection.background !== solid("base") || selection.source !== derived("textSelection")) {
+    throw new Error("Terminal selection must use the current base and text-selection overlay");
+  }
+  if (selection.value !== composite(selection.source, selection.background)) {
+    throw new Error("Terminal selection is not the recorded sRGB source-over composite");
+  }
+  for (const [name, value] of Object.entries({ shadowSoft: "#00000066", shadowStrong: "#000000CC", backdrop: "#000000B8" })) {
+    if (overlay(name) !== value) throw new Error(`${name} must remain transparent black`);
   }
 
   const activeValues = activeGroups.flatMap((group) =>
@@ -801,7 +822,8 @@ function validateSource() {
     ["primary text on panel", solid("text"), solid("panel"), 4.5],
     ["faint text on workspace", solid("faintText"), solid("base"), 4.5],
     ["faint text on panel", solid("faintText"), solid("panel"), 4.5],
-    ["black text on accent", solid("base"), solid("accent"), 4.5],
+    ["base-colored text on accent", solid("base"), solid("accent"), 4.5],
+    ["primary text on selection", solid("text"), composite(derived("textSelection"), solid("base")), 4.5],
     ["warm emphasis on workspace", solid("warm"), solid("base"), 4.5]
   ];
   for (const [name, foreground, background, minimum] of contrastPairs) {

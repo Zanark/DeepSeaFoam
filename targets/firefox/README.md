@@ -6,7 +6,7 @@ The Firefox export is a static WebExtension theme. It themes browser-owned chrom
 
 ## Tab treatment
 
-The tab strip uses the black recessed surface so inactive tabs visually merge into their background instead of appearing as separate cards. Inactive titles use the lower-emphasis text color. The selected tab rises into the blue-green panel surface with warm text and a restrained seafoam active line.
+The tab strip uses the near-black teal recessed surface (`#000F13`) so inactive tabs visually merge into their background instead of appearing as separate cards. Inactive titles use the lower-emphasis text color. The selected tab rises into the blue-green panel surface with warm text and a restrained seafoam active line.
 
 ## Preview
 

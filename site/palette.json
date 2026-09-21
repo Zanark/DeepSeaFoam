@@ -1,6 +1,6 @@
 {
   "name": "DeepSeaFoam",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "groups": [
     {
       "id": "solid",
@@ -9,8 +9,8 @@
       "colors": [
         {
           "id": "base",
-          "value": "#000000",
-          "role": "Primary workspace and recessed surface"
+          "value": "#000F13",
+          "role": "Near-black teal workspace and recessed surface"
         },
         {
           "id": "panel",
@@ -206,17 +206,17 @@
   "derived": [
     {
       "id": "textSelection",
-      "value": "#2AA19855",
+      "value": "#2AA1984D",
       "source": "#2AA198",
-      "alpha": 0.3333,
+      "alpha": 0.302,
       "background": "transparent-capable targets",
       "use": "Text selection, distinct from the original pixel-selection edge"
     },
     {
-      "id": "terminalSelectionOnBlack",
-      "value": "#165651",
-      "source": "#2AA19888",
-      "background": "#000000",
+      "id": "terminalSelectionOnBase",
+      "value": "#0D3B3B",
+      "source": "#2AA1984D",
+      "background": "#000F13",
       "use": "Opaque Windows Terminal selection fallback"
     }
   ]

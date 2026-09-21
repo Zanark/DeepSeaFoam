@@ -40,10 +40,13 @@ if (colorCount !== 27) {
   throw new Error(`The website must expose all 27 active colors; found ${colorCount}`);
 }
 
-for (const invariant of ["#000000", "#001E26", "#2AA198"]) {
-  if (!paletteText.includes(invariant)) {
+for (const [id, invariant] of Object.entries({ base: "#000F13", panel: "#001E26", accent: "#2AA198" })) {
+  if (palette.groups.find((group) => group.id === "solid")?.colors.find((color) => color.id === id)?.value !== invariant) {
     throw new Error(`Website palette is missing ${invariant}`);
   }
+}
+if (html.includes("#000000") || !html.includes("#000F13") || !html.includes('class="surface-card surface-base"')) {
+  throw new Error("Website workspace examples must use the current dark-teal base");
 }
 
 for (const marker of [

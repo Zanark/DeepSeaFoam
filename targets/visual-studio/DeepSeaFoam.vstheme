@@ -4,9 +4,9 @@
     <Category Name="Shell" GUID="{73708ded-2d56-4aad-b8eb-73b20d3f4bff}">
       <Color Name="AccentFillDefault"><Background Type="CT_RAW" Source="FF2AA198" /></Color>
       <Color Name="AccentFillSecondary"><Background Type="CT_RAW" Source="882AA198" /></Color>
-      <Color Name="AccentFillTertiary"><Background Type="CT_RAW" Source="552AA198" /></Color>
+      <Color Name="AccentFillTertiary"><Background Type="CT_RAW" Source="4D2AA198" /></Color>
       <Color Name="SolidBackgroundFillTertiary"><Background Type="CT_RAW" Source="FF001E26" /></Color>
-      <Color Name="SolidBackgroundFillQuaternary"><Background Type="CT_RAW" Source="FF000000" /></Color>
+      <Color Name="SolidBackgroundFillQuaternary"><Background Type="CT_RAW" Source="FF000F13" /></Color>
       <Color Name="SurfaceBackgroundFillDefault"><Background Type="CT_RAW" Source="FF001E26" /></Color>
       <Color Name="TextFillSecondary"><Background Type="CT_RAW" Source="FF93A1A1" /></Color>
     </Category>
@@ -30,25 +30,25 @@
       <Color Name="Default"><Background Type="CT_RAW" Source="FF001E26" /><Foreground Type="CT_RAW" Source="FFEEE8D5" /></Color>
     </Category>
     <Category Name="Output Window" GUID="{9973efdf-317d-431c-8bc1-5e88cbfd4f7f}">
-      <Color Name="Plain Text"><Background Type="CT_RAW" Source="FF000000" /><Foreground Type="CT_RAW" Source="FF93A1A1" /></Color>
+      <Color Name="Plain Text"><Background Type="CT_RAW" Source="FF000F13" /><Foreground Type="CT_RAW" Source="FF93A1A1" /></Color>
     </Category>
     <Category Name="Find Results" GUID="{5c48b2cb-0366-4fbf-9786-0bb37e945687}">
-      <Color Name="Plain Text"><Background Type="CT_RAW" Source="FF000000" /><Foreground Type="CT_RAW" Source="FF93A1A1" /></Color>
+      <Color Name="Plain Text"><Background Type="CT_RAW" Source="FF000F13" /><Foreground Type="CT_RAW" Source="FF93A1A1" /></Color>
     </Category>
     <Category Name="Immediate Window" GUID="{6bb65c5a-2f31-4bde-9f48-8a38dc0c63e7}">
-      <Color Name="Plain Text"><Background Type="CT_RAW" Source="FF000000" /><Foreground Type="CT_RAW" Source="FF93A1A1" /></Color>
+      <Color Name="Plain Text"><Background Type="CT_RAW" Source="FF000F13" /><Foreground Type="CT_RAW" Source="FF93A1A1" /></Color>
     </Category>
     <Category Name="Command Window" GUID="{ee1be240-4e81-4beb-8eea-54322b6b1bf5}">
-      <Color Name="Plain Text"><Background Type="CT_RAW" Source="FF000000" /><Foreground Type="CT_RAW" Source="FF93A1A1" /></Color>
+      <Color Name="Plain Text"><Background Type="CT_RAW" Source="FF000F13" /><Foreground Type="CT_RAW" Source="FF93A1A1" /></Color>
     </Category>
     <Category Name="Text Editor Text Manager Items" GUID="{58e96763-1d3b-4e05-b6ba-ff7115fd0b7b}">
-      <Color Name="Plain Text"><Background Type="CT_RAW" Source="FF000000" /><Foreground Type="CT_RAW" Source="FF93A1A1" /></Color>
-      <Color Name="Selected Text"><Background Type="CT_RAW" Source="552AA198" /><Foreground Type="CT_RAW" Source="FFEEE8D5" /></Color>
+      <Color Name="Plain Text"><Background Type="CT_RAW" Source="FF000F13" /><Foreground Type="CT_RAW" Source="FF93A1A1" /></Color>
+      <Color Name="Selected Text"><Background Type="CT_RAW" Source="4D2AA198" /><Foreground Type="CT_RAW" Source="FFEEE8D5" /></Color>
       <Color Name="Inactive Selected Text"><Background Type="CT_RAW" Source="33586E75" /><Foreground Type="CT_RAW" Source="FF93A1A1" /></Color>
       <Color Name="Line Number"><Foreground Type="CT_RAW" Source="FF586E75" /></Color>
       <Color Name="Selected Line Number"><Foreground Type="CT_RAW" Source="FF93A1A1" /></Color>
       <Color Name="Visible Whitespace"><Foreground Type="CT_RAW" Source="FF586E75" /></Color>
-      <Color Name="Indicator Margin"><Background Type="CT_RAW" Source="FF000000" /></Color>
+      <Color Name="Indicator Margin"><Background Type="CT_RAW" Source="FF000F13" /></Color>
     </Category>
     <Category Name="Text Editor Language Service Items" GUID="{e0187991-b458-4f7e-8ca9-42c9a573b56c}">
       <Color Name="Identifier"><Foreground Type="CT_RAW" Source="FF93A1A1" /></Color>

@@ -2,7 +2,7 @@
 
 ## Scope
 
-The Obsidian export uses the official `manifest.json` + `theme.css` structure. Note editing and reading surfaces are black; sidebars, tabs, status bars, prompts, and menus use the panel color. Images, attachments, canvases, and authored document colors are not filtered or rewritten.
+The Obsidian export uses the official `manifest.json` + `theme.css` structure. Note editing and reading surfaces are near-black teal (`#000F13`); sidebars, tabs, status bars, prompts, and menus use the panel color. Images, attachments, canvases, and authored document colors are not filtered or rewritten.
 
 ## Install
 

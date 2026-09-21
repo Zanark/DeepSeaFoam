@@ -776,7 +776,7 @@
     border-radius: 6px;
   }
 
-  .surface-black { background: var(--dsf-solid-base); }
+  .surface-base { background: var(--dsf-solid-base); }
   .surface-panel { background: var(--dsf-solid-panel); }
 
   .surface-card-head {

@@ -4,13 +4,15 @@
 
 [Explore the live DeepSeaFoam showcase](https://zanark.github.io/DeepSeaFoam/) · [Download the latest release](https://github.com/Zanark/DeepSeaFoam/releases/latest)
 
-DeepSeaFoam is a cross-application dark theme derived from [Ethan Schoonover's Solarized palette](https://ethanschoonover.com/solarized/), but it is not Solarized Dark renamed. Its defining relationship is a genuinely black working surface surrounded by extremely dark blue-green structure:
+DeepSeaFoam is a cross-application dark theme derived from [Ethan Schoonover's Solarized palette](https://ethanschoonover.com/solarized/), but it is not Solarized Dark renamed. Its defining relationship is an extremely dark teal working surface surrounded by slightly lighter blue-green structure:
 
-- **Workspace / recessed surface:** `#000000`
+- **Workspace / recessed surface:** `#000F13`
 - **Headers, toolbars, and panels:** `#001E26`
 - **Primary interaction accent:** `#2AA198`
 
 The interface should recede behind the work. Cyan is a restrained signal, ivory supplies selective warmth, and errors remain clear exceptions. Application exports do not add ocean decoration, colored glow, gradients, or textures, and never recolor documents, artwork, images, videos, or exported content.
+
+Version **0.2.0** deliberately replaces the original pure-black workspace with near-black teal. This updates the cross-application design without changing the read-only SpriteCanvas origin. Shadow and backdrop overlays retain their transparent black; they are not workspace surfaces.
 
 ## The underwater showcase
 
@@ -48,7 +50,7 @@ These are export files, not proof of runtime validation in every application ver
 
 | Swatch | Semantic role | Value |
 | --- | --- | --- |
-| ![Black](docs/swatches/000000.svg) | Base / recessed surface | `#000000` |
+| ![Near-black teal](docs/swatches/000f13.svg) | Base / recessed surface | `#000F13` |
 | ![Deep blue-green](docs/swatches/001e26.svg) | Panel surface | `#001E26` |
 | ![Seafoam cyan](docs/swatches/2aa198.svg) | Primary accent | `#2AA198` |
 | ![Soft gray](docs/swatches/93a1a1.svg) | Primary text | `#93A1A1` |
@@ -110,7 +112,7 @@ npm run package:release
 
 ## Porting rules
 
-1. Preserve the black workspace / blue-green panel relationship when the host exposes both surfaces.
+1. Preserve the near-black teal workspace / lighter blue-green panel relationship when the host exposes both surfaces.
 2. Map semantic roles rather than similarly named fields.
 3. Keep cyan restrained and preserve warm emphasis.
 4. Treat text selection, diagnostics, syntax, and ANSI colors as deliberate application-specific mappings.
@@ -121,6 +123,6 @@ npm run package:release
 
 ## Origin and attribution
 
-DeepSeaFoam originated in [SpriteCanvas](https://github.com/Zanark/SpriteCanvas). SpriteCanvas remains the read-only reference implementation for the original surface hierarchy, active palette, interaction recipes, transparency overlays, and neutral previews.
+DeepSeaFoam originated in [SpriteCanvas](https://github.com/Zanark/SpriteCanvas). SpriteCanvas remains the read-only reference for the original surface hierarchy, interaction recipes, overlays, and neutral previews. Its original black workspace is historical provenance, not the current cross-application base.
 
 DeepSeaFoam is derived from [Solarized by Ethan Schoonover](https://ethanschoonover.com/solarized/). The retained heritage colors are identified explicitly in the canonical palette rather than silently restoring the full Solarized theme.

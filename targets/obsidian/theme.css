@@ -7,8 +7,8 @@ body {
   --accent-h: 176;
   --accent-s: 59%;
   --accent-l: 40%;
-  --background-primary: #000000;
-  --background-primary-alt: #000000;
+  --background-primary: #000F13;
+  --background-primary-alt: #000F13;
   --background-secondary: #001E26;
   --background-secondary-alt: #001E26;
   --background-modifier-border: #586E75;
@@ -16,21 +16,21 @@ body {
   --background-modifier-border-focus: #2AA198;
   --background-modifier-hover: #586E7533;
   --background-modifier-active-hover: #586E7533;
-  --background-modifier-form-field: #000000;
+  --background-modifier-form-field: #000F13;
   --background-modifier-form-field-highlighted: #001E26;
   --background-modifier-box-shadow: #00000066;
   --background-modifier-cover: #000000B8;
   --text-normal: #93A1A1;
   --text-muted: #93A1A1;
   --text-faint: #839496;
-  --text-on-accent: #000000;
-  --text-on-accent-inverted: #000000;
+  --text-on-accent: #000F13;
+  --text-on-accent-inverted: #000F13;
   --text-error: #EEE8D5;
   --text-warning: #B58900;
   --text-success: #859900;
   --text-accent: #2AA198;
   --text-accent-hover: #EEE8D5;
-  --interactive-normal: #000000;
+  --interactive-normal: #000F13;
   --interactive-hover: #93A1A1;
   --interactive-accent: #2AA198;
   --interactive-accent-hover: #93A1A1;
@@ -57,17 +57,17 @@ body {
   --nav-item-color-hover: #EEE8D5;
   --nav-item-color-active: #2AA198;
   --nav-item-background-hover: #586E7533;
-  --nav-item-background-active: #000000;
+  --nav-item-background-active: #000F13;
   --nav-indentation-guide-color: #586E7566;
   --link-color: #2AA198;
   --link-color-hover: #EEE8D5;
   --link-external-color: #268BD2;
   --link-unresolved-color: #B58900;
   --tag-color: #2AA198;
-  --tag-background: #000000;
+  --tag-background: #000F13;
   --tag-background-hover: #586E7533;
   --code-normal: #93A1A1;
-  --code-background: #000000;
+  --code-background: #000F13;
   --code-comment: #586E75;
   --code-function: #EEE8D5;
   --code-important: #DC322F;
@@ -107,7 +107,7 @@ body {
 }
 
 ::selection {
-  background: #2AA19855;
+  background: #2AA1984D;
   color: #EEE8D5;
 }
 
@@ -122,7 +122,7 @@ body {
 .workspace-leaf-content,
 .markdown-source-view,
 .markdown-reading-view {
-  background-color: #000000;
+  background-color: #000F13;
 }
 
 .workspace-split.mod-left-split,

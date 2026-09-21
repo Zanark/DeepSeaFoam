@@ -1,10 +1,10 @@
 {
   "name": "DeepSeaFoam",
-  "background": "#000000",
+  "background": "#000F13",
   "foreground": "#93A1A1",
   "cursorColor": "#FDF6E3",
-  "selectionBackground": "#165651",
-  "black": "#000000",
+  "selectionBackground": "#0D3B3B",
+  "black": "#000F13",
   "red": "#DC322F",
   "green": "#859900",
   "yellow": "#B58900",
