@@ -6,13 +6,15 @@ This document separates exact core mappings from application-specific design wor
 
 | Semantic surface | VS Code | Visual Studio | Obsidian | Windows Terminal | Firefox |
 | --- | --- | --- | --- | --- | --- |
-| Primary work area `#000000` | Editor, terminal, active tab, inputs | Code editor, output and command windows | Note editor and reading view | Terminal buffer | Selected tab, address field, new-tab surface |
-| Surrounding panel `#001E26` | Activity bar, sidebars, panels, title/tab bars | Shell, tool windows, headers, tree views | Sidebars, ribbon, tabs, status, prompts, menus | Not separately exposed | Frame, toolbar, inactive tabs, popups, sidebar |
+| Primary work area `#000000` | Editor, terminal, active tab, inputs | Code editor, output and command windows | Note editor and reading view | Terminal buffer | Tab strip behind inactive tabs, address field, new-tab surface |
+| Surrounding panel `#001E26` | Activity bar, sidebars, panels, title/tab bars | Shell, tool windows, headers, tree views | Sidebars, ribbon, tabs, status, prompts, menus | Not separately exposed | Selected tab, toolbar, popups, sidebar |
 | Focus / active signal `#2AA198` | Focus border, active markers, links | Semantic accent, environment border | Focus outline, active navigation, links | ANSI cyan only | Active-tab line, focused field border, attention icons |
 | Primary text `#93A1A1` | Ordinary labels and editor text | Shell, editor, and tool-window text | Ordinary note and chrome text | Foreground | Ordinary chrome text |
 | Warm emphasis `#EEE8D5` | Active titles, headings, error-message text | Headers and selected text | Headings and active tabs | Bright white | Selected tab and focused-field text |
 
 Windows Terminal exposes one text buffer rather than a content area surrounded by application panels. Its background therefore stays black; forcing the panel color into the buffer would invert the defining hierarchy.
+
+Firefox deliberately places its inactive tabs on the black tab-strip surface with `#839496` titles. The selected tab uses the blue-green panel surface, warm text, and the seafoam active line. This preserves the reference theme's quiet, background-blending tab behavior without importing its Solarized background colors.
 
 ## Interaction adaptations
 

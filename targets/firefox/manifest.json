@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "DeepSeaFoam",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A quiet workstation beneath deep water, with small seafoam-colored signals and warm light illuminating what matters.",
   "browser_specific_settings": {
     "gecko": {
@@ -11,11 +11,11 @@
   },
   "theme": {
     "colors": {
-      "frame": "#001E26",
-      "frame_inactive": "#001E26",
-      "tab_background_text": "#93A1A1",
+      "frame": "#000000",
+      "frame_inactive": "#000000",
+      "tab_background_text": "#839496",
       "tab_text": "#EEE8D5",
-      "tab_selected": "#000000",
+      "tab_selected": "#001E26",
       "tab_line": "#2AA198",
       "tab_loading": "#2AA198",
       "toolbar": "#001E26",

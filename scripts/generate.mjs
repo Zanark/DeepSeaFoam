@@ -551,11 +551,11 @@ const firefoxManifest = {
   },
   theme: {
     colors: {
-      frame: solid("panel"),
-      frame_inactive: solid("panel"),
-      tab_background_text: solid("text"),
+      frame: solid("base"),
+      frame_inactive: solid("base"),
+      tab_background_text: solid("faintText"),
       tab_text: solid("warm"),
-      tab_selected: solid("base"),
+      tab_selected: solid("panel"),
       tab_line: solid("accent"),
       tab_loading: solid("accent"),
       toolbar: solid("panel"),

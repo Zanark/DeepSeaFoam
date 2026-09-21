@@ -4,6 +4,10 @@
 
 The Firefox export is a static WebExtension theme. It themes browser-owned chrome: the frame, tabs, toolbar, address/search fields, popups, sidebar, and Firefox new-tab surface. It does not inject CSS into websites or recolor page content.
 
+## Tab treatment
+
+The tab strip uses the black recessed surface so inactive tabs visually merge into their background instead of appearing as separate cards. Inactive titles use the lower-emphasis text color. The selected tab rises into the blue-green panel surface with warm text and a restrained seafoam active line.
+
 ## Preview
 
 1. Open `about:debugging#/runtime/this-firefox`.

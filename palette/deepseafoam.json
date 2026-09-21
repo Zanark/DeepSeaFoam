@@ -1,7 +1,7 @@
 {
   "$schema": "./schema.json",
   "name": "DeepSeaFoam",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A quiet workstation beneath deep water, with small seafoam-colored signals and warm light illuminating what matters.",
   "attribution": {
     "origin": "SpriteCanvas",
