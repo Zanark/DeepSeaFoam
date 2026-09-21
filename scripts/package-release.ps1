@@ -78,7 +78,10 @@ try {
     }
 
     Compress-Archive `
-        -Path (Join-Path $repoRoot "targets\chromium\*") `
+        -Path @(
+            (Join-Path $repoRoot "targets\chromium\manifest.json"),
+            (Join-Path $repoRoot "targets\chromium\README.md")
+        ) `
         -DestinationPath (Join-Path $dist "DeepSeaFoam-Chromium-$Version.zip") `
         -CompressionLevel Optimal
     [System.IO.Compression.ZipFile]::CreateFromDirectory(
@@ -106,11 +109,16 @@ try {
     Copy-Item (Join-Path $repoRoot "README.md") $bundle
     Copy-Item (Join-Path $repoRoot "package.json") $bundle
     Copy-Item (Join-Path $repoRoot ".gitattributes") $bundle
+    Copy-Item (Join-Path $repoRoot ".gitignore") $bundle
     Copy-Item (Join-Path $repoRoot "palette") $bundle -Recurse
     Copy-Item (Join-Path $repoRoot "docs") $bundle -Recurse
     Copy-Item (Join-Path $repoRoot "scripts") $bundle -Recurse
     Copy-Item (Join-Path $repoRoot "site") $bundle -Recurse
     Copy-Item (Join-Path $repoRoot "targets") $bundle -Recurse
+    $chromiumCache = Join-Path $bundle "targets\chromium\Cached Theme.pak"
+    if (Test-Path $chromiumCache) {
+        Remove-Item -Force $chromiumCache
+    }
     Compress-Archive `
         -Path $bundle `
         -DestinationPath (Join-Path $dist "DeepSeaFoam-$Version.zip") `

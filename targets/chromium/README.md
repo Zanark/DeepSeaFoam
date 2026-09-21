@@ -15,6 +15,8 @@ Chrome supports a finite color table, not every browser surface. Edge shares the
 
 Keep that directory in place while using the unpacked theme. The ZIP is not itself the folder to select. Enterprise policy may prohibit unpacked extensions; do not bypass your organization's policy.
 
+The browser may create `Cached Theme.pak` in the unpacked directory. That generated cache is ignored by Git and excluded from both release archives; it is not theme source.
+
 ## Remove / restore
 
 Switch back to the previous theme, or remove DeepSeaFoam through the browser's extension/theme management and reset the appearance to its default.

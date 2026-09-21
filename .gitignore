@@ -1,2 +1,3 @@
 dist/
 .agent-context/
+targets/chromium/Cached Theme.pak
