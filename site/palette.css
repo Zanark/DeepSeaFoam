@@ -35,5 +35,10 @@
   --dsf-heritage-violet: #6C71C4;
   --dsf-heritage-blue: #268BD2;
   --dsf-derived-text-selection: #2AA1984D;
-  --dsf-derived-terminal-selection-on-base: #0D3B3B;
+  --dsf-terminal-foreground: #9CC2C3;
+  --dsf-terminal-cursor-color: #F34B00;
+  --dsf-terminal-selection-background: #003748;
+  --dsf-terminal-green: #6CBE6C;
+  --dsf-terminal-cyan: #259286;
+  --dsf-terminal-white: #EAE3CB;
 }

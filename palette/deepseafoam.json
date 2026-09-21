@@ -1,13 +1,14 @@
 {
   "$schema": "./schema.json",
   "name": "DeepSeaFoam",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A quiet workstation beneath deep water, with small seafoam-colored signals and warm light illuminating what matters.",
   "attribution": {
     "origin": "SpriteCanvas",
     "originUrl": "https://github.com/Zanark/SpriteCanvas",
     "derivedFrom": "Solarized",
-    "derivedFromUrl": "https://ethanschoonover.com/solarized/"
+    "derivedFromUrl": "https://ethanschoonover.com/solarized/",
+    "terminalInspiration": "Solarized Dark Higher Contrast (user-supplied scheme)"
   },
   "solid": {
     "base": { "value": "#000F13", "role": "Near-black teal workspace and recessed surface" },
@@ -43,13 +44,34 @@
     "layer": { "value": "#191D22", "role": "Layer-thumbnail background" }
   },
   "heritage": {
-    "base03": { "value": "#002B36", "status": "inactive", "use": "RGB source for the grid overlay and optional syntax/ANSI extension" },
-    "base02": { "value": "#073642", "status": "inactive", "use": "Optional syntax/ANSI extension only" },
-    "base00": { "value": "#657B83", "status": "inactive", "use": "Optional syntax/ANSI extension only" },
-    "orange": { "value": "#CB4B16", "status": "extension", "use": "Syntax and ANSI role not defined by the original UI" },
-    "magenta": { "value": "#D33682", "status": "extension", "use": "Syntax and ANSI role not defined by the original UI" },
-    "violet": { "value": "#6C71C4", "status": "extension", "use": "Syntax and ANSI role not defined by the original UI" },
-    "blue": { "value": "#268BD2", "status": "extension", "use": "Syntax and ANSI role not defined by the original UI" }
+    "base03": { "value": "#002B36", "status": "inactive", "use": "RGB source for the grid overlay only" },
+    "base02": { "value": "#073642", "status": "inactive", "use": "Retained Solarized declaration" },
+    "base00": { "value": "#657B83", "status": "inactive", "use": "Retained Solarized declaration" },
+    "orange": { "value": "#CB4B16", "status": "extension", "use": "Syntax role not defined by the original UI" },
+    "magenta": { "value": "#D33682", "status": "extension", "use": "Syntax role not defined by the original UI" },
+    "violet": { "value": "#6C71C4", "status": "extension", "use": "Syntax role not defined by the original UI" },
+    "blue": { "value": "#268BD2", "status": "extension", "use": "Syntax role not defined by the original UI" }
+  },
+  "terminal": {
+    "foreground": { "value": "#9CC2C3", "role": "Terminal foreground" },
+    "cursorColor": { "value": "#F34B00", "role": "Terminal cursor" },
+    "selectionBackground": { "value": "#003748", "role": "Terminal selection" },
+    "black": { "value": "#002831", "role": "ANSI black" },
+    "red": { "value": "#F54F65", "role": "ANSI red" },
+    "green": { "value": "#6CBE6C", "role": "ANSI green" },
+    "yellow": { "value": "#EDAE29", "role": "ANSI yellow" },
+    "blue": { "value": "#2176C7", "role": "ANSI blue" },
+    "purple": { "value": "#C61C6F", "role": "ANSI magenta" },
+    "cyan": { "value": "#259286", "role": "ANSI cyan" },
+    "white": { "value": "#EAE3CB", "role": "ANSI white" },
+    "brightBlack": { "value": "#006488", "role": "ANSI bright black" },
+    "brightRed": { "value": "#F5858C", "role": "ANSI bright red" },
+    "brightGreen": { "value": "#51EF84", "role": "ANSI bright green" },
+    "brightYellow": { "value": "#FFF96E", "role": "ANSI bright yellow" },
+    "brightBlue": { "value": "#178EC8", "role": "ANSI bright blue" },
+    "brightPurple": { "value": "#E24D8E", "role": "ANSI bright magenta" },
+    "brightCyan": { "value": "#00B39E", "role": "ANSI bright cyan" },
+    "brightWhite": { "value": "#FCF4DC", "role": "ANSI bright white" }
   },
   "derived": {
     "textSelection": {
@@ -58,12 +80,6 @@
       "alpha": 0.302,
       "background": "transparent-capable targets",
       "use": "Text selection, distinct from the original pixel-selection edge"
-    },
-    "terminalSelectionOnBase": {
-      "value": "#0D3B3B",
-      "source": "#2AA1984D",
-      "background": "#000F13",
-      "use": "Opaque Windows Terminal selection fallback"
     }
   }
 }

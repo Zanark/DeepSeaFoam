@@ -11,9 +11,16 @@ const color = (group, name) => palette[group][name].value.toUpperCase();
 const solid = (name) => color("solid", name);
 const overlay = (name) => color("overlay", name);
 const heritage = (name) => color("heritage", name);
+const terminal = (name) => color("terminal", name);
 const derived = (name) => color("derived", name);
 const json = (value) => `${JSON.stringify(value, null, 2)}\n`;
 const add = (relativePath, content) => outputs.set(relativePath, content.replace(/\r\n/g, "\n"));
+const ansiNames = {
+  black: "Black", red: "Red", green: "Green", yellow: "Yellow",
+  blue: "Blue", purple: "Magenta", cyan: "Cyan", white: "White",
+  brightBlack: "BrightBlack", brightRed: "BrightRed", brightGreen: "BrightGreen", brightYellow: "BrightYellow",
+  brightBlue: "BrightBlue", brightPurple: "BrightMagenta", brightCyan: "BrightCyan", brightWhite: "BrightWhite"
+};
 
 function argb(value) {
   const hex = value.slice(1).toUpperCase();
@@ -236,25 +243,12 @@ const vscodeTheme = {
     "problemsWarningIcon.foreground": solid("warning"),
     "problemsInfoIcon.foreground": solid("accent"),
     "terminal.background": solid("base"),
-    "terminal.foreground": solid("text"),
-    "terminal.selectionBackground": derived("textSelection"),
-    "terminalCursor.foreground": solid("lightEdge"),
-    "terminal.ansiBlack": solid("base"),
-    "terminal.ansiRed": solid("error"),
-    "terminal.ansiGreen": solid("document"),
-    "terminal.ansiYellow": solid("warning"),
-    "terminal.ansiBlue": heritage("blue"),
-    "terminal.ansiMagenta": heritage("magenta"),
-    "terminal.ansiCyan": solid("accent"),
-    "terminal.ansiWhite": solid("text"),
-    "terminal.ansiBrightBlack": solid("border"),
-    "terminal.ansiBrightRed": solid("error"),
-    "terminal.ansiBrightGreen": solid("document"),
-    "terminal.ansiBrightYellow": solid("warning"),
-    "terminal.ansiBrightBlue": heritage("blue"),
-    "terminal.ansiBrightMagenta": heritage("violet"),
-    "terminal.ansiBrightCyan": solid("accent"),
-    "terminal.ansiBrightWhite": solid("lightEdge"),
+    "terminal.foreground": terminal("foreground"),
+    "terminal.selectionBackground": terminal("selectionBackground"),
+    "terminalCursor.foreground": terminal("cursorColor"),
+    ...Object.fromEntries(Object.entries(ansiNames).map(
+      ([name, suffix]) => [`terminal.ansi${suffix}`, terminal(name)]
+    )),
     "gitDecoration.addedResourceForeground": solid("document"),
     "gitDecoration.modifiedResourceForeground": solid("warning"),
     "gitDecoration.deletedResourceForeground": solid("error"),
@@ -525,25 +519,7 @@ add("targets/obsidian/theme.css", obsidianCss);
 const terminalScheme = {
   name: "DeepSeaFoam",
   background: solid("base"),
-  foreground: solid("text"),
-  cursorColor: solid("lightEdge"),
-  selectionBackground: derived("terminalSelectionOnBase"),
-  black: solid("base"),
-  red: solid("error"),
-  green: solid("document"),
-  yellow: solid("warning"),
-  blue: heritage("blue"),
-  purple: heritage("magenta"),
-  cyan: solid("accent"),
-  white: solid("text"),
-  brightBlack: solid("border"),
-  brightRed: solid("error"),
-  brightGreen: solid("document"),
-  brightYellow: solid("warning"),
-  brightBlue: heritage("blue"),
-  brightPurple: heritage("violet"),
-  brightCyan: solid("accent"),
-  brightWhite: solid("lightEdge")
+  ...Object.fromEntries(Object.keys(palette.terminal).map((name) => [name, terminal(name)]))
 };
 
 add("targets/windows-terminal/DeepSeaFoam.json", json(terminalScheme));
@@ -706,7 +682,9 @@ const vsTheme = `<?xml version="1.0" encoding="utf-8"?>
 add("targets/visual-studio/DeepSeaFoam.vstheme", vsTheme);
 
 const activeGroups = ["solid", "overlay", "preview"];
-for (const group of activeGroups) {
+const swatchGroups = [...activeGroups, "terminal"];
+const swatchDirectory = (group) => group === "terminal" ? "docs/terminal-swatches" : "docs/swatches";
+for (const group of swatchGroups) {
   for (const entry of Object.values(palette[group])) {
     const value = entry.value.toUpperCase();
     const fileName = `${value.slice(1).toLowerCase()}.svg`;
@@ -714,12 +692,12 @@ for (const group of activeGroups) {
     if (value.length === 9) {
       const { rgb, opacity } = rgba(value);
       add(
-        `docs/swatches/${fileName}`,
+        `${swatchDirectory(group)}/${fileName}`,
         `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="24" viewBox="0 0 64 24" role="img" aria-labelledby="title"><title id="title">${title}</title><defs><pattern id="checker" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="${color("preview", "checkerLight")}"/><path d="M0 0h4v4H0zM4 4h4v4H4z" fill="${color("preview", "checkerDark")}"/></pattern></defs><rect x=".5" y=".5" width="63" height="23" rx="2" fill="url(#checker)" stroke="#586E75"/><rect x=".5" y=".5" width="63" height="23" rx="2" fill="${rgb}" fill-opacity="${opacity}" stroke="#586E75"/></svg>\n`
       );
     } else {
       add(
-        `docs/swatches/${fileName}`,
+        `${swatchDirectory(group)}/${fileName}`,
         `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="24" viewBox="0 0 64 24" role="img" aria-labelledby="title"><title id="title">${title}</title><rect x=".5" y=".5" width="63" height="23" rx="2" fill="${value}" stroke="#586E75"/></svg>\n`
       );
     }
@@ -754,11 +732,16 @@ const sitePalette = {
 };
 
 const cssVariableGroups = ["solid", "overlay", "preview", "heritage", "derived"];
+const cssVariable = (group, name, value) =>
+  `  --dsf-${group}-${name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}: ${value};`;
 const siteVariables = cssVariableGroups.flatMap((group) =>
   Object.entries(palette[group]).map(
-    ([name, entry]) => `  --dsf-${group}-${name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}: ${entry.value};`
+    ([name, entry]) => cssVariable(group, name, entry.value)
   )
 );
+for (const name of ["foreground", "cursorColor", "selectionBackground", "green", "cyan", "white"]) {
+  siteVariables.push(cssVariable("terminal", name, terminal(name)));
+}
 add(
   "site/palette.css",
   `/* Generated from palette/deepseafoam.json. */\n:root {\n${siteVariables.join("\n")}\n}\n`
@@ -766,7 +749,7 @@ add(
 add("site/palette.json", json(sitePalette));
 
 function validateSource() {
-  const expectedCounts = { solid: 11, overlay: 8, preview: 8 };
+  const expectedCounts = { solid: 11, overlay: 8, preview: 8, terminal: 19 };
   for (const [group, count] of Object.entries(expectedCounts)) {
     const actual = Object.keys(palette[group]).length;
     if (actual !== count) {
@@ -778,12 +761,10 @@ function validateSource() {
     throw new Error("Defining DeepSeaFoam surface or accent invariant changed");
   }
 
-  const selection = palette.derived.terminalSelectionOnBase;
-  if (selection.background !== solid("base") || selection.source !== derived("textSelection")) {
-    throw new Error("Terminal selection must use the current base and text-selection overlay");
-  }
-  if (selection.value !== composite(selection.source, selection.background)) {
-    throw new Error("Terminal selection is not the recorded sRGB source-over composite");
+  for (const name of ["foreground", "cursorColor", "selectionBackground", ...Object.keys(ansiNames)]) {
+    if (!/^#[0-9A-F]{6}$/.test(terminal(name))) {
+      throw new Error(`Terminal role ${name} must be an opaque RGB color`);
+    }
   }
   for (const [name, value] of Object.entries({ shadowSoft: "#00000066", shadowStrong: "#000000CC", backdrop: "#000000B8" })) {
     if (overlay(name) !== value) throw new Error(`${name} must remain transparent black`);
@@ -824,7 +805,10 @@ function validateSource() {
     ["faint text on panel", solid("faintText"), solid("panel"), 4.5],
     ["base-colored text on accent", solid("base"), solid("accent"), 4.5],
     ["primary text on selection", solid("text"), composite(derived("textSelection"), solid("base")), 4.5],
-    ["warm emphasis on workspace", solid("warm"), solid("base"), 4.5]
+    ["warm emphasis on workspace", solid("warm"), solid("base"), 4.5],
+    ["terminal text on workspace", terminal("foreground"), solid("base"), 4.5],
+    ["terminal text on selection", terminal("foreground"), terminal("selectionBackground"), 4.5],
+    ["terminal cursor on workspace", terminal("cursorColor"), solid("base"), 3]
   ];
   for (const [name, foreground, background, minimum] of contrastPairs) {
     const ratio = contrast(foreground, background);
@@ -882,16 +866,16 @@ if (checkOnly) {
   }
 
   const readme = await readFile(path.join(root, "README.md"), "utf8");
-  for (const group of activeGroups) {
+  for (const group of swatchGroups) {
     for (const entry of Object.values(palette[group])) {
-      const swatchPath = `docs/swatches/${entry.value.slice(1).toLowerCase()}.svg`;
+      const swatchPath = `${swatchDirectory(group)}/${entry.value.slice(1).toLowerCase()}.svg`;
       if (!readme.includes(swatchPath)) {
         throw new Error(`README is missing visible swatch ${swatchPath}`);
       }
     }
   }
 
-  console.log(`Validated ${outputs.size} generated files and the 27-value active palette.`);
+  console.log(`Validated ${outputs.size} generated files, 27 core values and 19 terminal-extension colors.`);
 } else {
   console.log(`Generated ${outputs.size} files from palette/deepseafoam.json.`);
 }

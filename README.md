@@ -77,6 +77,34 @@ The values below use `#RRGGBBAA`, with alpha last. Their swatches are composited
 | ![Symmetry guide](docs/swatches/2aa19888.svg) | Symmetry guide | `#2AA19888` |
 | ![Brush cursor](docs/swatches/fdf6e3aa.svg) | Brush cursor | `#FDF6E3AA` |
 
+## Higher-contrast terminals
+
+Version **0.3.0** adds a terminal-only extension inspired by the supplied **Solarized Dark Higher Contrast** scheme: brighter mist text, richer ANSI colors, warm whites, and an orange cursor. Windows Terminal and VS Code's integrated terminal share these exact 19 values. The reference background `#001E27` is deliberately replaced by DeepSeaFoam's `#000F13`; the rest of the reference's terminal colors are preserved.
+
+These are **not additions to the core UI palette**. Editor syntax, application chrome, diagnostic colors and the existing 27 core values remain unchanged.
+
+| Swatch | Terminal role | Value |
+| --- | --- | --- |
+| ![Brighter mist](docs/terminal-swatches/9cc2c3.svg) | Foreground | `#9CC2C3` |
+| ![Orange cursor](docs/terminal-swatches/f34b00.svg) | Cursor | `#F34B00` |
+| ![Deep teal selection](docs/terminal-swatches/003748.svg) | Selection background | `#003748` |
+| ![ANSI black](docs/terminal-swatches/002831.svg) | Black | `#002831` |
+| ![ANSI red](docs/terminal-swatches/f54f65.svg) | Red | `#F54F65` |
+| ![ANSI green](docs/terminal-swatches/6cbe6c.svg) | Green | `#6CBE6C` |
+| ![ANSI yellow](docs/terminal-swatches/edae29.svg) | Yellow | `#EDAE29` |
+| ![ANSI blue](docs/terminal-swatches/2176c7.svg) | Blue | `#2176C7` |
+| ![ANSI magenta](docs/terminal-swatches/c61c6f.svg) | Magenta | `#C61C6F` |
+| ![ANSI cyan](docs/terminal-swatches/259286.svg) | Cyan | `#259286` |
+| ![Warm ANSI white](docs/terminal-swatches/eae3cb.svg) | White | `#EAE3CB` |
+| ![Bright black](docs/terminal-swatches/006488.svg) | Bright black | `#006488` |
+| ![Bright red](docs/terminal-swatches/f5858c.svg) | Bright red | `#F5858C` |
+| ![Bright green](docs/terminal-swatches/51ef84.svg) | Bright green | `#51EF84` |
+| ![Bright yellow](docs/terminal-swatches/fff96e.svg) | Bright yellow | `#FFF96E` |
+| ![Bright blue](docs/terminal-swatches/178ec8.svg) | Bright blue | `#178EC8` |
+| ![Bright magenta](docs/terminal-swatches/e24d8e.svg) | Bright magenta | `#E24D8E` |
+| ![Bright cyan](docs/terminal-swatches/00b39e.svg) | Bright cyan | `#00B39E` |
+| ![Warm bright white](docs/terminal-swatches/fcf4dc.svg) | Bright white | `#FCF4DC` |
+
 ## Preview-only neutrals
 
 These colors keep image and transparency previews visually neutral. They are not alternate application backgrounds.
@@ -94,9 +122,9 @@ These colors keep image and transparency previews visually neutral. They are not
 
 ## Canonical source and extensions
 
-[`palette/deepseafoam.json`](palette/deepseafoam.json) is the machine-readable source for all exports. The verified active inventory remains **11 interface solids + 8 overlays + 8 preview neutrals = 27 values**.
+[`palette/deepseafoam.json`](palette/deepseafoam.json) is the machine-readable source for all exports. The verified core inventory remains **11 interface solids + 8 overlays + 8 preview neutrals = 27 values**.
 
-Code editors and terminals require syntax and ANSI roles that SpriteCanvas never defined. The canonical source therefore labels the retained Solarized orange, magenta, violet, and blue as a **heritage extension**, not as newly approved core interface colors. It also records each derived opaque fallback and its compositing background.
+Code editors and terminals require roles that SpriteCanvas never defined. The canonical source separates the retained Solarized **syntax heritage extension** from the **higher-contrast terminal extension**, rather than redefining the core UI colors. Derived UI text-selection colors are recorded separately.
 
 See [application mappings](docs/MAPPINGS.md) for the exact surface decisions, extension roles, and unsupported boundaries across all five targets.
 
@@ -108,7 +136,7 @@ npm test
 npm run package:release
 ```
 
-`generate` rebuilds the five application exports and all local SVG swatches. `test` verifies JSON, XML, required theme invariants, swatch coverage, and that generated files are current. `package:release` creates the downloadable files under ignored `dist\`.
+`generate` rebuilds the five application exports and all core/terminal SVG swatches. `test` verifies JSON, XML, required theme invariants, contrast pairs, swatch coverage, and generated freshness. `package:release` creates the downloadable files under ignored `dist\`.
 
 ## Porting rules
 

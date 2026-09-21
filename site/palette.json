@@ -1,6 +1,6 @@
 {
   "name": "DeepSeaFoam",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "groups": [
     {
       "id": "solid",
@@ -164,43 +164,43 @@
       "id": "base03",
       "value": "#002B36",
       "status": "inactive",
-      "use": "RGB source for the grid overlay and optional syntax/ANSI extension"
+      "use": "RGB source for the grid overlay only"
     },
     {
       "id": "base02",
       "value": "#073642",
       "status": "inactive",
-      "use": "Optional syntax/ANSI extension only"
+      "use": "Retained Solarized declaration"
     },
     {
       "id": "base00",
       "value": "#657B83",
       "status": "inactive",
-      "use": "Optional syntax/ANSI extension only"
+      "use": "Retained Solarized declaration"
     },
     {
       "id": "orange",
       "value": "#CB4B16",
       "status": "extension",
-      "use": "Syntax and ANSI role not defined by the original UI"
+      "use": "Syntax role not defined by the original UI"
     },
     {
       "id": "magenta",
       "value": "#D33682",
       "status": "extension",
-      "use": "Syntax and ANSI role not defined by the original UI"
+      "use": "Syntax role not defined by the original UI"
     },
     {
       "id": "violet",
       "value": "#6C71C4",
       "status": "extension",
-      "use": "Syntax and ANSI role not defined by the original UI"
+      "use": "Syntax role not defined by the original UI"
     },
     {
       "id": "blue",
       "value": "#268BD2",
       "status": "extension",
-      "use": "Syntax and ANSI role not defined by the original UI"
+      "use": "Syntax role not defined by the original UI"
     }
   ],
   "derived": [
@@ -211,13 +211,6 @@
       "alpha": 0.302,
       "background": "transparent-capable targets",
       "use": "Text selection, distinct from the original pixel-selection edge"
-    },
-    {
-      "id": "terminalSelectionOnBase",
-      "value": "#0D3B3B",
-      "source": "#2AA1984D",
-      "background": "#000F13",
-      "use": "Opaque Windows Terminal selection fallback"
     }
   ]
 }

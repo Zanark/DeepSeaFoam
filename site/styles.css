@@ -647,6 +647,7 @@
     padding: 0 18px 13px;
     border-top: 1px solid var(--border-quiet);
     background: var(--dsf-solid-base);
+    color: var(--dsf-terminal-foreground);
     font-family: var(--mono);
     font-size: .66rem;
   }
@@ -687,25 +688,26 @@
   }
 
   .terminal p b {
-    color: var(--dsf-solid-accent);
+    color: var(--dsf-terminal-cyan);
   }
 
   .terminal p > span {
-    color: var(--dsf-solid-warm);
+    color: var(--dsf-terminal-white);
   }
 
   .terminal .terminal-success {
-    color: var(--dsf-solid-document);
+    color: var(--dsf-terminal-green);
   }
 
   .terminal-cursor {
     display: inline-block;
     width: 6px;
     height: 12px;
-    background: var(--dsf-solid-light-edge);
+    background: var(--dsf-terminal-cursor-color);
     vertical-align: middle;
     animation: cursor-blink 1.1s steps(1) infinite;
   }
+  .terminal ::selection { background: var(--dsf-terminal-selection-background); color: var(--dsf-terminal-foreground); }
 
   .workstation-status {
     display: flex;

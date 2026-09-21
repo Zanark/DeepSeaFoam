@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "DeepSeaFoam palette",
   "type": "object",
-  "required": ["name", "version", "solid", "overlay", "preview", "heritage", "derived"],
+  "required": ["name", "version", "solid", "overlay", "preview", "heritage", "terminal", "derived"],
   "properties": {
     "name": { "const": "DeepSeaFoam" },
     "version": { "type": "string" },
@@ -10,6 +10,7 @@
     "overlay": { "$ref": "#/$defs/colorMap" },
     "preview": { "$ref": "#/$defs/colorMap" },
     "heritage": { "$ref": "#/$defs/colorMap" },
+    "terminal": { "$ref": "#/$defs/colorMap" },
     "derived": { "$ref": "#/$defs/colorMap" }
   },
   "$defs": {

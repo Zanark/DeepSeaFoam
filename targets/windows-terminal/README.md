@@ -2,9 +2,9 @@
 
 ## Scope
 
-`DeepSeaFoam.json` is one object for the `schemes` array in Windows Terminal's `settings.json`. The terminal background is near-black teal (`#000F13`), the cursor is pale pearl, and selection uses `#0D3B3B`: the recorded opaque composite of `#2AA1984D` over that base. The selection shares the text-selection overlay and retains readable ordinary foreground text.
+`DeepSeaFoam.json` is one object for the `schemes` array in Windows Terminal's `settings.json`. It combines the near-black teal base (`#000F13`) with brighter `#9CC2C3` text, an orange `#F34B00` cursor, and `#003748` selection.
 
-ANSI blue, magenta, orange-related, and violet roles are an explicit Solarized heritage extension. Bright variants reuse approved colors rather than inventing a neon ramp.
+The [19-color terminal extension](../../README.md#higher-contrast-terminals) preserves the supplied **Solarized Dark Higher Contrast** scheme's colors except its background. Richer ANSI colors and distinct bright variants are shared with VS Code's integrated terminal; they do not alter the core UI palette.
 
 ## Install
 
