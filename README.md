@@ -10,6 +10,20 @@ DeepSeaFoam is a cross-application dark theme derived from [Ethan Schoonover's S
 
 The interface should recede behind the work. Cyan is a restrained signal, ivory supplies selective warmth, and errors remain clear exceptions. The theme does not add ocean decoration, colored glow, gradients, or textures, and it does not recolor documents, artwork, images, videos, or exported content.
 
+## Download
+
+Download the current packages from the [latest GitHub release](https://github.com/Zanark/DeepSeaFoam/releases/latest):
+
+| Asset | Intended use |
+| --- | --- |
+| `DeepSeaFoam-VSCode-<version>.vsix` | Installable Visual Studio Code extension |
+| `DeepSeaFoam-Obsidian-<version>.zip` | Obsidian theme folder |
+| `DeepSeaFoam-WindowsTerminal-<version>.json` | Windows Terminal scheme object |
+| `DeepSeaFoam-VisualStudio-<version>.vstheme` | Visual Studio theme source for Color Theme Designer / VSIX packaging |
+| `DeepSeaFoam-Firefox-<version>.zip` | Firefox static-theme source; permanent installation requires Mozilla signing |
+| `DeepSeaFoam-<version>.zip` | Complete palette, documentation, generator, and all application exports |
+| `SHA256SUMS.txt` | SHA-256 checksums for every release asset |
+
 ## Supported applications
 
 | Application | Native format | Scope |
@@ -81,9 +95,10 @@ Run:
 ```powershell
 npm run generate
 npm test
+npm run package:release
 ```
 
-`generate` rebuilds the five application exports and all local SVG swatches. `test` verifies JSON, XML, required theme invariants, swatch coverage, and that generated files are current.
+`generate` rebuilds the five application exports and all local SVG swatches. `test` verifies JSON, XML, required theme invariants, swatch coverage, and that generated files are current. `package:release` creates the downloadable files under ignored `dist\`.
 
 ## Porting rules
 

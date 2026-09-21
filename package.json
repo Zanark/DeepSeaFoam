@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "generate": "node scripts/generate.mjs",
-    "test": "node scripts/generate.mjs --check"
+    "test": "node scripts/generate.mjs --check",
+    "package:release": "pwsh -NoProfile -File scripts/package-release.ps1"
   }
 }
