@@ -258,7 +258,7 @@
     aspect-ratio: .85;
     border: 1px solid #D0E5CF88;
     border-radius: 47% 53% 41% 59%;
-    box-shadow: inset 2px 3px 5px #EEE8D566, 0 0 12px #2AA19833;
+    box-shadow: inset 2px 3px 5px #EEE8D566, 0 0 12px #78C8C033;
     animation: entry-bubble 2.6s cubic-bezier(.16, .4, .5, 1) both;
   }
   .entry-bubbles i:nth-child(2) { left: 24%; width: 12px; animation-delay: .15s; }
@@ -337,7 +337,7 @@
   .lure-focus { opacity: 0; }
   #angler-awake:focus-visible + .angler-toggle .lure-focus { opacity: 1; }
   .angler-lure { animation: lure-breathe 4s ease-in-out infinite alternate; }
-  .lure-bulb { filter: drop-shadow(0 0 5px #EEE8D5) drop-shadow(0 0 14px #2AA198); }
+  .lure-bulb { filter: drop-shadow(0 0 5px #EEE8D5) drop-shadow(0 0 14px var(--dsf-solid-accent)); }
   body:not(.ocean-ready) .nautilus { animation: none; transform: translateX(calc(50vw - 50%)); }
   @keyframes nautilus-pass { from { transform: translateX(100vw); } to { transform: translateX(-100%); } }
   @keyframes nautilus-bob { to { transform: translateY(-10px) rotate(3deg); } }

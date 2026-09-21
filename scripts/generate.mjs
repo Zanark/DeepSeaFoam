@@ -1,9 +1,11 @@
 import { readFile, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { rgb, hsl, pastelVariant, composite, contrast } from "./colors.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const palette = JSON.parse(await readFile(path.join(root, "palette", "deepseafoam.json"), "utf8"));
+const packageMetadata = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
 const checkOnly = process.argv.includes("--check");
 const outputs = new Map();
 
@@ -34,16 +36,6 @@ function rgba(value) {
     rgb: `#${hex.slice(0, 6).toUpperCase()}`,
     opacity: Number(alpha.toFixed(4))
   };
-}
-
-function composite(value, background) {
-  const alpha = parseInt(value.slice(7, 9), 16) / 255;
-  const channels = [1, 3, 5].map((start) => {
-    const foreground = parseInt(value.slice(start, start + 2), 16);
-    const behind = parseInt(background.slice(start, start + 2), 16);
-    return Math.round(foreground * alpha + behind * (1 - alpha)).toString(16).padStart(2, "0");
-  });
-  return `#${channels.join("").toUpperCase()}`;
 }
 
 const vscodePackage = {
@@ -168,12 +160,12 @@ const vscodeTheme = {
     "editorCursor.foreground": solid("lightEdge"),
     "editor.selectionBackground": derived("textSelection"),
     "editor.inactiveSelectionBackground": overlay("hover"),
-    "editor.selectionHighlightBackground": `${solid("accent")}33`,
+    "editor.selectionHighlightBackground": `${solid("accent")}1A`,
     "editor.wordHighlightBackground": `${solid("border")}33`,
-    "editor.wordHighlightStrongBackground": `${solid("accent")}33`,
-    "editor.findMatchBackground": `${solid("warning")}66`,
+    "editor.wordHighlightStrongBackground": `${solid("accent")}1A`,
+    "editor.findMatchBackground": `${solid("warning")}26`,
     "editor.findMatchBorder": solid("warning"),
-    "editor.findMatchHighlightBackground": `${solid("warning")}33`,
+    "editor.findMatchHighlightBackground": `${solid("warning")}1A`,
     "editor.hoverHighlightBackground": overlay("hover"),
     "editor.lineHighlightBackground": `${solid("panel")}80`,
     "editor.lineHighlightBorder": overlay("separator"),
@@ -309,7 +301,7 @@ const vscodeTheme = {
     {
       name: "Invalid",
       scope: ["invalid", "invalid.illegal"],
-      settings: { foreground: solid("warm"), background: solid("error") }
+      settings: { foreground: solid("base"), background: solid("error") }
     },
     {
       name: "Markup headings",
@@ -363,15 +355,16 @@ const obsidianManifest = {
   authorUrl: "https://github.com/Zanark/DeepSeaFoam"
 };
 
+const accentHsl = hsl(solid("accent"));
 const obsidianCss = `/*
  * Generated from palette/deepseafoam.json.
  * DeepSeaFoam themes application chrome and note presentation; it does not alter stored note content.
  */
 
 body {
-  --accent-h: 176;
-  --accent-s: 59%;
-  --accent-l: 40%;
+  --accent-h: ${accentHsl.h};
+  --accent-s: ${accentHsl.s}%;
+  --accent-l: ${accentHsl.l}%;
   --background-primary: ${solid("base")};
   --background-primary-alt: ${solid("base")};
   --background-secondary: ${solid("panel")};
@@ -399,11 +392,11 @@ body {
   --interactive-hover: ${solid("text")};
   --interactive-accent: ${solid("accent")};
   --interactive-accent-hover: ${solid("text")};
-  --interactive-accent-hsl: 176, 59%, 40%;
+  --interactive-accent-hsl: ${accentHsl.h}, ${accentHsl.s}%, ${accentHsl.l}%;
   --interactive-success: ${solid("document")};
-  --background-modifier-error: ${solid("error")};
-  --background-modifier-error-hover: ${solid("error")};
-  --background-modifier-error-rgb: 220, 50, 47;
+  --background-modifier-error: ${derived("errorBackground")};
+  --background-modifier-error-hover: ${derived("errorBackgroundHover")};
+  --background-modifier-error-rgb: ${rgb(solid("error")).join(", ")};
   --scrollbar-bg: transparent;
   --scrollbar-thumb-bg: ${overlay("separator")};
   --scrollbar-active-thumb-bg: ${solid("border")};
@@ -747,6 +740,7 @@ add(
 add("site/palette.json", `${JSON.stringify(sitePalette)}\n`);
 
 function validateSource() {
+  if (packageMetadata.version !== palette.version) throw new Error("Package and palette versions must match");
   const expectedCounts = { solid: 11, overlay: 8, preview: 8, terminal: 19 };
   for (const [group, count] of Object.entries(expectedCounts)) {
     const actual = Object.keys(palette[group]).length;
@@ -755,8 +749,29 @@ function validateSource() {
     }
   }
 
-  if (solid("base") !== "#000F13" || solid("panel") !== "#001E26" || solid("accent") !== "#2AA198") {
-    throw new Error("Defining DeepSeaFoam surface or accent invariant changed");
+  if (solid("base") !== "#000F13" || solid("panel") !== "#001E26") {
+    throw new Error("Defining DeepSeaFoam surface invariant changed");
+  }
+  const adaptation = palette.pastelAdaptation;
+  if (adaptation?.space !== "oklch" ||
+      Object.keys(adaptation.originals ?? {}).sort().join(",") !== "accent,document,error,warning") {
+    throw new Error("The pastel adaptation must describe the four chromatic core roles");
+  }
+  for (const [name, original] of Object.entries(adaptation.originals)) {
+    if (solid(name) !== pastelVariant(original, adaptation.lightness, adaptation.chroma)) {
+      throw new Error(`The ${name} pastel differs from its recorded OKLCH derivation`);
+    }
+  }
+  if (overlay("guide") !== `${solid("accent")}88` ||
+      palette.derived.textSelection.source !== solid("accent") ||
+      palette.derived.errorBackground.source !== solid("error") ||
+      palette.derived.errorBackgroundHover.source !== solid("error")) {
+    throw new Error("Guides, selection and error surfaces must follow their canonical signal");
+  }
+  for (const [name, entry] of Object.entries(palette.derived)) {
+    if (entry.value !== `${entry.source}${Math.round(entry.alpha * 255).toString(16).padStart(2, "0").toUpperCase()}`) {
+      throw new Error(`Derived ${name} has inconsistent RGB or alpha metadata`);
+    }
   }
 
   for (const name of ["foreground", "cursorColor", "selectionBackground", ...Object.keys(ansiNames)]) {
@@ -781,33 +796,27 @@ function validateSource() {
     }
   }
 
-  const relativeLuminance = (value) => {
-    const channels = value
-      .slice(1, 7)
-      .match(/../g)
-      .map((channel) => parseInt(channel, 16) / 255)
-      .map((channel) =>
-        channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4
-      );
-    return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
-  };
-  const contrast = (foreground, background) => {
-    const first = relativeLuminance(foreground);
-    const second = relativeLuminance(background);
-    return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05);
-  };
   const contrastPairs = [
     ["primary text on workspace", solid("text"), solid("base"), 4.5],
     ["primary text on panel", solid("text"), solid("panel"), 4.5],
     ["faint text on workspace", solid("faintText"), solid("base"), 4.5],
     ["faint text on panel", solid("faintText"), solid("panel"), 4.5],
     ["base-colored text on accent", solid("base"), solid("accent"), 4.5],
+    ["base-colored text on error fill", solid("base"), solid("error"), 4.5],
     ["primary text on selection", solid("text"), composite(derived("textSelection"), solid("base")), 4.5],
+    ["primary text on panel selection", solid("text"), composite(derived("textSelection"), solid("panel")), 4.5],
+    ["faint text on workspace selection", solid("faintText"), composite(derived("textSelection"), solid("base")), 4.5],
+    ["primary text on find match", solid("text"), composite(vscodeTheme.colors["editor.findMatchBackground"], solid("base")), 4.5],
+    ["primary text on error hover", solid("text"), composite(derived("errorBackgroundHover"), solid("panel")), 4.5],
+    ["warm text on error surface", solid("warm"), composite(derived("errorBackground"), solid("panel")), 4.5],
     ["warm emphasis on workspace", solid("warm"), solid("base"), 4.5],
     ["terminal text on workspace", terminal("foreground"), solid("base"), 4.5],
     ["terminal text on selection", terminal("foreground"), terminal("selectionBackground"), 4.5],
     ["terminal cursor on workspace", terminal("cursorColor"), solid("base"), 3]
   ];
+  for (const name of ["accent", "document", "warning", "error"]) {
+    contrastPairs.push([`${name} signal on panel`, solid(name), solid("panel"), 4.5]);
+  }
   for (const [name, foreground, background, minimum] of contrastPairs) {
     const ratio = contrast(foreground, background);
     if (ratio < minimum) {

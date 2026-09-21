@@ -9,6 +9,8 @@
 
 The code editor and output surfaces are near-black teal (`#000F13`). Tool windows and shell structure use `#001E26`. Visual Studio colors use `AARRGGBB`, not the palette's `RRGGBBAA`.
 
+Version 0.4.0 maps accent, document, warning, and error roles to pastel seafoam (`#78C8C0`), kelp (`#B2BF84`), amber (`#CEB47C`), and coral (`#E6A49C`). Native semantic tokens and core-backed syntax inherit those colors; the four Solarized heritage syntax colors and neutral surfaces remain unchanged. Text selection derives from `#78C8C026`, written as `2678C8C0` in this format.
+
 ## Build and install
 
 Visual Studio does not install a raw `.vstheme` through the normal settings-import wizard. Use Microsoft's Visual Studio theme tooling:

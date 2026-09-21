@@ -1,7 +1,7 @@
 {
   "$schema": "./schema.json",
   "name": "DeepSeaFoam",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A quiet workstation beneath deep water, with small seafoam-colored signals and warm light illuminating what matters.",
   "attribution": {
     "origin": "SpriteCanvas",
@@ -10,18 +10,30 @@
     "derivedFromUrl": "https://ethanschoonover.com/solarized/",
     "terminalInspiration": "Solarized Dark Higher Contrast (user-supplied scheme)"
   },
+  "pastelAdaptation": {
+    "sourceVersion": "0.3.0",
+    "space": "oklch",
+    "lightness": 0.78,
+    "chroma": 0.08,
+    "originals": {
+      "accent": "#2AA198",
+      "document": "#859900",
+      "warning": "#B58900",
+      "error": "#DC322F"
+    }
+  },
   "solid": {
     "base": { "value": "#000F13", "role": "Near-black teal workspace and recessed surface" },
     "panel": { "value": "#001E26", "role": "Headers, toolbars, and surrounding panels" },
-    "accent": { "value": "#2AA198", "role": "Primary interaction, focus, and active outline" },
+    "accent": { "value": "#78C8C0", "role": "Pastel seafoam interaction, focus, and active outline" },
     "text": { "value": "#93A1A1", "role": "Primary text and primary-action hover" },
     "faintText": { "value": "#839496", "role": "Genuinely lower-emphasis labels and markers" },
     "warm": { "value": "#EEE8D5", "role": "Warm emphasis, headings, and notices" },
     "lightEdge": { "value": "#FDF6E3", "role": "Precise light selection edge" },
     "border": { "value": "#586E75", "role": "Strong structural border" },
-    "document": { "value": "#859900", "role": "Document indicator" },
-    "warning": { "value": "#B58900", "role": "Warning indicator" },
-    "error": { "value": "#DC322F", "role": "Error boundary and indicator" }
+    "document": { "value": "#B2BF84", "role": "Pastel kelp document indicator" },
+    "warning": { "value": "#CEB47C", "role": "Pastel amber warning indicator" },
+    "error": { "value": "#E6A49C", "role": "Pastel coral error boundary and indicator" }
   },
   "overlay": {
     "separator": { "value": "#586E7566", "role": "Quiet structural separation" },
@@ -30,7 +42,7 @@
     "shadowStrong": { "value": "#000000CC", "role": "Strong shadow" },
     "backdrop": { "value": "#000000B8", "role": "Modal backdrop" },
     "grid": { "value": "#002B3630", "role": "Faint pixel grid" },
-    "guide": { "value": "#2AA19888", "role": "Symmetry guide" },
+    "guide": { "value": "#78C8C088", "role": "Symmetry guide" },
     "cursor": { "value": "#FDF6E3AA", "role": "Brush cursor" }
   },
   "preview": {
@@ -75,11 +87,25 @@
   },
   "derived": {
     "textSelection": {
-      "value": "#2AA1984D",
-      "source": "#2AA198",
-      "alpha": 0.302,
+      "value": "#78C8C026",
+      "source": "#78C8C0",
+      "alpha": 0.149,
       "background": "transparent-capable targets",
-      "use": "Text selection, distinct from the original pixel-selection edge"
+      "use": "Readable pastel text selection, distinct from the original pixel-selection edge"
+    },
+    "errorBackground": {
+      "value": "#E6A49C26",
+      "source": "#E6A49C",
+      "alpha": 0.149,
+      "background": "base or panel",
+      "use": "Obsidian error surface with readable warm text"
+    },
+    "errorBackgroundHover": {
+      "value": "#E6A49C2E",
+      "source": "#E6A49C",
+      "alpha": 0.18,
+      "background": "base or panel",
+      "use": "Obsidian error surface hover without an opaque pastel wash"
     }
   }
 }

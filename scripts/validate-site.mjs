@@ -40,6 +40,7 @@ if (/\.control-row\s*>\s*span\s*\{[^}]*\bcolor\s*:/.test(css)) {
 }
 
 const palette = JSON.parse(paletteText);
+const canonical = JSON.parse(await readFile(path.join(root, "palette", "deepseafoam.json"), "utf8"));
 const manifest = JSON.parse(manifestText);
 const { icons } = JSON.parse(await readFile(path.join(root, "docs", "application-icons.json"), "utf8"));
 const appIds = ["vscode", "visual-studio", "obsidian", "terminal", "firefox"];
@@ -67,7 +68,7 @@ for (const icon of icons) {
   }
   if (icon.license) await access(path.join(site, "icons", icon.license));
 }
-const logoUrl = "mark.svg?v=seaweed-foam";
+const logoUrl = "mark.svg?v=seaweed-foam-pastel";
 if (!html.includes(`rel="icon" href="${logoUrl}"`) ||
     [...html.matchAll(/<img\b[^>]*src="([^"]+)"/g)].filter((match) => match[1] === logoUrl).length !== 3 ||
     !manifest.icons.some((icon) => icon.src === logoUrl && icon.type === "image/svg+xml") ||
@@ -75,8 +76,9 @@ if (!html.includes(`rel="icon" href="${logoUrl}"`) ||
   throw new Error("Website branding, favicon and web-app icon must share the current logo and dark-teal base");
 }
 if (!logo.includes('id="seaweed"') || !logo.includes('id="foam"') ||
-    logo.indexOf('id="seaweed"') > logo.indexOf('id="foam"')) {
-  throw new Error("The logo must draw seaweed behind its foam bubbles");
+    logo.indexOf('id="seaweed"') > logo.indexOf('id="foam"') ||
+    !logo.includes(`id="seaweed" fill="${canonical.solid.accent.value}"`)) {
+  throw new Error("The logo must draw canonical seafoam seaweed behind its foam bubbles");
 }
 
 const colorCount = palette.groups.reduce((total, group) => total + group.colors.length, 0);
@@ -84,10 +86,14 @@ if (colorCount !== 27) {
   throw new Error(`The website must expose all 27 active colors; found ${colorCount}`);
 }
 
-for (const [id, invariant] of Object.entries({ base: "#000F13", panel: "#001E26", accent: "#2AA198" })) {
+for (const id of ["base", "panel", "accent", "document", "warning", "error"]) {
+  const invariant = canonical.solid[id].value;
   if (palette.groups.find((group) => group.id === "solid")?.colors.find((color) => color.id === id)?.value !== invariant) {
     throw new Error(`Website palette is missing ${invariant}`);
   }
+}
+if (!html.includes(`<code>${canonical.solid.accent.value}</code>`)) {
+  throw new Error("The interaction-study example must show the current accent");
 }
 if (html.includes("#000000") || !html.includes("#000F13") || !html.includes('class="surface-card surface-base"')) {
   throw new Error("Website workspace examples must use the current dark-teal base");
