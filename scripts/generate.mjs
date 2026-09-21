@@ -716,6 +716,45 @@ for (const group of activeGroups) {
   }
 }
 
+const sitePalette = {
+  name: palette.name,
+  version: palette.version,
+  groups: [
+    {
+      id: "solid",
+      title: "Core interface colors",
+      description: "The eleven solid colors that define DeepSeaFoam application chrome.",
+      colors: Object.entries(palette.solid).map(([id, entry]) => ({ id, ...entry }))
+    },
+    {
+      id: "overlay",
+      title: "Transparent overlays",
+      description: "RGBA overlays shown over their intended surfaces rather than flattened into opaque substitutes.",
+      colors: Object.entries(palette.overlay).map(([id, entry]) => ({ id, ...entry }))
+    },
+    {
+      id: "preview",
+      title: "Preview-only neutrals",
+      description: "Neutral materials for images, thumbnails, and transparency previews—not alternate chrome.",
+      colors: Object.entries(palette.preview).map(([id, entry]) => ({ id, ...entry }))
+    }
+  ],
+  heritage: Object.entries(palette.heritage).map(([id, entry]) => ({ id, ...entry })),
+  derived: Object.entries(palette.derived).map(([id, entry]) => ({ id, ...entry }))
+};
+
+const cssVariableGroups = ["solid", "overlay", "preview", "heritage", "derived"];
+const siteVariables = cssVariableGroups.flatMap((group) =>
+  Object.entries(palette[group]).map(
+    ([name, entry]) => `  --dsf-${group}-${name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}: ${entry.value};`
+  )
+);
+add(
+  "site/palette.css",
+  `/* Generated from palette/deepseafoam.json. */\n:root {\n${siteVariables.join("\n")}\n}\n`
+);
+add("site/palette.json", json(sitePalette));
+
 function validateSource() {
   const expectedCounts = { solid: 11, overlay: 8, preview: 8 };
   for (const [group, count] of Object.entries(expectedCounts)) {

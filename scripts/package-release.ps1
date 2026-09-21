@@ -79,6 +79,7 @@ try {
     Copy-Item (Join-Path $repoRoot "palette") $bundle -Recurse
     Copy-Item (Join-Path $repoRoot "docs") $bundle -Recurse
     Copy-Item (Join-Path $repoRoot "scripts") $bundle -Recurse
+    Copy-Item (Join-Path $repoRoot "site") $bundle -Recurse
     Copy-Item (Join-Path $repoRoot "targets") $bundle -Recurse
     Compress-Archive `
         -Path $bundle `

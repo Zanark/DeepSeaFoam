@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="DeepSeaFoam is a quiet, Solarized-derived cross-application theme built from black working depth, blue-green structure, seafoam signals, and warm emphasis.">
+    <meta name="theme-color" content="#001E26">
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="DeepSeaFoam">
+    <meta property="og:description" content="A quiet workstation beneath deep water. One visual identity for the tools where focused work happens.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://zanark.github.io/DeepSeaFoam/">
+    <title>DeepSeaFoam — quiet depth for focused work</title>
+    <link rel="icon" href="mark.svg" type="image/svg+xml">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="stylesheet" href="palette.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" type="module"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to the theme</a>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="DeepSeaFoam home">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <rect x="1" y="1" width="38" height="38" rx="8"></rect>
+          <path d="M11 27V13h18"></path>
+          <path d="M11 27h18"></path>
+          <circle cx="29" cy="13" r="3"></circle>
+        </svg>
+        <span>DeepSeaFoam</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#identity">Identity</a>
+        <a href="#palette">Palette</a>
+        <a href="#applications">Applications</a>
+      </nav>
+      <a class="header-download" href="https://github.com/Zanark/DeepSeaFoam/releases/latest">
+        Download
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M8 2v8m0 0 3-3m-3 3L5 7M3 13h10"></path>
+        </svg>
+      </a>
+    </header>
+
+    <main id="main">
+      <section class="hero section-shell" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> Solarized heritage. A distinct identity.</p>
+          <h1 id="hero-title">
+            Quiet depth for
+            <em>focused work.</em>
+          </h1>
+          <p class="hero-lede">
+            A cross-application theme built around one defining relationship:
+            a genuinely black workspace held inside almost-black blue-green structure,
+            with seafoam signals and warm light reserved for what matters.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://github.com/Zanark/DeepSeaFoam/releases/latest">
+              Get DeepSeaFoam
+              <svg viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M3 8h10m-4-4 4 4-4 4"></path>
+              </svg>
+            </a>
+            <a class="button button-secondary" href="#palette">Explore the palette</a>
+          </div>
+          <dl class="hero-facts" aria-label="Project facts">
+            <div><dt>27</dt><dd>active values</dd></div>
+            <div><dt>5</dt><dd>native exports</dd></div>
+            <div><dt>0</dt><dd>runtime dependencies</dd></div>
+          </dl>
+        </div>
+
+        <div class="workstation-wrap">
+          <div role="img" aria-label="DeepSeaFoam applied to a code workspace with a black editor, blue-green chrome, seafoam focus signals, warm text, and an integrated terminal.">
+            <div class="workstation">
+            <div class="workstation-titlebar">
+              <div class="wordmark">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 18V6h14M5 18h14"></path>
+                  <circle cx="19" cy="6" r="2"></circle>
+                </svg>
+                <span>deepseafoam.workspace</span>
+              </div>
+              <div class="window-actions" aria-hidden="true"><i></i><i></i><i></i></div>
+            </div>
+            <div class="workstation-body">
+              <aside class="workstation-rail" aria-hidden="true">
+                <span class="rail-icon active"><i></i><i></i><i></i></span>
+                <span class="rail-icon code">&lt;/&gt;</span>
+                <span class="rail-icon branch"></span>
+                <span class="rail-spacer"></span>
+                <span class="rail-icon small">?</span>
+              </aside>
+              <div class="workstation-main">
+                <div class="workstation-tabs">
+                  <span class="active"><i></i> theme.css <b>×</b></span>
+                  <span>palette.json</span>
+                  <span>README.md</span>
+                </div>
+                <div class="editor-grid">
+                  <div class="line-numbers" aria-hidden="true">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12</div>
+                  <pre><code><span class="syntax-comment">/* Quiet structure. Exact signals. */</span>
+<span class="syntax-selector">:root</span> {
+  <span class="syntax-property">--workspace</span>: <span class="syntax-string">#000000</span>;
+  <span class="syntax-property">--panel</span>: <span class="syntax-string">#001E26</span>;
+  <span class="syntax-property">--signal</span>: <span class="syntax-string">#2AA198</span>;
+  <span class="syntax-property">--warmth</span>: <span class="syntax-string">#EEE8D5</span>;
+}
+
+<span class="syntax-selector">.interface</span> {
+  <span class="syntax-property">background</span>: <span class="syntax-keyword">var</span>(<span class="syntax-string">--panel</span>);
+  <span class="syntax-property">color</span>: <span class="syntax-string">#93A1A1</span>;
+}</code></pre>
+                </div>
+                <div class="terminal">
+                  <div class="terminal-head">
+                    <span>TERMINAL</span><span>OUTPUT</span><span>PROBLEMS</span>
+                    <i></i>
+                  </div>
+                  <p><b>PS</b> <span>C:\focus</span>&gt; deepseafoam --apply</p>
+                  <p class="terminal-success">✓ workspace stays black</p>
+                  <p class="terminal-success">✓ content remains untouched</p>
+                  <p><span class="terminal-cursor"></span></p>
+                </div>
+              </div>
+            </div>
+            <div class="workstation-status">
+              <span><i></i> DeepSeaFoam</span>
+              <span>main*</span>
+              <span class="status-spacer"></span>
+              <span>UTF-8</span>
+              <span>Spaces: 2</span>
+              <span>{ }</span>
+            </div>
+            </div>
+          </div>
+          <p class="workstation-caption">
+            <span>LIVE THEME STUDY</span>
+            Built entirely with semantic HTML and CSS—no screenshot, no image mockup.
+          </p>
+        </div>
+      </section>
+
+      <section class="surface-decision" id="identity" aria-labelledby="surface-title">
+        <div class="section-intro section-shell">
+          <p class="eyebrow"><span></span> The defining decision</p>
+          <h2 id="surface-title">Depth is not the same as darkness.</h2>
+          <p>
+            DeepSeaFoam does not wash every surface in teal or substitute generic charcoal.
+            It creates hierarchy with two exact large-area colors.
+          </p>
+        </div>
+        <div class="surface-stage">
+          <article class="surface-card surface-black">
+            <div class="surface-card-head">
+              <span>01 / WORK</span>
+              <code>#000000</code>
+            </div>
+            <div class="surface-card-copy">
+              <p>THE ABYSS</p>
+              <h3>Content gets the deepest, quietest surface.</h3>
+              <span>Editors · canvases · terminals · recessed controls</span>
+            </div>
+          </article>
+          <div class="surface-relationship" aria-hidden="true">
+            <span></span>
+            <b>held by</b>
+            <span></span>
+          </div>
+          <article class="surface-card surface-panel">
+            <div class="surface-card-head">
+              <span>02 / STRUCTURE</span>
+              <code>#001E26</code>
+            </div>
+            <div class="surface-card-copy">
+              <p>DEEP WATER</p>
+              <h3>Panels establish identity without competing with the work.</h3>
+              <span>Headers · toolbars · navigation · surrounding chrome</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="principles section-shell" aria-labelledby="principles-title">
+        <div class="section-intro compact">
+          <p class="eyebrow"><span></span> Character, not decoration</p>
+          <h2 id="principles-title">Calm. Considered. Technically capable.</h2>
+        </div>
+        <div class="principle-grid">
+          <article>
+            <span class="principle-number">01</span>
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <path d="M8 10h32v28H8zM13 15h22v18H13z"></path>
+            </svg>
+            <h3>Depth</h3>
+            <p>Black is an intentional working material, not an approximation made from dark gray.</p>
+          </article>
+          <article>
+            <span class="principle-number">02</span>
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <path d="M8 24h32M24 8v32"></path>
+              <circle cx="24" cy="24" r="6"></circle>
+            </svg>
+            <h3>Restrained signal</h3>
+            <p>Seafoam marks focus and interaction. If everything is cyan, nothing is important.</p>
+          </article>
+          <article>
+            <span class="principle-number">03</span>
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <path d="M12 34 24 10l12 24z"></path>
+              <circle cx="24" cy="28" r="3"></circle>
+            </svg>
+            <h3>Warmth</h3>
+            <p>Ivory emphasis keeps the cool environment intimate rather than clinical.</p>
+          </article>
+          <article>
+            <span class="principle-number">04</span>
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <path d="M9 14h30M9 24h21M9 34h26"></path>
+              <circle cx="35" cy="24" r="4"></circle>
+            </svg>
+            <h3>Precision</h3>
+            <p>Clear boundaries, visible focus, and readable hierarchy take priority over visual novelty.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="palette-section" id="palette" aria-labelledby="palette-title">
+        <div class="section-intro section-shell">
+          <p class="eyebrow"><span></span> The complete active inventory</p>
+          <h2 id="palette-title">Twenty-seven values. Every one has a job.</h2>
+          <p>
+            Select any swatch to copy its exact value. Transparent colors remain transparent
+            and are previewed against real target surfaces.
+          </p>
+        </div>
+        <div class="palette-groups section-shell" id="palette-groups" aria-live="polite">
+          <noscript>
+            <p class="noscript-note">JavaScript is only used to render copyable swatches from the canonical palette JSON. The complete palette remains available in the repository README.</p>
+          </noscript>
+        </div>
+      </section>
+
+      <section class="hierarchy section-shell" aria-labelledby="hierarchy-title">
+        <div class="hierarchy-copy">
+          <p class="eyebrow"><span></span> Hierarchy in practice</p>
+          <h2 id="hierarchy-title">Signals stay small so they can stay meaningful.</h2>
+          <p>
+            The accent is not a wallpaper color. Warm ivory is not a default white.
+            Red is not permanent decoration. Each appears only where its role earns attention.
+          </p>
+          <ul>
+            <li><i class="signal accent"></i><strong>Interaction</strong><span>focus, links, active outlines</span></li>
+            <li><i class="signal warm"></i><strong>Emphasis</strong><span>headings, notices, selected text</span></li>
+            <li><i class="signal warning"></i><strong>Caution</strong><span>localized warning indicators</span></li>
+            <li><i class="signal error"></i><strong>Exception</strong><span>error boundaries and diagnostics</span></li>
+          </ul>
+        </div>
+        <div class="control-study" aria-hidden="true">
+          <div class="control-head"><span>INTERACTION STUDY</span><span>04 STATES</span></div>
+          <div class="control-row">
+            <span>Primary action</span>
+            <span class="demo-control demo-primary">Continue</span>
+          </div>
+          <div class="control-row">
+            <span>Selected control</span>
+            <span class="demo-control demo-selected"><i></i> Grid enabled</span>
+          </div>
+          <div class="control-row">
+            <span>Recessed input</span>
+            <span class="demo-input"><code>#2AA198</code></span>
+          </div>
+          <div class="control-row">
+            <span>Error boundary</span>
+            <div class="demo-error"><i></i><b>Export interrupted</b><small>Your document is unchanged.</small></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="applications" id="applications" aria-labelledby="applications-title">
+        <div class="section-intro section-shell">
+          <p class="eyebrow"><span></span> One identity, native formats</p>
+          <h2 id="applications-title">Your tools can feel related without pretending to be identical.</h2>
+          <p>
+            Each export maps semantic roles to what the host actually exposes.
+            Content stays separate from chrome, and limitations are documented instead of hidden.
+          </p>
+        </div>
+        <div class="application-grid section-shell">
+          <a class="app-card app-vscode" href="https://github.com/Zanark/DeepSeaFoam/tree/main/targets/vscode">
+            <div class="app-card-top"><span>01</span><b>VS</b></div>
+            <div><h3>Visual Studio Code</h3><p>Workbench, editor, syntax, terminal, diagnostics.</p></div>
+            <span class="app-link">Explore export <b>↗</b></span>
+          </a>
+          <a class="app-card app-visual-studio" href="https://github.com/Zanark/DeepSeaFoam/tree/main/targets/visual-studio">
+            <div class="app-card-top"><span>02</span><b>VS</b></div>
+            <div><h3>Visual Studio</h3><p>Legacy editor categories and modern semantic shell tokens.</p></div>
+            <span class="app-link">Explore export <b>↗</b></span>
+          </a>
+          <a class="app-card app-obsidian" href="https://github.com/Zanark/DeepSeaFoam/tree/main/targets/obsidian">
+            <div class="app-card-top"><span>03</span><b>◇</b></div>
+            <div><h3>Obsidian</h3><p>Workspace chrome, writing surfaces, controls, graph.</p></div>
+            <span class="app-link">Explore export <b>↗</b></span>
+          </a>
+          <a class="app-card app-terminal" href="https://github.com/Zanark/DeepSeaFoam/tree/main/targets/windows-terminal">
+            <div class="app-card-top"><span>04</span><b>&gt;_</b></div>
+            <div><h3>Windows Terminal</h3><p>Black buffer, quiet foreground, deliberate ANSI extension.</p></div>
+            <span class="app-link">Explore export <b>↗</b></span>
+          </a>
+          <a class="app-card app-firefox" href="https://github.com/Zanark/DeepSeaFoam/tree/main/targets/firefox">
+            <div class="app-card-top"><span>05</span><b>◎</b></div>
+            <div><h3>Firefox</h3><p>Browser chrome only. Websites remain themselves.</p></div>
+            <span class="app-link">Explore export <b>↗</b></span>
+          </a>
+        </div>
+      </section>
+
+      <section class="extension-note section-shell" aria-labelledby="extension-title">
+        <div class="extension-label">
+          <span>TRANSPARENT DESIGN WORK</span>
+          <b>Core identity ≠ invented history</b>
+        </div>
+        <div>
+          <h2 id="extension-title">New roles are labeled as new roles.</h2>
+          <p>
+            Programming syntax and ANSI terminals need colors that the original SpriteCanvas interface never defined.
+            DeepSeaFoam uses four retained Solarized heritage colors for those extensions—and says so plainly.
+          </p>
+          <div class="heritage-strip" aria-label="Solarized heritage extension colors">
+            <span style="--heritage:#CB4B16"><i></i>Orange</span>
+            <span style="--heritage:#D33682"><i></i>Magenta</span>
+            <span style="--heritage:#6C71C4"><i></i>Violet</span>
+            <span style="--heritage:#268BD2"><i></i>Blue</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="final-cta">
+        <div class="final-mark" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="section-shell">
+          <p class="eyebrow"><span></span> Bring the quiet with you</p>
+          <h2>Make your workstation feel like one place.</h2>
+          <p>Download the complete bundle or choose the native package for the tool you use first.</p>
+          <div class="hero-actions centered">
+            <a class="button button-primary" href="https://github.com/Zanark/DeepSeaFoam/releases/latest">
+              Download the latest release
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0 3-3m-3 3L5 7M3 13h10"></path></svg>
+            </a>
+            <a class="button button-secondary" href="https://github.com/Zanark/DeepSeaFoam">View source on GitHub</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="section-shell footer-grid">
+        <div>
+          <a class="brand footer-brand" href="#top">
+            <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+              <rect x="1" y="1" width="38" height="38" rx="8"></rect>
+              <path d="M11 27V13h18"></path>
+              <path d="M11 27h18"></path>
+              <circle cx="29" cy="13" r="3"></circle>
+            </svg>
+            <span>DeepSeaFoam</span>
+          </a>
+          <p>A quiet workstation beneath deep water.</p>
+        </div>
+        <div class="footer-links">
+          <div><strong>Project</strong><a href="https://github.com/Zanark/DeepSeaFoam">Repository</a><a href="https://github.com/Zanark/DeepSeaFoam/releases">Releases</a></div>
+          <div><strong>Reference</strong><a href="https://github.com/Zanark/SpriteCanvas">SpriteCanvas</a><a href="https://ethanschoonover.com/solarized/">Solarized</a></div>
+        </div>
+      </div>
+      <div class="footer-bottom section-shell">
+        <span>DeepSeaFoam is derived from Solarized by Ethan Schoonover.</span>
+        <span>Built without frameworks, external fonts, analytics, or trackers.</span>
+      </div>
+    </footer>
+
+    <div class="copy-toast" id="copy-toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

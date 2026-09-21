@@ -2,6 +2,8 @@
 
 **A quiet workstation beneath deep water, with small seafoam-colored signals and warm light illuminating what matters.**
 
+[Explore the live DeepSeaFoam showcase](https://zanark.github.io/DeepSeaFoam/) · [Download the latest release](https://github.com/Zanark/DeepSeaFoam/releases/latest)
+
 DeepSeaFoam is a cross-application dark theme derived from [Ethan Schoonover's Solarized palette](https://ethanschoonover.com/solarized/), but it is not Solarized Dark renamed. Its defining relationship is a genuinely black working surface surrounded by extremely dark blue-green structure:
 
 - **Workspace / recessed surface:** `#000000`
