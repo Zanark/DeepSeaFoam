@@ -23,17 +23,29 @@ for (const file of requiredFiles) {
   await access(path.join(site, file));
 }
 
-const [html, mainCss, oceanCss, paletteText, manifestText] = await Promise.all([
+const [html, mainCss, oceanCss, paletteText, manifestText, logo] = await Promise.all([
   readFile(path.join(site, "index.html"), "utf8"),
   readFile(path.join(site, "styles.css"), "utf8"),
   readFile(path.join(site, "ocean.css"), "utf8"),
   readFile(path.join(site, "palette.json"), "utf8"),
-  readFile(path.join(site, "site.webmanifest"), "utf8")
+  readFile(path.join(site, "site.webmanifest"), "utf8"),
+  readFile(path.join(site, "mark.svg"), "utf8")
 ]);
 const css = `${mainCss}\n${oceanCss}`;
 
 const palette = JSON.parse(paletteText);
-JSON.parse(manifestText);
+const manifest = JSON.parse(manifestText);
+const logoUrl = "mark.svg?v=seaweed-foam";
+if (!html.includes(`rel="icon" href="${logoUrl}"`) ||
+    [...html.matchAll(/<img\b[^>]*src="([^"]+)"/g)].filter((match) => match[1] === logoUrl).length !== 3 ||
+    !manifest.icons.some((icon) => icon.src === logoUrl && icon.type === "image/svg+xml") ||
+    manifest.background_color !== "#000F13") {
+  throw new Error("Website branding, favicon and web-app icon must share the current logo and dark-teal base");
+}
+if (!logo.includes('id="seaweed"') || !logo.includes('id="foam"') ||
+    logo.indexOf('id="seaweed"') > logo.indexOf('id="foam"')) {
+  throw new Error("The logo must draw seaweed behind its foam bubbles");
+}
 
 const colorCount = palette.groups.reduce((total, group) => total + group.colors.length, 0);
 if (colorCount !== 27) {

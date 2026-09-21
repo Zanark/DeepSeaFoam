@@ -198,22 +198,7 @@
   .brand-mark {
     width: 30px;
     height: 30px;
-  }
-
-  .brand-mark rect {
-    fill: var(--dsf-solid-panel);
-    stroke: var(--border-quiet);
-  }
-
-  .brand-mark path {
-    fill: none;
-    stroke: var(--dsf-solid-accent);
-    stroke-linecap: round;
-    stroke-width: 2.2;
-  }
-
-  .brand-mark circle {
-    fill: var(--dsf-solid-warm);
+    flex-shrink: 0;
   }
 
   .site-header nav {
@@ -450,17 +435,9 @@
     font-weight: 620;
   }
 
-  .wordmark svg {
+  .wordmark img {
     width: 18px;
-    fill: none;
-    stroke: var(--dsf-solid-accent);
-    stroke-linecap: round;
-    stroke-width: 1.5;
-  }
-
-  .wordmark svg circle {
-    fill: var(--dsf-solid-warm);
-    stroke: none;
+    height: 18px;
   }
 
   .window-actions {

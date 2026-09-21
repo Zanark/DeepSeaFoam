@@ -4,11 +4,11 @@
   "description": "A quiet, Solarized-derived cross-application theme.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#000000",
+  "background_color": "#000F13",
   "theme_color": "#001E26",
   "icons": [
     {
-      "src": "mark.svg",
+      "src": "mark.svg?v=seaweed-foam",
       "sizes": "any",
       "type": "image/svg+xml"
     }

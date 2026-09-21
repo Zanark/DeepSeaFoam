@@ -1,5 +1,7 @@
 # DeepSeaFoam
 
+<img src="site/mark.svg" width="80" height="80" alt="Seaweed with foam bubbles in front">
+
 **A quiet workstation beneath deep water, with small seafoam-colored signals and warm light illuminating what matters.**
 
 [Explore the live DeepSeaFoam showcase](https://zanark.github.io/DeepSeaFoam/) · [Download the latest release](https://github.com/Zanark/DeepSeaFoam/releases/latest)
@@ -15,6 +17,8 @@ The interface should recede behind the work. Cyan is a restrained signal, ivory 
 Version **0.2.0** deliberately replaces the original pure-black workspace with near-black teal. This updates the cross-application design without changing the read-only SpriteCanvas origin. Shadow and backdrop overlays retain their transparent black; they are not workspace surfaces.
 
 ## The underwater showcase
+
+The logo is seafoam-colored kelp with warm foam bubbles layered in front. One local [SVG](site/mark.svg) supplies the website header, footer, workspace study, favicon and web-app icon.
 
 The [website](https://zanark.github.io/DeepSeaFoam/) is a cinematic interpretation of the theme: a brief surface-crossing descent, refracted light, drifting particles, and strongly swaying layered kelp with out-of-focus foreground fronds. Scrolling releases bubbles from below; clicking or tapping releases a small burst from that exact point. They drift upward without blocking links or controls. Scroll deeper and the light fades. Click the tiny light in the midnight zone to reveal the otherwise invisible anglerfish. Investigate what is sulking on the seabed to find the hidden blobfish.
 
