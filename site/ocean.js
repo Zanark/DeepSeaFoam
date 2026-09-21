@@ -1,5 +1,6 @@
 const body = document.body;
 const world = document.querySelector(".ocean-world");
+const bubbleField = document.querySelector(".bubble-field");
 const controls = document.querySelector(".dive-controls");
 const motionToggle = document.querySelector("#motion-toggle");
 const motionLabel = motionToggle.querySelector(".motion-label");
@@ -14,8 +15,37 @@ let diveTimer;
 let frame = 0;
 let pointerX = 0;
 let pointerY = 0;
+let scrollBubbles = false;
+let nextBubbleTime = 0;
 
 const isStill = () => userPaused || reducedMotion.matches;
+
+function clearBubbles() {
+  scrollBubbles = false;
+  nextBubbleTime = 0;
+  bubbleField.replaceChildren();
+}
+
+function bubblesAt(x, y, count, replace = false) {
+  if (isStill() || document.hidden) return;
+  for (let i = 0; i < count; i++) {
+    if (bubbleField.childElementCount >= 64) {
+      if (!replace) break;
+      bubbleField.firstElementChild.remove();
+    }
+    const bubble = document.createElement("i");
+    bubble.style.cssText = `left:${x}px;top:${y}px;width:${8 + Math.random() * 18}px;
+      --drift:${Math.random() * 120 - 60}px;--rise:${-y - 48}px;
+      --flight:${Math.max(1, (y + 48) / (170 + Math.random() * 100))}s`;
+    bubbleField.append(bubble);
+  }
+}
+
+for (const type of ["animationend", "animationcancel"]) {
+  bubbleField.addEventListener(type, ({ target }) => {
+    if (target.parentElement === bubbleField) target.remove();
+  });
+}
 
 function finishDive() {
   clearTimeout(diveTimer);
@@ -32,8 +62,13 @@ function dive() {
   diveTimer = setTimeout(finishDive, 2850);
 }
 
-function updateScene() {
+function updateScene(now = 0) {
   frame = 0;
+  if (scrollBubbles && now >= nextBubbleTime) {
+    bubblesAt(Math.random() * innerWidth, innerHeight + 18, 3);
+    nextBubbleTime = now + 160;
+  }
+  scrollBubbles = false;
   const distance = document.documentElement.scrollHeight - innerHeight;
   const progress = Math.max(0, Math.min(1, distance > 0 ? scrollY / distance : 0));
   body.style.setProperty("--depth-progress", progress.toFixed(3));
@@ -50,6 +85,11 @@ function requestUpdate() {
   if (!frame) frame = requestAnimationFrame(updateScene);
 }
 
+function queueBubbles() {
+  scrollBubbles = !isStill() && !document.hidden;
+  requestUpdate();
+}
+
 function syncMotion() {
   const still = isStill();
   body.classList.toggle("motion-paused", still);
@@ -57,7 +97,10 @@ function syncMotion() {
   motionToggle.disabled = reducedMotion.matches;
   motionLabel.textContent = reducedMotion.matches ? "Reduced motion" : userPaused ? "Resume motion" : "Pause motion";
   replay.textContent = still ? "Back to the surface." : "Back to the surface. Dive again.";
-  if (still) finishDive();
+  if (still) {
+    finishDive();
+    clearBubbles();
+  }
   requestUpdate();
 }
 
@@ -77,12 +120,17 @@ document.addEventListener("keydown", (event) => {
 // Navigation or scrolling should never wait for an opening sequence.
 document.addEventListener("click", (event) => {
   if (event.target instanceof Element && event.target.closest("a")) finishDive();
+  if (event.detail > 0) bubblesAt(event.clientX, event.clientY, 7, true);
 });
-window.addEventListener("wheel", finishDive, { passive: true });
+window.addEventListener("wheel", () => {
+  finishDive();
+  queueBubbles();
+}, { passive: true });
 window.addEventListener("touchstart", finishDive, { passive: true });
+window.addEventListener("touchmove", queueBubbles, { passive: true });
 window.addEventListener("scroll", () => {
   if (scrollY > 10) finishDive();
-  requestUpdate();
+  queueBubbles();
 }, { passive: true });
 window.addEventListener("resize", requestUpdate);
 window.addEventListener("pointermove", (event) => {
@@ -97,9 +145,15 @@ document.addEventListener("pointerleave", () => {
 });
 document.addEventListener("visibilitychange", () => {
   body.classList.toggle("page-hidden", document.hidden);
-  if (document.hidden) finishDive();
+  if (document.hidden) {
+    finishDive();
+    clearBubbles();
+  }
 });
-window.addEventListener("pagehide", finishDive);
+window.addEventListener("pagehide", () => {
+  finishDive();
+  clearBubbles();
+});
 window.addEventListener("pageshow", requestUpdate);
 reducedMotion.addEventListener("change", syncMotion);
 // The palette loads independently and changes the document's scroll range.

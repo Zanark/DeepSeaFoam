@@ -726,9 +726,7 @@ const sitePalette = {
       description: "Neutral materials for images, thumbnails, and transparency previews—not alternate chrome.",
       colors: Object.entries(palette.preview).map(([id, entry]) => ({ id, ...entry }))
     }
-  ],
-  heritage: Object.entries(palette.heritage).map(([id, entry]) => ({ id, ...entry })),
-  derived: Object.entries(palette.derived).map(([id, entry]) => ({ id, ...entry }))
+  ]
 };
 
 const cssVariableGroups = ["solid", "overlay", "preview", "heritage", "derived"];
@@ -746,7 +744,7 @@ add(
   "site/palette.css",
   `/* Generated from palette/deepseafoam.json. */\n:root {\n${siteVariables.join("\n")}\n}\n`
 );
-add("site/palette.json", json(sitePalette));
+add("site/palette.json", `${JSON.stringify(sitePalette)}\n`);
 
 function validateSource() {
   const expectedCounts = { solid: 11, overlay: 8, preview: 8, terminal: 19 };

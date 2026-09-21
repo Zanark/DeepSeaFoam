@@ -26,6 +26,10 @@ function scene({ reduced = false, hash = "", scroll = 0 } = {}) {
     classes = new Set();
     properties = new Map();
     firstChild = { textContent: "" };
+    children = [];
+    parentElement = null;
+    get childElementCount() { return this.children.length; }
+    get firstElementChild() { return this.children[0]; }
     style = { setProperty: (name, value) => this.properties.set(name, value) };
     classList = {
       add: name => this.classes.add(name),
@@ -37,14 +41,26 @@ function scene({ reduced = false, hash = "", scroll = 0 } = {}) {
     querySelector(selector) { return elements.get(selector); }
     closest(selector) { return selector === "a" && this.isLink ? this : null; }
     focus() { document.activeElement = this; }
+    append(child) { child.parentElement = this; this.children.push(child); }
+    remove() {
+      if (this.parentElement) {
+        this.parentElement.children = this.parentElement.children.filter(child => child !== this);
+        this.parentElement = null;
+      }
+    }
+    replaceChildren() {
+      for (const child of this.children) child.parentElement = null;
+      this.children = [];
+    }
   }
   const elements = new Map([
-    ".ocean-world", ".dive-controls", "#motion-toggle", ".motion-label",
+    ".ocean-world", ".bubble-field", ".dive-controls", "#motion-toggle", ".motion-label",
     "#skip-dive", "#replay-dive", "#depth-value", "#depth-zone", ".brand"
   ].map(selector => [selector, new Element()]));
   document.body = new Element();
   document.documentElement = { scrollHeight: 5000 };
   document.querySelector = selector => elements.get(selector);
+  document.createElement = () => new Element();
   document.hidden = false;
   const media = Object.assign(new Events(), { matches: reduced });
   const fine = Object.assign(new Events(), { matches: true });
@@ -52,6 +68,7 @@ function scene({ reduced = false, hash = "", scroll = 0 } = {}) {
   const timers = new Map();
   const frames = new Map();
   let id = 0;
+  let now = 0;
   const globals = {
     document, window, Element, location: { hash }, innerHeight: 1000, innerWidth: 1000, scrollY: scroll,
     matchMedia: query => query.includes("reduced-motion") ? media : fine,
@@ -62,10 +79,11 @@ function scene({ reduced = false, hash = "", scroll = 0 } = {}) {
   };
   window.scrollTo = ({ top }) => { globals.scrollY = top; };
   vm.runInNewContext(source, globals, { filename: "ocean.js" });
-  const flush = () => {
+  const flush = (elapsed = 160) => {
+    now += elapsed;
     const pending = [...frames.values()];
     frames.clear();
-    for (const callback of pending) callback();
+    for (const callback of pending) callback(now);
   };
   return { document, window, media, fine, timers, frames, globals, flush, el: selector => elements.get(selector) };
 }
@@ -173,4 +191,119 @@ test("replay returns to the top and respects paused motion", () => {
   s.el("#motion-toggle").fire("click");
   s.el("#replay-dive").fire("click");
   assert.equal(s.document.body.classList.contains("is-diving"), false);
+});
+
+test("pointer clicks emit at their viewport coordinates, not keyboard activation", () => {
+  const s = scene({ hash: "#main" });
+  const field = s.el(".bubble-field");
+  s.document.fire("click", { detail: 1, clientX: 230, clientY: 410 });
+  assert.equal(field.childElementCount, 7);
+  for (const bubble of field.children) {
+    assert.match(bubble.style.cssText, /left:230px;top:410px;/);
+    assert.match(bubble.style.cssText, /--rise:-458px/);
+  }
+  s.document.fire("click", { detail: 0, clientX: 0, clientY: 0 });
+  assert.equal(field.childElementCount, 7);
+});
+
+test("wheel, touch and scroll coalesce into bounded upward bursts, including page edges", () => {
+  const s = scene({ hash: "#main" });
+  s.flush();
+  const field = s.el(".bubble-field");
+  for (const type of ["wheel", "touchmove", "scroll"]) s.window.fire(type);
+  assert.equal(s.frames.size, 1);
+  s.flush(16);
+  assert.equal(field.childElementCount, 3);
+  assert.match(field.firstElementChild.style.cssText, /top:1018px;/);
+  assert.match(field.firstElementChild.style.cssText, /--rise:-1066px/);
+  s.window.fire("scroll");
+  s.flush(16);
+  assert.equal(field.childElementCount, 3, "continuous input is rate-limited");
+  for (const scroll of [1000, 500, 4000]) {
+    s.globals.scrollY = scroll;
+    s.window.fire("scroll");
+    s.flush();
+  }
+  assert.equal(field.childElementCount, 12, "both scroll directions emit");
+  s.window.fire("wheel");
+  s.flush();
+  assert.equal(field.childElementCount, 15, "wheel input at the bottom still emits");
+  assert.equal(s.frames.size, 0);
+});
+
+test("bubble population is capped and clicks still respond when the pool is full", () => {
+  const s = scene({ hash: "#main" });
+  const field = s.el(".bubble-field");
+  for (let i = 0; i < 100; i++) {
+    s.document.fire("click", { detail: 1, clientX: i, clientY: 500 });
+    assert.ok(field.childElementCount <= 64);
+  }
+  assert.equal(field.childElementCount, 64);
+  assert.match(field.children.at(-1).style.cssText, /left:99px;/);
+  const oldest = field.firstElementChild;
+  s.window.fire("scroll");
+  s.flush();
+  assert.equal(field.firstElementChild, oldest, "scroll leaves existing bubbles free to rise");
+  assert.equal(field.childElementCount, 64);
+  assert.equal(s.timers.size, 0);
+});
+
+test("finished and cancelled bubble animations remove only their own particles", () => {
+  const s = scene({ hash: "#main" });
+  const field = s.el(".bubble-field");
+  s.document.fire("click", { detail: 1, clientX: 100, clientY: 200 });
+  for (const type of ["animationend", "animationcancel"]) {
+    const bubble = field.firstElementChild;
+    field.fire(type, { target: bubble });
+    assert.equal(bubble.parentElement, null);
+  }
+  assert.equal(field.childElementCount, 5);
+  field.fire("animationend", { target: field });
+  assert.equal(field.childElementCount, 5);
+});
+
+test("pause and reduced motion clear particles and suppress new emissions", () => {
+  const s = scene({ hash: "#main" });
+  const field = s.el(".bubble-field");
+  const click = () => s.document.fire("click", { detail: 1, clientX: 100, clientY: 200 });
+  click();
+  s.window.fire("scroll");
+  s.el("#motion-toggle").fire("click");
+  s.flush();
+  assert.equal(field.childElementCount, 0);
+  click();
+  s.window.fire("wheel");
+  s.flush();
+  assert.equal(field.childElementCount, 0);
+  s.el("#motion-toggle").fire("click");
+  click();
+  assert.equal(field.childElementCount, 7);
+  s.media.matches = true;
+  s.media.fire("change");
+  click();
+  s.window.fire("touchmove");
+  s.flush();
+  assert.equal(field.childElementCount, 0);
+});
+
+test("hidden pages and page departure discard particles without a return backlog", () => {
+  const s = scene({ hash: "#main" });
+  const field = s.el(".bubble-field");
+  const click = () => s.document.fire("click", { detail: 1, clientX: 100, clientY: 200 });
+  click();
+  s.window.fire("scroll");
+  s.document.hidden = true;
+  s.document.fire("visibilitychange");
+  click();
+  s.window.fire("wheel");
+  s.document.hidden = false;
+  s.document.fire("visibilitychange");
+  s.flush();
+  assert.equal(field.childElementCount, 0);
+  click();
+  s.window.fire("scroll");
+  s.window.fire("pagehide");
+  s.window.fire("pageshow");
+  s.flush();
+  assert.equal(field.childElementCount, 0);
 });

@@ -55,6 +55,7 @@ for (const marker of [
   "prefers-reduced-motion",
   'id="motion-toggle"',
   'id="skip-dive"',
+  '<div class="bubble-field" aria-hidden="true">',
   '<details class="angler-discovery">',
   '<details class="blobfish-discovery">',
   "https://github.com/Zanark/DeepSeaFoam/releases/latest"
