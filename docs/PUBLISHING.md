@@ -12,22 +12,25 @@ license choice cannot be assumed valid for every store's listing-license menu.
 
 | Target | Route | Current boundary |
 | --- | --- | --- |
-| VS Code | [Visual Studio Marketplace](https://code.visualstudio.com/api/working-with-extensions/publishing-extension) | Owner confirmed `zanark` and chose manual browser upload without a PAT. Upload kit is generated under `dist\marketplace\vscode`; not submitted by automation. |
+| VS Code | [Live Marketplace listing](https://marketplace.visualstudio.com/items?itemName=zanark.deepseafoam-theme) | **0.5.1 is public.** Owner uploaded through the browser without a PAT; verification completed and the public listing resolves. |
 | Visual Studio | [Visual Studio Marketplace](https://learn.microsoft.com/en-us/visualstudio/extensibility/walkthrough-publishing-a-visual-studio-extension) | `.vstheme` is source, not an installable IDE VSIX. Version-specific packaging and runtime coverage are required. |
 | Obsidian | [Community directory](https://docs.obsidian.md/Themes/App+themes/Submit+your+theme) | Current route is community.obsidian.md, not the historical theme-list PR. Needs root metadata/license, matching version tag and separate manifest/theme release attachments, real screenshot, account linking and owner policy acceptance. |
-| Windows Terminal | [Community gallery](https://github.com/atomcorp/themes#contributing) | Preparing a contribution; this is not an official Microsoft marketplace. |
+| Windows Terminal | [Community gallery PR #115](https://github.com/atomcorp/themes/pull/115) | Submitted, open and awaiting review. Not yet a live gallery entry; this is not an official Microsoft marketplace. |
 | Firefox | [AMO static themes](https://extensionworkshop.com/documentation/publish/submitting-an-add-on/) | Needs Mozilla account/agreement and owner-approved listing license. Static-theme API licenses use CC choices or All Rights Reserved, not arbitrary MIT/custom licenses. |
 | Discord | [BetterDiscord guidelines](https://docs.betterdiscord.app/themes/publishing/guidelines) | Existing generated variable-only CSS is ineligible. Do not disguise it or submit it. Native Discord theme sharing is a different, limited feature. |
 | Telegram Desktop | [Official theme editor](https://core.telegram.org/themes) | Logged-in owner can create a cloud theme/share link. Uploading the file alone does not create a managed cloud theme. No app-theme marketplace submission. |
 | Slack | [Native sharing](https://slack.com/help/articles/205166337-Change-your-Slack-theme) | Theme Colors -> Share, not Slack Marketplace. A CSV preset is not a Slack app. |
 | Chrome / Edge | [Chrome Web Store](https://developer.chrome.com/docs/webstore/publish) | Chrome needs an eligible account, owner declarations and mandatory store artwork. Edge can use Chromium themes; separate third-party Edge Add-ons theme eligibility is not established. |
 | JetBrains | [Marketplace](https://plugins.jetbrains.com/docs/marketplace/uploading-a-new-plugin.html) | First upload is manual; requires vendor/account decisions, plugin icon, real IDE screenshots, licensing and compatibility review. |
-| Sublime Text | [Package Control](https://github.com/sublimehq/package_control_channel) | Preparing a root-level distribution package and channel contribution; monorepo subdirectory is not a package repository. |
+| Sublime Text | [Package Control PR #9570](https://github.com/sublimehq/package_control_channel/pull/9570) | Submitted and awaiting review. [Distribution repository/tag 0.5.1](https://github.com/Zanark/DeepSeaFoam-SublimeText/tree/0.5.1) is public; channel acceptance and upstream workflow approval are pending. |
 | Alacritty | [Official-project theme collection](https://github.com/alacritty/alacritty-theme#contributing) | Collection does not accept submissions from theme authors. Wait for genuine independent community interest. |
 
 ## Credentials and owner decisions
 
 ### VS Code manual-upload kit
+
+Version **0.5.1 is already public**. The kit records that submission; future
+updates need a higher version rather than replacing or resubmitting 0.5.1.
 
 Run `npm run package:release`, then use
 `dist\marketplace\vscode\DeepSeaFoam-VSCode-0.5.1.vsix`.
@@ -63,3 +66,9 @@ Keep native source in this repository. Distribution mirrors must record their
 source revision and match the generated theme; they are not independently
 maintained palettes. Preserve immutable published versions, required license
 notices and accurate minimum-version claims.
+
+The Sublime distribution is pinned to source commit
+`bd41af252ce559b082ef6a0a3d2fdeea32039160`. Its channel PR leaves the human
+author/maintainer declaration unchecked; the owner must participate in review.
+Upstream workflow approval is controlled by channel maintainers, not this
+repository. Neither community PR was merged as part of submission.

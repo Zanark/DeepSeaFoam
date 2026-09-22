@@ -20,7 +20,9 @@ The integrated terminal shares Windows Terminal's [higher-contrast extension](ht
 
 ## Install
 
-Download the VSIX from the [latest release](https://github.com/Zanark/DeepSeaFoam/releases/latest) and use **Extensions: Install from VSIX**. To build it locally, run `npm run package:release` from the repository root. Marketplace publication is separate.
+Install [DeepSeaFoam from the Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=zanark.deepseafoam-theme), then select **Preferences: Color Theme > DeepSeaFoam**. The extension ID is `zanark.deepseafoam-theme`.
+
+For offline installation, download the VSIX from the [latest release](https://github.com/Zanark/DeepSeaFoam/releases/latest) and use **Extensions: Install from VSIX**. To build it locally, run `npm run package:release` from the repository root.
 
 ## Remove / restore
 

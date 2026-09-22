@@ -42,6 +42,8 @@ The twelve application cards use locally hosted, lazy-loaded SVGs in their origi
 
 ## Download
 
+**VS Code:** [Install DeepSeaFoam from the Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=zanark.deepseafoam-theme).
+
 The original theme files and generator code are now available under the [MIT license](licenses/MIT.txt). This is **not a blanket artwork license**: [scope and exclusions](LICENSE) preserve third-party marks, upstream notices, and the supplied blobfish's unresolved rights. Marketplace submission and approval are separate from GitHub release availability.
 
 Version **0.5.1** packages that license without changing theme colors. Existing releases are not replaced. [Publication routes and current status](docs/PUBLISHING.md) distinguish downloadable files, submitted listings and approved directory entries.
