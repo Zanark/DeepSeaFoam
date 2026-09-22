@@ -1,0 +1,23 @@
+{
+  "source": "https://zanark.github.io/DeepSeaFoam/",
+  "sourceCommit": "3cd7bf99b7433f3a7962f386474bdd7564522818",
+  "capturedAt": "2026-09-22T08:50:56.424Z",
+  "viewport": {
+    "width": 1440,
+    "height": 960
+  },
+  "reducedMotion": true,
+  "note": "Real browser captures of the current website, not native application screenshots.",
+  "images": [
+    {
+      "name": "deepseafoam-website-overview.png",
+      "title": "Current DeepSeaFoam website landing page",
+      "bytes": 1113435
+    },
+    {
+      "name": "deepseafoam-website-palette.png",
+      "title": "Current DeepSeaFoam website - 11 core interface colors",
+      "bytes": 86131
+    }
+  ]
+}
