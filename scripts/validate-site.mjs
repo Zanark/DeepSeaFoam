@@ -16,6 +16,8 @@ const requiredFiles = [
   "ocean.js",
   "water.js",
   "nautilus.js",
+  "music.js",
+  "audio/deepseafoam-music.mp3",
   "blobfish.webp",
   "artwork-NOTICE.txt",
   "kelp.svg",
@@ -95,7 +97,7 @@ if (bubbles.length < 14 || bubbles.some(([, , y, radius]) => Number(y) - Number(
   throw new Error("The foam logo needs a dense lower-half bubble cluster and reflected larger bubbles");
 }
 
-const { blobfish, photographicInspiration } = JSON.parse(await readFile(path.join(root, "docs", "showcase-artwork.json"), "utf8"));
+const { blobfish, photographicInspiration, music } = JSON.parse(await readFile(path.join(root, "docs", "showcase-artwork.json"), "utf8"));
 const fishBytes = await readFile(path.join(site, "blobfish.webp"));
 if (blobfish.file !== "blobfish.webp" || createHash("sha256").update(fishBytes).digest("hex") !== blobfish.sha256 ||
     fishBytes.length !== blobfish.bytes || fishBytes.toString("ascii", 0, 4) !== "RIFF" ||
@@ -111,6 +113,24 @@ for (const key of ["page", "photographerPage", "original"]) {
 if (!html.includes(`${photographicInspiration.width} &times; ${photographicInspiration.height}`) ||
     /<(?:img|source)\b[^>]+(?:src|srcset)=["']https?:/i.test(html)) {
   throw new Error("Credit the original photo dimensions without automatically loading external images");
+}
+
+if (music.file !== "audio/deepseafoam-music.mp3" || music.codec !== "mp3" || music.bitRate !== 128000 ||
+    music.durationSeconds !== 176 || music.sourceSampleRate !== 48000 || music.sourceChannels !== 2) {
+  throw new Error("Music provenance must describe the complete supplied track and its web encoding");
+}
+const musicBytes = await readFile(path.join(site, music.file));
+if (musicBytes.length !== music.bytes || musicBytes.toString("ascii", 0, 3) !== "ID3" ||
+    createHash("sha256").update(musicBytes).digest("hex") !== music.sha256) {
+  throw new Error("The web music file differs from its recorded MP3 size or hash");
+}
+const audioMarkup = html.match(/<audio\b[^>]*>/)?.[0] ?? "";
+if (!audioMarkup.includes('id="background-music"') || !audioMarkup.includes('preload="none"') ||
+    !audioMarkup.includes(`data-src="${music.file}"`) || !/\sloop(?:\s|>)/.test(audioMarkup) ||
+    /\s(?:autoplay|src)(?:\s|=|>)/.test(audioMarkup) || /<source\b/.test(html) ||
+    !html.includes('id="music-toggle"') || !html.includes('id="music-status" role="status"') ||
+    !html.includes(`<noscript><a class="music-fallback" href="${music.file}">`)) {
+  throw new Error("Music must remain opt-in, source-free until a press, with status and a no-JS link");
 }
 
 const colorCount = palette.groups.reduce((total, group) => total + group.colors.length, 0);
@@ -142,6 +162,7 @@ for (const marker of [
   '<script src="ocean.js?v=touch-water" type="module"></script>',
   '<script src="water.js?v=touch-water" type="module"></script>',
   '<script src="nautilus.js?v=nautilus-behind-content" type="module"></script>',
+  '<script src="music.js?v=optional-music" type="module"></script>',
   'class="nautilus-zone"',
   'class="blobfish-zone"',
   'class="angler-zone"',
@@ -177,7 +198,7 @@ if (html.indexOf('class="nautilus-zone"') > html.indexOf("<main") ||
     !html.includes('class="nautilus-zone" aria-hidden="true"') ||
     !/main,\s*footer\s*\{[^}]*position:\s*relative;[^}]*z-index:\s*2/.test(css) ||
     !/\.nautilus-zone\s*\{[^}]*position:\s*fixed;[^}]*z-index:\s*1;[^}]*pointer-events:\s*none/.test(css) ||
-    !html.includes('href="ocean.css?v=nautilus-behind-content"')) {
+    !html.includes('href="ocean.css?v=optional-music"')) {
   throw new Error("Nautilus must roam in a pointer-transparent root layer below readable content");
 }
 const hideout = html.match(/<section class="blobfish-zone"[\s\S]*?<\/section>/)?.[0] ?? "";
@@ -237,10 +258,12 @@ const assets = await listAssets(site);
 const totalBytes = (await Promise.all(assets.map(async (file) => (await stat(file)).size)))
   .reduce((total, size) => total + size, 0);
 
-// Include the transparent supplied illustration, drift module, product SVGs and all notices.
-const budget = 256 * 1024;
+// The optional track is counted in the total cap; retain the original cap for every other asset.
+const budget = 3 * 1024 * 1024;
 if (totalBytes > budget) {
-  throw new Error(`Website exceeds the 256 KiB asset budget: ${totalBytes} bytes`);
+  throw new Error(`Website exceeds the 3 MiB all-file asset budget: ${totalBytes} bytes`);
 }
+const nonAudioBytes = totalBytes - musicBytes.length;
+if (nonAudioBytes > 256 * 1024) throw new Error(`Non-audio assets exceed 256 KiB: ${nonAudioBytes} bytes`);
 
-console.log(`Validated static website: ${totalBytes} bytes across ${assets.length} files.`);
+console.log(`Validated static website: ${totalBytes} bytes across ${assets.length} files; ${nonAudioBytes} non-audio bytes.`);

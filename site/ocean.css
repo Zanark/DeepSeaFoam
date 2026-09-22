@@ -267,20 +267,26 @@
   .entry-bubbles i:nth-child(5) { left: 89%; width: 70px; filter: blur(3px); }
   .entry-bubbles i:nth-child(6) { left: 5%; width: 85px; filter: blur(4px); animation-delay: .2s; }
   .is-diving .ocean-world { animation: camera-descent 2.8s var(--ease-out) both; }
-  .dive-controls {
+  .scene-controls {
     position: fixed;
     z-index: 50;
-    bottom: 18px;
-    right: 18px;
+    bottom: max(18px, env(safe-area-inset-bottom));
+    right: max(18px, env(safe-area-inset-right));
     display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    max-width: calc(100vw - 36px);
     gap: 5px;
     padding: 4px;
     border: 1px solid var(--dsf-overlay-separator);
     border-radius: 7px;
     background: #00131BEC;
   }
-  .dive-controls button {
-    min-height: 40px;
+  .dive-controls { display: contents; }
+  .scene-controls button, .music-fallback {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     padding: 6px 13px;
     border: 0;
     border-radius: 3px;
@@ -288,9 +294,15 @@
     color: var(--dsf-solid-warm);
     font: .65rem var(--mono);
     cursor: pointer;
+    text-decoration: none;
   }
-  .dive-controls button:hover { background: var(--dsf-overlay-hover); }
-  .dive-controls button > span:first-child { color: var(--dsf-solid-accent); margin-right: 7px; }
+  .scene-controls button:hover, .music-fallback:hover { background: var(--dsf-overlay-hover); }
+  .scene-controls button > span:first-child { color: var(--dsf-solid-accent); margin-right: 7px; }
+  #skip-dive, .music-status { position: absolute; bottom: calc(100% + 8px); right: 0; background: #00131BF5; border: 1px solid var(--dsf-overlay-separator); border-radius: 7px; }
+  .music-status { width: min(280px, calc(100vw - 36px)); margin: 0; padding: 8px 10px; color: var(--dsf-solid-text); font: .65rem/1.5 var(--mono); }
+  .music-status:empty { width: 1px; height: 1px; padding: 0; border: 0; overflow: hidden; clip-path: inset(50%); }
+  #music-toggle[data-state="playing"] { background: var(--dsf-overlay-hover); }
+  #music-toggle[data-state="error"] { box-shadow: inset 0 0 0 1px var(--dsf-solid-warning); }
   .depth-gauge {
     position: fixed;
     z-index: 5;
@@ -317,7 +329,7 @@
     font: .7rem var(--mono);
     cursor: pointer;
   }
-  .copy-toast { bottom: 85px; }
+  .copy-toast { bottom: 145px; }
 
   /* Keep the free-roaming nautilus above the ocean, but below every readable surface. */
   .nautilus-zone { position: fixed; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; contain: layout paint; }
@@ -428,8 +440,8 @@
     .water-light { opacity: calc(var(--water-light) * .85); }
     .reading-shade { background: linear-gradient(90deg, transparent, #00070B99 15% 85%, transparent); }
     .depth-gauge { display: none; }
-    .dive-controls { bottom: 12px; right: 12px; }
-    .dive-controls button { min-height: 36px; padding: 6px 10px; font-size: .6rem; }
+    .scene-controls { bottom: max(12px, env(safe-area-inset-bottom)); right: max(12px, env(safe-area-inset-right)); max-width: calc(100vw - 24px); }
+    .scene-controls button, .music-fallback { padding: 6px 10px; font-size: .6rem; }
     .descent-cue { margin-top: 35px; font-size: .5rem; }
   }
   /* Freeze all motion, including the original cursor and scroll animations. */

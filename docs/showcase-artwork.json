@@ -25,5 +25,23 @@
     "license": "https://www.pexels.com/license/",
     "evidence": "Pexels photo-page ImageObject JSON-LD: contentUrl, creator, width and height; retrieved 2026-09-22",
     "use": "Named by the project owner as visual inspiration. External reference only: no image bytes are bundled or loaded automatically, and palette values are not claimed to be pixel samples."
+  },
+  "music": {
+    "file": "audio/deepseafoam-music.mp3",
+    "source": "User-supplied WAV for the website; original artist and license not supplied",
+    "sourceSha256": "5925e483d20f4e5a4e9f9dbf94ee94fde9ae3bcb1192fc10605ae7341b769152",
+    "sourceBytes": 33792044,
+    "sourceChannels": 2,
+    "sourceSampleRate": 48000,
+    "sourceSampleWidthBytes": 2,
+    "durationSeconds": 176,
+    "codec": "mp3",
+    "bitRate": 128000,
+    "processing": "Encode the full stereo track at 128 kbps MP3, preserve 48 kHz sample rate, strip source metadata; no trimming, gain, speed or pitch change",
+    "script": "scripts/prepare-music.py",
+    "encoder": "FFmpeg 7.1 / libmp3lame",
+    "bytes": 2817068,
+    "sha256": "10a981e9ffb903b1ff230585d602cbf746a21b33cb9055f43ab4b1f2c2aea7fa",
+    "use": "Website-only, opt-in looping playback. No autoplay or initial audio download. Not part of native themes or their MIT grant."
   }
 }

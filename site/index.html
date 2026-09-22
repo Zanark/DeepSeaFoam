@@ -15,11 +15,12 @@
     <link rel="manifest" href="site.webmanifest?v=seaweed-foam-cluster">
     <link rel="stylesheet" href="palette.css">
     <link rel="stylesheet" href="styles.css?v=0.5.0">
-    <link rel="stylesheet" href="ocean.css?v=nautilus-behind-content">
+    <link rel="stylesheet" href="ocean.css?v=optional-music">
     <script src="app.js" type="module"></script>
     <script src="ocean.js?v=touch-water" type="module"></script>
     <script src="water.js?v=touch-water" type="module"></script>
     <script src="nautilus.js?v=nautilus-behind-content" type="module"></script>
+    <script src="music.js?v=optional-music" type="module"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the theme</a>
@@ -88,10 +89,18 @@
       <div class="entry-bubbles"><i></i><i></i><i></i><i></i><i></i><i></i></div>
       <p>LEAVE THE SURFACE BEHIND</p>
     </div>
-    <div class="dive-controls" hidden>
-      <button id="skip-dive" type="button" hidden>Skip descent</button>
-      <button id="motion-toggle" type="button" aria-pressed="false"><span aria-hidden="true">Ⅱ</span> <span class="motion-label">Pause motion</span></button>
+    <div class="scene-controls">
+      <div class="dive-controls" hidden>
+        <button id="skip-dive" type="button" hidden>Skip descent</button>
+        <button id="motion-toggle" type="button" aria-pressed="false"><span aria-hidden="true">Ⅱ</span> <span class="motion-label">Pause motion</span></button>
+      </div>
+      <div class="music-controls" hidden>
+        <button id="music-toggle" type="button" aria-controls="background-music" aria-describedby="music-status" title="Optional background music. Use your device volume controls."><span aria-hidden="true">&#9835;</span> <span class="music-label">Play music</span></button>
+      </div>
+      <p class="music-status" id="music-status" role="status"></p>
+      <noscript><a class="music-fallback" href="audio/deepseafoam-music.mp3">Listen to the music (MP3)</a></noscript>
     </div>
+    <audio id="background-music" data-src="audio/deepseafoam-music.mp3" preload="none" loop hidden></audio>
     <div class="depth-gauge" aria-hidden="true">
       <span class="depth-track"><i></i></span>
       <div><span id="depth-zone">THE SUNLIT ZONE</span><strong id="depth-value">0000 <small>m</small></strong><small>AN IMAGINED DESCENT</small></div>
@@ -484,7 +493,7 @@
         </div>
         <div class="footer-links">
           <div><strong>Project</strong><a href="https://github.com/Zanark/DeepSeaFoam">Repository</a><a href="https://github.com/Zanark/DeepSeaFoam/releases">Releases</a></div>
-          <div><strong>Reference</strong><a href="https://github.com/Zanark/SpriteCanvas">SpriteCanvas</a><a href="https://ethanschoonover.com/solarized/">Solarized</a><a href="#photo-reference">Photographic inspiration</a><a href="icons/NOTICE.txt">Application icon credits</a><a href="artwork-NOTICE.txt">Blobfish artwork</a></div>
+          <div><strong>Reference</strong><a href="https://github.com/Zanark/SpriteCanvas">SpriteCanvas</a><a href="https://ethanschoonover.com/solarized/">Solarized</a><a href="#photo-reference">Photographic inspiration</a><a href="icons/NOTICE.txt">Application icon credits</a><a href="artwork-NOTICE.txt">Artwork and audio</a></div>
         </div>
       </div>
       <div class="footer-bottom section-shell">
