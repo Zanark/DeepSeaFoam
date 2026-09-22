@@ -19,7 +19,7 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
     state = next;
     button.dataset.state = next;
     button.setAttribute("aria-busy", String(next === "loading"));
-    label.textContent = { paused: "Play music", loading: "Cancel music", playing: "Pause music", error: "Retry music" }[next];
+    label.textContent = { paused: "Play music", blocked: "Play music", loading: "Cancel music", playing: "Pause music", error: "Retry music" }[next];
     status.textContent = message;
   }
 
@@ -30,18 +30,21 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
     render("paused");
   }
 
-  function fail(error) {
+  function fail(error, automatic = false) {
     wanted = false;
     generation++;
     audio.pause();
-    const message = error?.name === "NotAllowedError"
-      ? "Your browser blocked the music. Press Retry music to try again."
-      : "Music could not play. Check your connection and press Retry music.";
-    render("error", message);
-    console.warn("DeepSeaFoam background music could not play.", error);
+    const blocked = automatic && error?.name === "NotAllowedError";
+    const message = blocked
+      ? "Your browser requires a tap. Press Play music."
+      : error?.name === "NotAllowedError"
+        ? "Your browser blocked the music. Press Retry music to try again."
+        : "Music could not play. Check your connection and press Retry music.";
+    render(blocked ? "blocked" : "error", message);
+    if (!blocked) console.warn("DeepSeaFoam background music could not play.", error);
   }
 
-  async function play() {
+  async function play(automatic = false) {
     if (doc.hidden || disposed) return;
     wanted = true;
     const ticket = ++generation;
@@ -51,7 +54,7 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
     try {
       await audio.play();
     } catch (error) {
-      if (!disposed && ticket === generation && wanted) fail(error);
+      if (!disposed && ticket === generation && wanted) fail(error, automatic);
       return;
     }
     // An old play promise must neither restart paused music nor cancel a newer play.
@@ -77,7 +80,7 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
     if (wanted) render("loading", "Buffering music. Press Cancel music to stop.");
   });
   listen(audio, "pause", () => {
-    if (!audio.paused || state === "error") return;
+    if (!audio.paused || state === "error" || state === "blocked") return;
     wanted = false;
     generation++;
     render("paused");
@@ -91,11 +94,13 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
   });
   listen(win, "pagehide", pause);
 
-  // iOS may keep media volume under hardware control; playback still requires a press.
+  // Browsers may require a user gesture; iOS may retain hardware volume control.
   audio.volume = 0.35;
   status.hidden = false;
   render("paused");
   controls.hidden = false;
+  // History restoration must not undo the lifecycle pause, even without bfcache.
+  if (win.performance?.getEntriesByType("navigation")[0]?.type !== "back_forward") void play(true);
 
   return {
     destroy() {

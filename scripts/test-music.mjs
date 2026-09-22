@@ -13,9 +13,11 @@ class Events {
   get listenerCount() { return [...this.listeners.values()].reduce((sum, set) => sum + set.size, 0); }
 }
 
-function fixture() {
-  const doc = Object.assign(new Events(), { hidden: false });
-  const win = new Events();
+function fixture({ hidden = false, navigationType = "navigate" } = {}) {
+  const doc = Object.assign(new Events(), { hidden });
+  const win = Object.assign(new Events(), {
+    performance: { getEntriesByType: () => [{ type: navigationType }] }
+  });
   const attributes = new Map();
   const requests = [];
   const audio = Object.assign(new Events(), {
@@ -56,21 +58,30 @@ function fixture() {
 
 const settle = () => new Promise(resolve => setImmediate(resolve));
 
-test("music is opt-in and mounting never assigns a source, loads or plays", () => {
+test("visible page loads attempt music automatically at the default volume", () => {
   const f = fixture();
-  assert.equal(f.audio.getAttribute("src"), null);
-  assert.equal(f.requests.length, 0);
+  assert.equal(f.audio.getAttribute("src"), f.audio.dataset.src);
+  assert.equal(f.requests.length, 1);
   assert.equal(f.audio.loadCalls, 0);
   assert.equal(f.audio.volume, 0.35);
   assert.equal(f.controls.hidden, false);
-  assert.equal(f.label.textContent, "Play music");
+  assert.equal(f.label.textContent, "Cancel music");
   assert.equal(f.status.hidden, false);
-  assert.equal(f.status.textContent, "");
+  assert.match(f.status.textContent, /Loading/);
 });
 
-test("a press loads music, reports loading, and reflects actual playing and buffering", async () => {
+test("hidden loads and history restoration stay paused, while reloads attempt playback", () => {
+  for (const options of [{ hidden: true }, { navigationType: "back_forward" }]) {
+    const f = fixture(options);
+    assert.equal(f.requests.length, 0);
+    assert.equal(f.audio.getAttribute("src"), null);
+    assert.equal(f.label.textContent, "Play music");
+  }
+  assert.equal(fixture({ navigationType: "reload" }).requests.length, 1);
+});
+
+test("automatic playback reflects actual playing and buffering", async () => {
   const f = fixture();
-  f.click();
   assert.equal(f.audio.getAttribute("src"), f.audio.dataset.src);
   assert.equal(f.label.textContent, "Cancel music");
   assert.equal(f.button.attributes["aria-busy"], "true");
@@ -88,7 +99,7 @@ test("a press loads music, reports loading, and reflects actual playing and buff
 
 test("pause and resume preserve position without reloading or changing motion", async () => {
   const f = fixture();
-  f.click(); f.finish(); await settle();
+  f.finish(); await settle();
   f.audio.currentTime = 37;
   f.click();
   assert.equal(f.audio.paused, true);
@@ -103,7 +114,7 @@ test("pause and resume preserve position without reloading or changing motion", 
 test("cancelling a pending play suppresses its expected rejection", async t => {
   const warning = t.mock.method(console, "warn", () => {});
   const f = fixture();
-  f.click(); f.click();
+  f.click();
   f.requests[0].reject(new DOMException("Cancelled", "AbortError"));
   await settle();
   assert.equal(f.label.textContent, "Play music");
@@ -113,13 +124,13 @@ test("cancelling a pending play suppresses its expected rejection", async t => {
 
 test("late play completion cannot restart cancelled music or cancel a newer play", async () => {
   const cancelled = fixture();
-  cancelled.click(); cancelled.click(); cancelled.finish();
+  cancelled.click(); cancelled.finish();
   await settle();
   assert.equal(cancelled.audio.paused, true);
   assert.equal(cancelled.label.textContent, "Play music");
 
   const replayed = fixture();
-  replayed.click(); replayed.click(); replayed.click();
+  replayed.click(); replayed.click();
   replayed.finish(0);
   await settle();
   assert.equal(replayed.audio.paused, false);
@@ -130,11 +141,28 @@ test("late play completion cannot restart cancelled music or cancel a newer play
   assert.equal(replayed.label.textContent, "Pause music", "ignore queued pause events when media is no longer paused");
 });
 
-test("rejected playback is visible, announced, logged and retryable", async t => {
+test("blocked autoplay offers Play music without treating browser policy as a media failure", async t => {
   const warning = t.mock.method(console, "warn", () => {});
   const f = fixture();
-  f.click();
   f.requests[0].reject(new DOMException("Gesture required", "NotAllowedError"));
+  await settle();
+  assert.equal(f.label.textContent, "Play music");
+  assert.equal(f.audio.paused, true);
+  assert.match(f.status.textContent, /requires a tap/);
+  assert.equal(warning.mock.callCount(), 0);
+  f.audio.fire("pause");
+  assert.match(f.status.textContent, /requires a tap/, "queued pause events preserve the fallback explanation");
+  f.click(); f.finish(); await settle();
+  assert.equal(f.label.textContent, "Pause music");
+  assert.equal(f.requests.length, 2);
+});
+
+test("rejected manual playback is visible, announced, logged and retryable", async t => {
+  const warning = t.mock.method(console, "warn", () => {});
+  const f = fixture();
+  f.finish(); await settle(); f.click();
+  f.click();
+  f.requests[1].reject(new DOMException("Gesture required", "NotAllowedError"));
   await settle();
   assert.equal(f.label.textContent, "Retry music");
   assert.match(f.status.textContent, /browser blocked/);
@@ -148,7 +176,6 @@ test("rejected playback is visible, announced, logged and retryable", async t =>
 test("media failures retry the resource and ignore stale error events after reset", async t => {
   t.mock.method(console, "warn", () => {});
   const f = fixture();
-  f.click();
   f.audio.error = { code: 2 };
   f.audio.fire("error");
   assert.equal(f.label.textContent, "Retry music");
@@ -164,7 +191,7 @@ test("media failures retry the resource and ignore stale error events after rese
 
 test("hidden pages and navigation pause music without automatic resume", async () => {
   const f = fixture();
-  f.click(); f.finish(); await settle();
+  f.finish(); await settle();
   f.doc.hidden = true;
   f.doc.fire("visibilitychange");
   assert.equal(f.audio.paused, true);
@@ -181,8 +208,8 @@ test("hidden pages and navigation pause music without automatic resume", async (
 });
 
 test("native pause/end events update the control and hidden clicks do not play", async () => {
-  const f = fixture();
-  f.doc.hidden = true; f.click();
+  const f = fixture({ hidden: true });
+  f.click();
   assert.equal(f.requests.length, 0);
   f.doc.hidden = false; f.click(); f.finish(); await settle();
   f.audio.pause();
@@ -195,7 +222,6 @@ test("native pause/end events update the control and hidden clicks do not play",
 
 test("teardown releases media and listeners, including pending play completion", async () => {
   const f = fixture();
-  f.click();
   f.controller.destroy();
   f.controller.destroy();
   assert.equal(f.audio.getAttribute("src"), null);

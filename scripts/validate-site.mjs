@@ -130,7 +130,7 @@ if (!audioMarkup.includes('id="background-music"') || !audioMarkup.includes('pre
     /\s(?:autoplay|src)(?:\s|=|>)/.test(audioMarkup) || /<source\b/.test(html) ||
     !html.includes('id="music-toggle"') || !html.includes('id="music-status" role="status"') ||
     !html.includes(`<noscript><a class="music-fallback" href="${music.file}">`)) {
-  throw new Error("Music must remain opt-in, source-free until a press, with status and a no-JS link");
+  throw new Error("Music startup must remain controller-owned, with status, pause controls and a no-JS link");
 }
 
 const colorCount = palette.groups.reduce((total, group) => total + group.colors.length, 0);
@@ -162,7 +162,7 @@ for (const marker of [
   '<script src="ocean.js?v=touch-water" type="module"></script>',
   '<script src="water.js?v=touch-water" type="module"></script>',
   '<script src="nautilus.js?v=nautilus-behind-content" type="module"></script>',
-  '<script src="music.js?v=optional-music" type="module"></script>',
+  '<script src="music.js?v=default-music" type="module"></script>',
   'class="nautilus-zone"',
   'class="blobfish-zone"',
   'class="angler-zone"',
@@ -198,7 +198,7 @@ if (html.indexOf('class="nautilus-zone"') > html.indexOf("<main") ||
     !html.includes('class="nautilus-zone" aria-hidden="true"') ||
     !/main,\s*footer\s*\{[^}]*position:\s*relative;[^}]*z-index:\s*2/.test(css) ||
     !/\.nautilus-zone\s*\{[^}]*position:\s*fixed;[^}]*z-index:\s*1;[^}]*pointer-events:\s*none/.test(css) ||
-    !html.includes('href="ocean.css?v=optional-music"')) {
+    !html.includes('href="ocean.css?v=default-music"')) {
   throw new Error("Nautilus must roam in a pointer-transparent root layer below readable content");
 }
 const hideout = html.match(/<section class="blobfish-zone"[\s\S]*?<\/section>/)?.[0] ?? "";
@@ -258,7 +258,7 @@ const assets = await listAssets(site);
 const totalBytes = (await Promise.all(assets.map(async (file) => (await stat(file)).size)))
   .reduce((total, size) => total + size, 0);
 
-// The optional track is counted in the total cap; retain the original cap for every other asset.
+// The track is counted in the total cap; retain the original cap for every other asset.
 const budget = 3 * 1024 * 1024;
 if (totalBytes > budget) {
   throw new Error(`Website exceeds the 3 MiB all-file asset budget: ${totalBytes} bytes`);

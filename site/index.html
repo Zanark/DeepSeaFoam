@@ -15,12 +15,12 @@
     <link rel="manifest" href="site.webmanifest?v=seaweed-foam-cluster">
     <link rel="stylesheet" href="palette.css">
     <link rel="stylesheet" href="styles.css?v=0.5.0">
-    <link rel="stylesheet" href="ocean.css?v=optional-music">
+    <link rel="stylesheet" href="ocean.css?v=default-music">
     <script src="app.js" type="module"></script>
     <script src="ocean.js?v=touch-water" type="module"></script>
     <script src="water.js?v=touch-water" type="module"></script>
     <script src="nautilus.js?v=nautilus-behind-content" type="module"></script>
-    <script src="music.js?v=optional-music" type="module"></script>
+    <script src="music.js?v=default-music" type="module"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the theme</a>
@@ -95,7 +95,7 @@
         <button id="motion-toggle" type="button" aria-pressed="false"><span aria-hidden="true">Ⅱ</span> <span class="motion-label">Pause motion</span></button>
       </div>
       <div class="music-controls" hidden>
-        <button id="music-toggle" type="button" aria-controls="background-music" aria-describedby="music-status" title="Optional background music. Use your device volume controls."><span aria-hidden="true">&#9835;</span> <span class="music-label">Play music</span></button>
+        <button id="music-toggle" type="button" aria-controls="background-music" aria-describedby="music-status" title="Music starts automatically where allowed. Use your device volume controls."><span aria-hidden="true">&#9835;</span> <span class="music-label">Play music</span></button>
       </div>
       <p class="music-status" id="music-status" role="status"></p>
       <noscript><a class="music-fallback" href="audio/deepseafoam-music.mp3">Listen to the music (MP3)</a></noscript>

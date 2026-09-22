@@ -37,7 +37,7 @@ config:
 ---
 flowchart LR
   accTitle: Showcase architecture and palette boundary
-  accDescr: Generated palette assets feed swatches and CSS. Ocean state coordinates the behind-content nautilus, bubbles and water. A separate explicit music press loads a local MP3. CSS and a direct audio link provide no-JavaScript fallbacks.
+  accDescr: Generated palette assets feed swatches and CSS. Ocean state coordinates the behind-content nautilus, bubbles and water. Music attempts automatic playback, with a Play button if blocked. CSS and a direct audio link provide no-JavaScript fallbacks.
   subgraph Data["Unchanged theme data"]
     P["Canonical palette"] --> G["generate.mjs"]
     G --> A["palette.json and palette.css"]
@@ -52,16 +52,16 @@ flowchart LR
   V["visualViewport: resize and pan"] --> N
   B --> K["Bubbles: foreground above nautilus"]
   B --> W["water.js: pointer and touch wakes"]
-  H --> M["music.js: explicit playback controls"]
-  M -->|User press only| T["Local MP3: no initial audio request"]
+  H --> M["music.js: automatic start and playback controls"]
+  M -->|Autoplay or Play button| T["Local looping MP3"]
   classDef default fill:#2d333b,stroke:#6d5dfc,color:#e6edf3
   style Data fill:#161b22,stroke:#30363d,color:#e6edf3
   linkStyle default stroke:#8b949e
 ```
 
-The modules load independently from HTML; shared body classes coordinate motion rather than making palette loading a prerequisite. Music is an independent opt-in controller, not a side effect of motion, scrolling, the intro or a remembered browser preference. The diagram shows that state contract, not a JavaScript import chain. ([site/index.html:16–23](../site/index.html#L16-L23), `syncMotion`, [site/ocean.js:96–108](../site/ocean.js#L96-L108), `mountNautilus` / `blocked`, [site/nautilus.js:209–213](../site/nautilus.js#L209-L213), `mountWater`, [site/water.js:113–115](../site/water.js#L113-L115))
+The modules load independently from HTML; shared body classes coordinate motion rather than making palette loading a prerequisite. Music is an independent controller that attempts autoplay on initial visible page loads, not a side effect of motion, scrolling or the intro. The diagram shows that state contract, not a JavaScript import chain. ([site/index.html:16–23](../site/index.html#L16-L23), `syncMotion`, [site/ocean.js:96–108](../site/ocean.js#L96-L108), `mountNautilus` / `blocked`, [site/nautilus.js:209–213](../site/nautilus.js#L209-L213), `mountWater`, [site/water.js:113–115](../site/water.js#L113-L115))
 
-The nautilus zone is **fixed, `aria-hidden`, and pointer-transparent across the full viewport**, outside `main`. It uses `z-index: 1`, above the ocean world at `0` but below `main` and `footer` at `2`; the fish therefore keeps its full roaming area without painting over text or controls. Foreground kelp and bubbles remain above it at `4` and `6`. During the opening dive, `.is-diving` hides the nautilus zone and its controller suspends motion. ([site/index.html:70–91](../site/index.html#L70-L91), [site/ocean.css:1–16](../site/ocean.css#L1-L16), [site/ocean.css:109–140](../site/ocean.css#L109-L140), [site/ocean.css:334–345](../site/ocean.css#L334-L345), [site/nautilus.js:210–214](../site/nautilus.js#L210-L214))
+The nautilus zone is **fixed, `aria-hidden`, and pointer-transparent across the full viewport**, outside `main`. It uses `z-index: 1`, above the ocean world at `0` but below `main` and `footer` at `2`; the fish therefore keeps its full roaming area without painting over text or controls. Foreground kelp and bubbles remain above it at `4` and `6`. During the opening dive, `.is-diving` hides the nautilus zone and its controller suspends motion. ([site/index.html:70–91](../site/index.html#L70-L91), [site/ocean.css:1–16](../site/ocean.css#L1-L16), [site/ocean.css:109–140](../site/ocean.css#L109-L140), [site/ocean.css:335–346](../site/ocean.css#L335-L346), [site/nautilus.js:210–214](../site/nautilus.js#L210-L214))
 
 ### Components
 
@@ -70,15 +70,15 @@ The nautilus zone is **fixed, `aria-hidden`, and pointer-transparent across the 
 | Palette generation | `sitePalette` includes the three core groups; CSS also exposes the extension variables used by studies. The generator imports `addChatThemes` and `addDesktopThemes` and passes the shared `exportContext` to both, keeping exports tied to canonical roles. Do not hand-edit generated assets. ([scripts/generate.mjs:1–22](../scripts/generate.mjs#L1-L22), [scripts/generate.mjs:684–686](../scripts/generate.mjs#L684-L686), [scripts/generate.mjs:716–756](../scripts/generate.mjs#L716-L756)) |
 | Palette UI | `loadPalette` fetches local JSON; `renderPalette` creates accessible copy buttons. Failure displays a README fallback; `copyValue` has a clipboard fallback. ([site/app.js:10–108](../site/app.js#L10-L108)) |
 | Scene controls | `dive`, `finishDive`, `syncMotion`, and `updateScene` own the intro, pause state, narrative depth, and bubble emissions. ([site/ocean.js:21–108](../site/ocean.js#L21-L108)) |
-| Optional music | `mountMusic` assigns the source only on an explicit press, manages pending-play cancellation, real media events, visible retry/status and lifecycle pauses. It does not observe or modify motion state. ([site/music.js](../site/music.js), [scripts/test-music.mjs](../scripts/test-music.mjs)) |
+| Background music | `mountMusic` attempts automatic startup, falls back to Play when browser policy blocks it, and manages pending-play cancellation, real media events, visible retry/status and lifecycle pauses. It does not observe or modify motion state. ([site/music.js](../site/music.js), [scripts/test-music.mjs](../scripts/test-music.mjs)) |
 | Interactive water | `WaterField.wake` models directional pressure; `tap` creates a smooth depression and displaced rim. Both propagate through the same damped field. `mountWater` renders local-light refraction behind content. This is stylized, not fluid-accuracy validation. ([site/water.js:24–90](../site/water.js#L24-L90), [site/water.js:140–215](../site/water.js#L140-L215), [site/index.html:28–63](../site/index.html#L28-L63), [site/ocean.css:1–16](../site/ocean.css#L1-L16)) |
 | Nautilus | Pure model functions choose two-axis drift legs; `mountNautilus` owns one animation frame loop, visual-viewport fitting, observers, and cleanup. ([site/nautilus.js:38–149](../site/nautilus.js#L38-L149), [site/nautilus.js:158–342](../site/nautilus.js#L158-L342)) |
 | Application gallery | Twelve source-linked cards describe app-specific support, with local decorative product marks. These are export links, not screenshots or proof of native import compatibility. ([site/index.html:327–398](../site/index.html#L327-L398), [site/styles.css:1210–1255](../site/styles.css#L1210-L1255)) |
-| Creature reveals | Native checkboxes and CSS reveal/retract the angler and footer blobfish; no disclosure script or expanding card is required. ([site/index.html:430–463](../site/index.html#L430-L463), [site/index.html:503–534](../site/index.html#L503-L534), [site/ocean.css:345–383](../site/ocean.css#L345-L383)) |
+| Creature reveals | Native checkboxes and CSS reveal/retract the angler and footer blobfish; no disclosure script or expanding card is required. ([site/index.html:430–463](../site/index.html#L430-L463), [site/index.html:503–534](../site/index.html#L503-L534), [site/ocean.css:346–384](../site/ocean.css#L346-L384)) |
 
 ## Data flow and interaction lifecycle
 
-The no-JavaScript fallback parks the nautilus near the **lower-right corner** (`left: 80%; top: 75%`, with smaller maximum dimensions), beneath readable content rather than in front of it. Unsupported animation APIs leave that fallback intact. Reduced motion removes the inline motion transform and selects the same static corner state; ordinary pause instead freezes the current swimming pose. With an unchanged viewport, scrolling the document does not move that paused scene-layer location. Eligible animation starts from the centered model, and resuming resets the frame clock so suspended time is not replayed. ([site/ocean.css:334–345](../site/ocean.css#L334-L345), `createDrift`, [site/nautilus.js:54–65](../site/nautilus.js#L54-L65), `mountNautilus` / `sync`, [site/nautilus.js:159–174](../site/nautilus.js#L159-L174), [site/nautilus.js:216–256](../site/nautilus.js#L216-L256))
+The no-JavaScript fallback parks the nautilus near the **lower-right corner** (`left: 80%; top: 75%`, with smaller maximum dimensions), beneath readable content rather than in front of it. Unsupported animation APIs leave that fallback intact. Reduced motion removes the inline motion transform and selects the same static corner state; ordinary pause instead freezes the current swimming pose. With an unchanged viewport, scrolling the document does not move that paused scene-layer location. Eligible animation starts from the centered model, and resuming resets the frame clock so suspended time is not replayed. ([site/ocean.css:335–346](../site/ocean.css#L335-L346), `createDrift`, [site/nautilus.js:54–65](../site/nautilus.js#L54-L65), `mountNautilus` / `sync`, [site/nautilus.js:159–174](../site/nautilus.js#L159-L174), [site/nautilus.js:216–256](../site/nautilus.js#L216-L256))
 
 ```mermaid
 ---
@@ -118,15 +118,15 @@ flowchart TD
 
 `blocked` also handles collapsed bounds and shared `page-hidden` state. Intersection/resize observers are event-driven, with scroll/resize fallbacks. Persisted page navigation suspends the controller for back/forward-cache restoration; non-persisted departure destroys it. Cleanup restores the original transform, state attribute, and zone sizing, and detaches viewport listeners as well as the other observers/listeners. ([site/nautilus.js:202–218](../site/nautilus.js#L202-L218), [site/nautilus.js:258–342](../site/nautilus.js#L258-L342))
 
-`fitViewport` uses native `visualViewport.width`, `height`, `offsetLeft`, and `offsetTop`. Its resize and scroll events refit the fixed zone when browser chrome, pinch zoom, or visual-viewport panning changes the visible rectangle; no zoom gesture is intercepted. Window resize remains a fallback when `visualViewport` is unavailable. Responsive SVG dimensions and rotated-rectangle margins keep the fish inside that zone. A shrinking viewport can require repositioning into smaller bounds, including while paused; this is distinct from a swimming turn, which preserves continuous position, velocity, and acceleration. ([site/nautilus.js:11–26](../site/nautilus.js#L11-L26), `resizeDrift`, [site/nautilus.js:134–149](../site/nautilus.js#L134-L149), [site/nautilus.js:179–196](../site/nautilus.js#L179-L196), [site/nautilus.js:258–282](../site/nautilus.js#L258-L282), [site/ocean.css:335–342](../site/ocean.css#L335-L342))
+`fitViewport` uses native `visualViewport.width`, `height`, `offsetLeft`, and `offsetTop`. Its resize and scroll events refit the fixed zone when browser chrome, pinch zoom, or visual-viewport panning changes the visible rectangle; no zoom gesture is intercepted. Window resize remains a fallback when `visualViewport` is unavailable. Responsive SVG dimensions and rotated-rectangle margins keep the fish inside that zone. A shrinking viewport can require repositioning into smaller bounds, including while paused; this is distinct from a swimming turn, which preserves continuous position, velocity, and acceleration. ([site/nautilus.js:11–26](../site/nautilus.js#L11-L26), `resizeDrift`, [site/nautilus.js:134–149](../site/nautilus.js#L134-L149), [site/nautilus.js:179–196](../site/nautilus.js#L179-L196), [site/nautilus.js:258–282](../site/nautilus.js#L258-L282), [site/ocean.css:336–343](../site/ocean.css#L336-L343))
 
 The other effects have separate lifecycles:
 
 - **Intro and bubbles:** skip, Escape, Tab, navigation, pressing, and scrolling bypass the intro. A primary `pointerdown` emits at the contact point before finger release; subsequent compatibility clicks do not emit again. Scroll emissions use the visual viewport's bottom, are frame-coalesced/rate-limited, and share a 64-node cap. Pause, reduced motion, hiding, and departure clear them. (`finishDive`, `bubblesAt`, `updateScene`, [site/ocean.js:23–108](../site/ocean.js#L23-L108), [site/ocean.js:110–174](../site/ocean.js#L110-L174))
 - **Water:** fine-pointer mouse/pen movement and single-finger touch gestures create disturbances. `touchstart` injects a tap; passive `touchmove` continues directional wakes after native scrolling causes `pointercancel`. No pointer capture, `preventDefault`, or restrictive touch-action is needed. Multi-touch and cancelled contacts stop tracking; browser-chrome resizes reanchor the active contact rather than inventing a long stroke. Pause, reduced motion, blur, hiding, and navigation clear the field; rendering stops once it settles. (`startTouch`, `moveTouch`, `resize`, [site/water.js:113–138](../site/water.js#L113-L138), [site/water.js:191–309](../site/water.js#L191-L309))
-- **Native reveals:** click/tap or Space on the focused checkbox toggles each creature. Hover/focus alone does not reveal the angler. Blobfish kelp parts outward and the image rises within a fixed-height, responsive hideout; unchecking retracts it without changing section height. These controls work without JavaScript; reduced motion suppresses transitions rather than removing the controls. ([site/index.html:430–434](../site/index.html#L430-L434), [site/index.html:503–534](../site/index.html#L503-L534), [site/ocean.css:345–383](../site/ocean.css#L345-L383), [site/styles.css:1709–1726](../site/styles.css#L1709-L1726))
+- **Native reveals:** click/tap or Space on the focused checkbox toggles each creature. Hover/focus alone does not reveal the angler. Blobfish kelp parts outward and the image rises within a fixed-height, responsive hideout; unchecking retracts it without changing section height. These controls work without JavaScript; reduced motion suppresses transitions rather than removing the controls. ([site/index.html:430–434](../site/index.html#L430-L434), [site/index.html:503–534](../site/index.html#L503-L534), [site/ocean.css:346–384](../site/ocean.css#L346-L384), [site/styles.css:1709–1726](../site/styles.css#L1709-L1726))
 
-The footer cover uses **20 instances of the same kelp SVG**, each sized with `width: clamp(200px, 40%, 336px)` and its natural aspect ratio. The fish itself has no CSS opacity reduction or filter, preserving its painted colors rather than dimming it to simulate concealment. When changing responsive sizes, inspect the whole sway cycle: a frond count alone does not establish concealment. ([site/index.html:510–529](../site/index.html#L510-L529), `.blobfish` / `.cover-kelp`, [site/ocean.css:348–361](../site/ocean.css#L348-L361))
+The footer cover uses **20 instances of the same kelp SVG**, each sized with `width: clamp(200px, 40%, 336px)` and its natural aspect ratio. The fish itself has no CSS opacity reduction or filter, preserving its painted colors rather than dimming it to simulate concealment. When changing responsive sizes, inspect the whole sway cycle: a frond count alone does not establish concealment. ([site/index.html:510–529](../site/index.html#L510-L529), `.blobfish` / `.cover-kelp`, [site/ocean.css:349–362](../site/ocean.css#L349-L362))
 
 ## Implementation details
 
@@ -173,7 +173,7 @@ The linked inspiration is **[Bay with Orange Seashore Under White and Gray Cloud
 
 Only text links appear in the editorial section, with a footer jump to that section. **The photograph is never automatically fetched or bundled with the showcase**: following the source/original links is an explicit external navigation. The validator checks the three reference links and original dimensions and prohibits external `img`/`source` loading; stylesheet and script checks separately prohibit external runtime assets. ([site/index.html:283–289](../site/index.html#L283-L289), [site/index.html:494–496](../site/index.html#L494-L496), [scripts/validate-site.mjs:108–116](../scripts/validate-site.mjs#L108-L116), [scripts/validate-site.mjs:226–232](../scripts/validate-site.mjs#L226-L232))
 
-### Optional background music
+### Default background music
 
 The owner supplied a **176-second, stereo, 48 kHz, 16-bit PCM WAV**. The complete recording is encoded as **128 kbps MP3, 2,817,068 bytes**, with metadata removed and no trimming, gain, speed or pitch changes. The original WAV is not committed. A small standard-library Python wrapper invokes an existing FFmpeg/libmp3lame encoder, refuses to overwrite either the source or an existing output, and reports source/output hashes and metadata. Reproduction needs the private source and an encoder; neither is a browser dependency. ([scripts/prepare-music.py](../scripts/prepare-music.py), [docs/showcase-artwork.json](showcase-artwork.json))
 
@@ -182,26 +182,33 @@ python scripts\prepare-music.py "$sourceWav" site\audio\deepseafoam-music.mp3 --
 ```
 
 `music.js` is independent of the ocean controller. Its HTML audio element has
-`preload="none"` and **no initial `src`**; `data-src` is assigned only during an
-explicit button activation, before awaiting `play()`, preserving mobile gesture
-eligibility. **Play music / Cancel music / Pause music / Retry music** reflect
-actual playback or a pending request. A persistent live region announces loading
-and errors. The label remains actionable during loading, and stale play promises
-cannot restart paused music or cancel a newer request. ([site/music.js](../site/music.js))
+`preload="none"` and **no initial `src`** in markup, leaving startup under the
+controller's control. On a fresh visible page load, the controller assigns
+`data-src` and attempts audible playback at the user's request. A browser-policy
+`NotAllowedError` leaves **Play music** with an explanation, not a media-error
+warning or a repeated autoplay attempt. An explicit button activation calls
+`play()` before awaiting, preserving mobile gesture eligibility.
+**Play music / Cancel music / Pause music / Retry music** reflect actual playback
+or a pending request. A persistent live region announces loading, blocked
+autoplay and errors. Loading remains cancellable, and stale play promises cannot
+restart paused music or cancel a newer request. ([site/music.js](../site/music.js))
 
 Pause preserves playback position. `visibilitychange` to hidden and `pagehide`
-pause music; returning does not resume it automatically. There is no preference
-storage, autoplay, Web Audio graph or coupling to Pause motion/reduced motion.
-The source loops after opt-in playback. Element volume starts at 0.35 where the
-browser permits it; iOS may keep volume under hardware control. The no-JavaScript
-fallback is a direct MP3 link, not an eagerly loaded native player.
+pause music; returning does not resume it automatically. A `back_forward`
+navigation also skips startup when the page is reconstructed without bfcache.
+Initially hidden pages stay paused. Fresh navigation and reload attempt playback;
+there is no preference storage, Web Audio graph, muted-autoplay workaround or
+coupling to Pause motion/reduced motion. The source loops while playing. Element
+volume starts at 0.35 where the browser permits it; iOS may keep volume under
+hardware control. The no-JavaScript fallback is a direct MP3 link.
 
 Controls use a shared fixed dock with 44px minimum targets and safe-area offsets.
 The skip action and live status sit above the dock rather than shifting its
 buttons during intro completion or network loading. The music file counts toward
-the all-assets budget, and browser acceptance must verify zero audio requests
-before interaction, real keyboard/touch decoding/playback, looping, retry,
-navigation pauses and narrow/no-JavaScript layouts.
+the all-assets budget, and browser acceptance must cover both allowed and blocked
+autoplay, real keyboard/touch decoding/playback, looping, retry, navigation pauses
+and narrow/no-JavaScript layouts. No-JavaScript mode does not request audio until
+the visitor follows its direct link.
 
 The user supplied the recording for website playback, but its original artist
 and redistribution license were not supplied. Do not infer that the music is
@@ -224,9 +231,9 @@ The shared `mark.svg` paints **18 lower-half foam circles and five reflection pa
 
 ### Validation and publication boundaries
 
-`npm test` includes generated freshness, the static-site validator, and the ocean, water, color, nautilus, application-target and music suites. The music suite covers silent/source-free initialization, trusted-control flow, cancellation races, retryable failures, media events, lifecycle pauses and teardown. The nautilus suite defines **20 tests**, covering seeded two-axis travel, the exact threefold pre-confinement speed relationship, bounded/continuous turns, pause, reduced motion, visibility, resize, visual-viewport resize/pan handling, fallback APIs, and cleanup. These are source-level test contracts, not a claim that a particular deployed revision passed browser validation. ([package.json:8](../package.json#L8), [scripts/test-nautilus.mjs:12–188](../scripts/test-nautilus.mjs#L12-L188), [scripts/test-nautilus.mjs:279–500](../scripts/test-nautilus.mjs#L279-L500))
+`npm test` includes generated freshness, the static-site validator, and the ocean, water, color, nautilus, application-target and music suites. The music suite covers automatic startup, policy-blocked fallback, hidden/history initialization, trusted-control flow, cancellation races, retryable failures, media events, lifecycle pauses and teardown. The nautilus suite defines **20 tests**, covering seeded two-axis travel, the exact threefold pre-confinement speed relationship, bounded/continuous turns, pause, reduced motion, visibility, resize, visual-viewport resize/pan handling, fallback APIs, and cleanup. These are source-level test contracts, not a claim that a particular deployed revision passed browser validation. ([package.json:8](../package.json#L8), [scripts/test-nautilus.mjs:12–188](../scripts/test-nautilus.mjs#L12-L188), [scripts/test-nautilus.mjs:279–500](../scripts/test-nautilus.mjs#L279-L500))
 
-The site cap is now **3 MiB across every deployed file**, increased specifically for the user-requested music. An additional **256 KiB non-audio cap** preserves the earlier lightweight page boundary; the 2,817,068-byte MP3 is deferred until user interaction. Counting is recursive and includes the audio, transparent illustration, every module/product SVG/notice, and `.nojekyll`; nothing is omitted from the total cap. The linked-only Pexels photograph is not a deployed asset. ([site/icons/NOTICE.txt:4–14](../site/icons/NOTICE.txt#L4-L14), `listAssets` / `totalBytes` / `budget`, [scripts/validate-site.mjs:245–268](../scripts/validate-site.mjs#L245-L268))
+The site cap is now **3 MiB across every deployed file**, increased specifically for the user-requested music. An additional **256 KiB non-audio cap** preserves the earlier lightweight page boundary; the 2,817,068-byte MP3 can now load during automatic startup. Counting is recursive and includes the audio, transparent illustration, every module/product SVG/notice, and `.nojekyll`; nothing is omitted from the total cap. The linked-only Pexels photograph is not a deployed asset. ([site/icons/NOTICE.txt:4–14](../site/icons/NOTICE.txt#L4-L14), `listAssets` / `totalBytes` / `budget`, [scripts/validate-site.mjs:245–268](../scripts/validate-site.mjs#L245-L268))
 
 Validation checks the twelve-card inventory and icon hashes, blobfish hash/size/alpha/dimensions, photo attribution links, required controls, section order, behind-content layering contract, and research limits. It does not prove visual kelp occlusion, installed-app compatibility, or comfort. Browser acceptance must additionally cover wide/narrow viewports; seeded left/right/up/down/diagonal travel; bounded turns; nautilus paint below reading content with kelp and bubbles above; native click/tap-through; pause remaining fixed during document scroll; intro hiding; no-JavaScript/reduced-motion fallback; and native pinch/visual-viewport containment. Phone emulation is not physical-device or Safari validation. ([scripts/validate-site.mjs:50–116](../scripts/validate-site.mjs#L50-L116), [scripts/validate-site.mjs:154–214](../scripts/validate-site.mjs#L154-L214), [scripts/test-nautilus.mjs:25–140](../scripts/test-nautilus.mjs#L25-L140), [scripts/test-nautilus.mjs:340–414](../scripts/test-nautilus.mjs#L340-L414), [scripts/test-nautilus.mjs:481–500](../scripts/test-nautilus.mjs#L481-L500))
 

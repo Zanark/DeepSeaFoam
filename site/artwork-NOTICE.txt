@@ -14,7 +14,7 @@ Original artist and license were not supplied. This recording is not covered by
 the MIT license for original theme files and generator code.
 
 The complete 176-second stereo recording was encoded as a 128 kbps, 48 kHz MP3
-for optional playback. Source metadata was stripped; no trimming, gain, speed
+for website playback. Source metadata was stripped; no trimming, gain, speed
 or pitch changes were applied. The original WAV is not distributed here.
 Source/output hashes and the preparation command are recorded in
 docs/showcase-artwork.json and docs/SHOWCASE.md.

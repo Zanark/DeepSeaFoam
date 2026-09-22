@@ -7,7 +7,7 @@ import wave
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Encode the supplied WAV as an opt-in website MP3.")
+    parser = argparse.ArgumentParser(description="Encode the supplied WAV as a website MP3.")
     parser.add_argument("source", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--ffmpeg", default="ffmpeg")
