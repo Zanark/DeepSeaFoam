@@ -8,6 +8,7 @@ import { addDesktopThemes } from "./desktop-themes.mjs";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const palette = JSON.parse(await readFile(path.join(root, "palette", "deepseafoam.json"), "utf8"));
 const packageMetadata = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
+const themeLicense = await readFile(path.join(root, "licenses", "MIT.txt"), "utf8");
 const checkOnly = process.argv.includes("--check");
 const outputs = new Map();
 
@@ -46,12 +47,16 @@ const vscodePackage = {
   description: palette.description,
   version: palette.version,
   publisher: "zanark",
-  license: "UNLICENSED",
+  license: "MIT",
+  icon: "icon.png",
+  homepage: "https://zanark.github.io/DeepSeaFoam/",
+  bugs: { url: "https://github.com/Zanark/DeepSeaFoam/issues" },
+  keywords: ["theme", "dark", "solarized", "seafoam", "teal"],
   repository: {
     type: "git",
     url: "https://github.com/Zanark/DeepSeaFoam.git"
   },
-  files: ["themes/**", "README.md"],
+  files: ["themes/**", "README.md", "LICENSE", "icon.png"],
   engines: { vscode: "^1.90.0" },
   categories: ["Themes"],
   extensionKind: ["ui"],
@@ -679,6 +684,11 @@ add("targets/visual-studio/DeepSeaFoam.vstheme", vsTheme);
 const exportContext = { palette, add, json, solid, overlay, derived, heritage, terminal, syntaxRules: vscodeTheme.tokenColors };
 addChatThemes(exportContext);
 addDesktopThemes(exportContext);
+
+const targetNames = new Set([...outputs.keys()]
+  .filter(file => file.startsWith("targets/")).map(file => file.split("/")[1]));
+for (const target of targetNames) add(`targets/${target}/LICENSE`, themeLicense);
+add("targets/jetbrains/resources/META-INF/LICENSE", themeLicense);
 
 const activeGroups = ["solid", "overlay", "preview"];
 const swatchGroups = [...activeGroups, "terminal"];

@@ -1,0 +1,33 @@
+DeepSeaFoam - manual Visual Studio Code Marketplace upload
+
+No PAT is needed for this browser workflow.
+
+1. Open https://marketplace.visualstudio.com/manage and sign in as an owner
+   or member of the zanark publisher.
+2. Select zanark.
+3. For the first listing, choose New extension > Visual Studio Code.
+   If zanark.deepseafoam-theme already exists, use that listing's Update
+   operation instead of creating another identity.
+4. Upload DeepSeaFoam-VSCode-{{VERSION}}.vsix from this folder.
+   Upload the VSIX itself, not a ZIP containing the upload kit.
+5. Review the imported name, description, README, icon, license and version.
+   LISTING.txt contains the intended identity and copy if the portal asks.
+6. The account owner must personally handle any unaccepted agreement,
+   account verification or public-contact declarations.
+7. Submit, then wait for Marketplace validation. Do not call it published
+   until the portal reports success and the public listing resolves.
+
+Expected identity: zanark.deepseafoam-theme
+Expected public URL after approval:
+https://marketplace.visualstudio.com/items?itemName=zanark.deepseafoam-theme
+
+The VSIX includes the color-theme JSON, manifest, README, MIT license and
+128x128 PNG icon. It contains no executable extension code or dependencies.
+Screenshots are optional for this VS Code submission; none are fabricated.
+
+Installation after approval:
+Extensions > search "DeepSeaFoam" > Install
+Preferences: Color Theme > DeepSeaFoam
+
+This kit does not publish a Visual Studio IDE extension. That separate target
+currently ships .vstheme source and needs its own IDE VSIX packaging.

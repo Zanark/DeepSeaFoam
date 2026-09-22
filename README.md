@@ -42,6 +42,10 @@ The twelve application cards use locally hosted, lazy-loaded SVGs in their origi
 
 ## Download
 
+The original theme files and generator code are now available under the [MIT license](licenses/MIT.txt). This is **not a blanket artwork license**: [scope and exclusions](LICENSE) preserve third-party marks, upstream notices, and the supplied blobfish's unresolved rights. Marketplace submission and approval are separate from GitHub release availability.
+
+Version **0.5.1** packages that license without changing theme colors. Existing releases are not replaced. [Publication routes and current status](docs/PUBLISHING.md) distinguish downloadable files, submitted listings and approved directory entries.
+
 Download the current packages from the [latest GitHub release](https://github.com/Zanark/DeepSeaFoam/releases/latest):
 
 | Asset | Intended use |
@@ -59,6 +63,7 @@ Download the current packages from the [latest GitHub release](https://github.co
 | `DeepSeaFoam-SublimeText-<version>.sublime-color-scheme` | Sublime Text 4 editor/syntax color scheme |
 | `DeepSeaFoam-Alacritty-<version>.toml` | Colors-only fragment imported into an existing Alacritty config |
 | `DeepSeaFoam-<version>.zip` | Complete palette, documentation, generator, and all application exports |
+| `DeepSeaFoam-Themes-LICENSE.txt` | MIT license for original theme files; retain with redistributed single-file exports |
 | `SHA256SUMS.txt` | SHA-256 checksums for every release asset |
 
 The showcase on `main` and GitHub Pages can advance independently of immutable source bundles. Website-only refinements do not require a palette version bump or replacement artifacts; **0.5.0 is a new release for the additional application exports**, leaving all earlier assets untouched.

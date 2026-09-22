@@ -1,0 +1,34 @@
+Publisher ID: zanark
+Extension ID: deepseafoam-theme
+Display name: DeepSeaFoam
+Version: {{VERSION}}
+Category: Themes
+License for original theme/code: MIT
+Minimum VS Code version: 1.90.0
+Pricing: Free
+
+Short description:
+A quiet workstation beneath deep water, with small seafoam-colored signals and warm light illuminating what matters.
+
+Overview:
+DeepSeaFoam is a dark theme with a near-black teal editor (#000F13),
+blue-green surrounding panels (#001E26), vivid seafoam focus signals and
+warm ivory emphasis. It is derived from Solarized, not simply Solarized Dark
+renamed.
+
+The extension themes the VS Code workbench, editor, syntax, diagnostics,
+semantic tokens and integrated terminal. Its terminal keeps the separately
+documented higher-contrast palette. It does not install scenery, change user
+documents or inject executable extension code.
+
+Install the extension and select DeepSeaFoam through Preferences: Color Theme.
+Disable/uninstall it and select your previous theme to restore the old look.
+Extension-contributed webviews may not inherit every workbench color.
+
+Homepage: https://zanark.github.io/DeepSeaFoam/
+Source: https://github.com/Zanark/DeepSeaFoam
+Issues: https://github.com/Zanark/DeepSeaFoam/issues
+Solarized attribution: https://ethanschoonover.com/solarized/
+
+Use the packaged README for the complete rendered overview.
+Do not claim Microsoft endorsement or universal eye-health benefits.

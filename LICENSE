@@ -1,0 +1,16 @@
+DeepSeaFoam license scope
+
+The original DeepSeaFoam application theme files under targets/ and generator
+and supporting code under scripts/ are licensed under the MIT License in
+licenses/MIT.txt. That license is also distributed with the application themes.
+
+This grant does not relicense third-party material or product marks. Existing
+upstream licenses and notices remain applicable. Solarized remains credited to
+Ethan Schoonover; see https://ethanschoonover.com/solarized/.
+
+No blanket license is granted for showcase artwork, photographs or third-party
+icons. In particular, the supplied blobfish illustration has no established
+redistribution license. See site/artwork-NOTICE.txt, site/icons/NOTICE.txt,
+docs/showcase-artwork.json and docs/application-icons.json for provenance and
+the applicable notices. Excluding artwork from this MIT grant is not a claim
+that its existing rights have changed.

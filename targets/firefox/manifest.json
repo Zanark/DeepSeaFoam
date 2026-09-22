@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "DeepSeaFoam",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A quiet workstation beneath deep water, with small seafoam-colored signals and warm light illuminating what matters.",
   "browser_specific_settings": {
     "gecko": {

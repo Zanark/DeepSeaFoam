@@ -2,16 +2,30 @@
   "name": "deepseafoam-theme",
   "displayName": "DeepSeaFoam",
   "description": "A quiet workstation beneath deep water, with small seafoam-colored signals and warm light illuminating what matters.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "publisher": "zanark",
-  "license": "UNLICENSED",
+  "license": "MIT",
+  "icon": "icon.png",
+  "homepage": "https://zanark.github.io/DeepSeaFoam/",
+  "bugs": {
+    "url": "https://github.com/Zanark/DeepSeaFoam/issues"
+  },
+  "keywords": [
+    "theme",
+    "dark",
+    "solarized",
+    "seafoam",
+    "teal"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Zanark/DeepSeaFoam.git"
   },
   "files": [
     "themes/**",
-    "README.md"
+    "README.md",
+    "LICENSE",
+    "icon.png"
   ],
   "engines": {
     "vscode": "^1.90.0"

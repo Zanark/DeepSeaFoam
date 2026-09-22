@@ -76,11 +76,13 @@ try {
             (Join-Path $repoRoot "targets\$($asset.Target)\DeepSeaFoam.$($asset.Extension)") `
             (Join-Path $dist "DeepSeaFoam-$($asset.Name)-$Version.$($asset.Extension)")
     }
+    Copy-Item (Join-Path $repoRoot "licenses\MIT.txt") (Join-Path $dist "DeepSeaFoam-Themes-LICENSE.txt")
 
     Compress-Archive `
         -Path @(
             (Join-Path $repoRoot "targets\chromium\manifest.json"),
-            (Join-Path $repoRoot "targets\chromium\README.md")
+            (Join-Path $repoRoot "targets\chromium\README.md"),
+            (Join-Path $repoRoot "targets\chromium\LICENSE")
         ) `
         -DestinationPath (Join-Path $dist "DeepSeaFoam-Chromium-$Version.zip") `
         -CompressionLevel Optimal
@@ -97,6 +99,7 @@ try {
     Copy-Item (Join-Path $repoRoot "targets\obsidian\manifest.json") $obsidianTheme
     Copy-Item (Join-Path $repoRoot "targets\obsidian\theme.css") $obsidianTheme
     Copy-Item (Join-Path $repoRoot "targets\obsidian\README.md") $obsidianTheme
+    Copy-Item (Join-Path $repoRoot "targets\obsidian\LICENSE") $obsidianTheme
     Compress-Archive `
         -Path $obsidianTheme `
         -DestinationPath (Join-Path $dist "DeepSeaFoam-Obsidian-$Version.zip") `
@@ -107,12 +110,15 @@ try {
     $bundle = Join-Path $bundleRoot "DeepSeaFoam-$Version"
     New-Item -ItemType Directory -Path $bundle -Force | Out-Null
     Copy-Item (Join-Path $repoRoot "README.md") $bundle
+    Copy-Item (Join-Path $repoRoot "LICENSE") $bundle
+    Copy-Item (Join-Path $repoRoot "licenses") $bundle -Recurse
     Copy-Item (Join-Path $repoRoot "package.json") $bundle
     Copy-Item (Join-Path $repoRoot ".gitattributes") $bundle
     Copy-Item (Join-Path $repoRoot ".gitignore") $bundle
     Copy-Item (Join-Path $repoRoot "palette") $bundle -Recurse
     Copy-Item (Join-Path $repoRoot "docs") $bundle -Recurse
     Copy-Item (Join-Path $repoRoot "scripts") $bundle -Recurse
+    Copy-Item (Join-Path $repoRoot "publishing") $bundle -Recurse
     Copy-Item (Join-Path $repoRoot "site") $bundle -Recurse
     Copy-Item (Join-Path $repoRoot "targets") $bundle -Recurse
     $chromiumCache = Join-Path $bundle "targets\chromium\Cached Theme.pak"
@@ -136,6 +142,17 @@ try {
         [string[]]$checksumLines,
         [System.Text.UTF8Encoding]::new($false)
     )
+
+    $vscodeUpload = Join-Path $dist "marketplace\vscode"
+    New-Item -ItemType Directory -Path $vscodeUpload -Force | Out-Null
+    Copy-Item (Join-Path $dist "DeepSeaFoam-VSCode-$Version.vsix") $vscodeUpload
+    Get-ChildItem (Join-Path $repoRoot "publishing\vscode\*.txt") | ForEach-Object {
+        $text = (Get-Content -Raw $_.FullName).Replace("{{VERSION}}", $Version)
+        [System.IO.File]::WriteAllText(
+            (Join-Path $vscodeUpload $_.Name), $text, [System.Text.UTF8Encoding]::new($false)
+        )
+    }
+    Copy-Item (Join-Path $repoRoot "targets\vscode\icon.png") $vscodeUpload
 
     Get-ChildItem -Path $dist -File |
         Sort-Object Name |
