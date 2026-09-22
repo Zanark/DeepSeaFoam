@@ -32,7 +32,8 @@ try {
     foreach ($xmlPath in @(
         "targets\visual-studio\DeepSeaFoam.vstheme",
         "targets\jetbrains\resources\META-INF\plugin.xml",
-        "targets\jetbrains\resources\DeepSeaFoam.xml"
+        "targets\jetbrains\resources\DeepSeaFoam.xml",
+        "targets\notepad-plus-plus\DeepSeaFoam.xml"
     )) {
         $null = [xml](Get-Content -Raw (Join-Path $repoRoot $xmlPath))
     }
@@ -66,10 +67,15 @@ try {
         @{ Target = "windows-terminal"; Name = "WindowsTerminal"; Extension = "json" },
         @{ Target = "visual-studio"; Name = "VisualStudio"; Extension = "vstheme" },
         @{ Target = "discord"; Name = "Discord"; Extension = "theme.css" },
+        @{ Target = "discord"; Name = "BetterDiscord"; Extension = "theme.css" },
         @{ Target = "telegram"; Name = "TelegramDesktop"; Extension = "tdesktop-theme" },
         @{ Target = "slack"; Name = "Slack"; Extension = "txt" },
         @{ Target = "sublime-text"; Name = "SublimeText"; Extension = "sublime-color-scheme" },
-        @{ Target = "alacritty"; Name = "Alacritty"; Extension = "toml" }
+        @{ Target = "alacritty"; Name = "Alacritty"; Extension = "toml" },
+        @{ Target = "notepad-plus-plus"; Name = "NotepadPlusPlus"; Extension = "xml" },
+        @{ Target = "rofi"; Name = "Rofi"; Extension = "rasi" },
+        @{ Target = "xfce4-terminal"; Name = "Xfce4Terminal"; Extension = "theme" },
+        @{ Target = "godot"; Name = "Godot"; Extension = "tet" }
     )
     foreach ($asset in $singleFiles) {
         Copy-Item `
@@ -77,6 +83,20 @@ try {
             (Join-Path $dist "DeepSeaFoam-$($asset.Name)-$Version.$($asset.Extension)")
     }
     Copy-Item (Join-Path $repoRoot "licenses\MIT.txt") (Join-Path $dist "DeepSeaFoam-Themes-LICENSE.txt")
+
+    foreach ($asset in @(
+        @{ Target = "zsh"; Name = "Zsh" },
+        @{ Target = "termux"; Name = "Termux" },
+        @{ Target = "github-pages"; Name = "GitHubPages" },
+        @{ Target = "nova-launcher"; Name = "NovaLauncher" }
+    )) {
+        [System.IO.Compression.ZipFile]::CreateFromDirectory(
+            (Join-Path $repoRoot "targets\$($asset.Target)"),
+            (Join-Path $dist "DeepSeaFoam-$($asset.Name)-$Version.zip"),
+            [System.IO.Compression.CompressionLevel]::Optimal,
+            $false
+        )
+    }
 
     Compress-Archive `
         -Path @(

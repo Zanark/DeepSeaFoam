@@ -1,0 +1,62 @@
+/* Generated from palette/deepseafoam.json. Default layout, colors only. */
+@theme "default"
+
+* {
+    background: #000F13;
+    foreground: #93A1A1;
+    border-color: #586E75;
+    separatorcolor: #586E7566;
+    normal-background: #000F13;
+    normal-foreground: #93A1A1;
+    active-background: #000F13;
+    active-foreground: #00A591;
+    urgent-background: #000F13;
+    urgent-foreground: #E84A5F;
+    alternate-normal-background: #001E26;
+    alternate-normal-foreground: #93A1A1;
+    alternate-active-background: #001E26;
+    alternate-active-foreground: #00A591;
+    alternate-urgent-background: #001E26;
+    alternate-urgent-foreground: #E84A5F;
+    selected-normal-background: #002526;
+    selected-normal-foreground: #EEE8D5;
+    selected-active-background: #00A591;
+    selected-active-foreground: #000F13;
+    selected-urgent-background: #E84A5F;
+    selected-urgent-foreground: #000F13;
+}
+
+window {
+    background-color: @background;
+}
+
+inputbar, message {
+    background-color: #001E26;
+}
+
+prompt {
+    text-color: #00A591;
+}
+
+entry {
+    text-color: #EEE8D5;
+    placeholder-color: #839496;
+    cursor-color: #FDF6E3;
+}
+
+num-filtered-rows, num-rows, textbox-num-sep {
+    text-color: #839496;
+}
+
+overlay {
+    background-color: #00A591;
+    text-color: #000F13;
+}
+
+element-text {
+    highlight: bold;
+}
+
+scrollbar {
+    handle-color: #586E75;
+}

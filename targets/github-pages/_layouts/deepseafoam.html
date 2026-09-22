@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="{{ page.lang | default: site.lang | default: 'en' | escape }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title | default: site.title | escape }}</title>
+  <meta name="description" content="{{ page.description | default: site.description | escape }}">
+  <link rel="stylesheet" href="{{ '/assets/css/deepseafoam.css' | relative_url }}">
+</head>
+<body class="deepseafoam">
+  <a class="dsf-skip" href="#content">Skip to content</a>
+  <header class="dsf-header"><div class="dsf-shell">
+    <a class="dsf-brand" href="{{ '/' | relative_url }}">{{ site.title | escape }}</a>
+    {% if site.deepseafoam_nav %}
+    <nav aria-label="Main navigation">{% for item in site.deepseafoam_nav %}<a href="{{ item.url | relative_url | escape }}">{{ item.title | escape }}</a>{% endfor %}</nav>
+    {% endif %}
+  </div></header>
+  <main id="content" class="dsf-shell dsf-content" tabindex="-1">{{ content }}</main>
+  <footer class="dsf-footer"><div class="dsf-shell">{{ site.title | escape }}</div></footer>
+</body>
+</html>

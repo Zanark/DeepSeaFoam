@@ -300,7 +300,7 @@ test("all target guides document restoration and packaging source mirrors stay i
 test("all theme distributions carry the approved MIT license without relicensing showcase artwork", async () => {
   const license = (await read("licenses/MIT.txt")).replace(/\r\n/g, "\n");
   assert.match(license, /^MIT License/);
-  for (const target of ["vscode", "visual-studio", "obsidian", "windows-terminal", "firefox", "discord", "telegram", "slack", "chromium", "jetbrains", "sublime-text", "alacritty", "monkeytype"]) {
+  for (const target of ["vscode", "visual-studio", "obsidian", "windows-terminal", "firefox", "discord", "telegram", "slack", "chromium", "jetbrains", "sublime-text", "alacritty", "monkeytype", "notepad-plus-plus", "zsh", "rofi", "xfce4-terminal", "termux", "github-pages", "godot", "nova-launcher"]) {
     assert.equal((await read(`targets/${target}/LICENSE`)).replace(/\r\n/g, "\n"), license, target);
   }
   assert.equal((await read("targets/jetbrains/resources/META-INF/LICENSE")).replace(/\r\n/g, "\n"), license);

@@ -4,9 +4,11 @@ import { mountMusic } from "../site/music.js";
 
 class Events {
   listeners = new Map();
-  addEventListener(type, callback) {
+  listenerOptions = new Map();
+  addEventListener(type, callback, options) {
     if (!this.listeners.has(type)) this.listeners.set(type, new Set());
     this.listeners.get(type).add(callback);
+    this.listenerOptions.set(type, options);
   }
   removeEventListener(type, callback) { this.listeners.get(type)?.delete(callback); }
   fire(type, event = {}) { for (const callback of this.listeners.get(type) ?? []) callback({ type, ...event }); }
@@ -58,6 +60,10 @@ function fixture({ hidden = false, navigationType = "navigate", diveState = "com
 }
 
 const settle = () => new Promise(resolve => setImmediate(resolve));
+const scrollGestures = [
+  ["wheel", { isTrusted: true, deltaY: 120 }],
+  ["touchmove", { isTrusted: true, touches: [{ identifier: 0 }] }]
+];
 
 test("visible loads with an already-complete intro attempt music at the default volume", () => {
   const f = fixture();
@@ -176,10 +182,10 @@ test("blocked autoplay offers Play music without treating browser policy as a me
   await settle();
   assert.equal(f.label.textContent, "Play music");
   assert.equal(f.audio.paused, true);
-  assert.match(f.status.textContent, /Tap anywhere/);
+  assert.match(f.status.textContent, /Scroll, tap or click/);
   assert.equal(warning.mock.callCount(), 0);
   f.audio.fire("pause");
-  assert.match(f.status.textContent, /Tap anywhere/, "queued pause events preserve the fallback explanation");
+  assert.match(f.status.textContent, /Scroll, tap or click/, "queued pause events preserve the fallback explanation");
   f.click(); f.finish(); await settle();
   assert.equal(f.label.textContent, "Pause music");
   assert.equal(f.requests.length, 2);
@@ -209,6 +215,116 @@ test("music-control activation does not race the page-wide startup retry", async
   assert.equal(f.requests.length, 1);
   f.click(); f.finish(); await settle();
   assert.equal(f.label.textContent, "Pause music");
+});
+
+test("the first wheel or touch-scroll retries once, keeping tap and click recovery available", async () => {
+  for (const [type, event] of scrollGestures) {
+    const f = fixture();
+    for (const [scrollType] of scrollGestures) {
+      assert.deepEqual(f.doc.listenerOptions.get(scrollType), { capture: true, passive: true });
+    }
+    f.requests[0].reject(new DOMException("Gesture required", "NotAllowedError"));
+    await settle();
+    f.doc.fire(type, event);
+    assert.equal(f.requests.length, 2);
+    for (let i = 0; i < 10; i++) {
+      for (const [scrollType, scrollEvent] of scrollGestures) f.doc.fire(scrollType, scrollEvent);
+    }
+    assert.equal(f.requests.length, 2, "do not overlap a pending play");
+    f.requests[1].reject(new DOMException("Scroll is not activation", "NotAllowedError"));
+    await settle();
+    assert.match(f.status.textContent, /browser still blocks sound/);
+    for (const [scrollType, scrollEvent] of scrollGestures) f.doc.fire(scrollType, scrollEvent);
+    assert.equal(f.requests.length, 2, "blocked scrolling must not create repeated retries");
+    f.doc.fire(type === "wheel" ? "click" : "touchend", { isTrusted: true });
+    assert.equal(f.requests.length, 3);
+    f.finish(); await settle();
+    assert.equal(f.label.textContent, "Pause music");
+  }
+});
+
+test("a first scroll can finish the dive without early playback or a second scroll attempt", async () => {
+  for (const [type, event] of scrollGestures) {
+    const f = fixture({ diveState: "running" });
+    f.doc.fire(type, event);
+    assert.equal(f.requests.length, 0);
+    f.doc.body.dataset.diveState = "complete";
+    f.doc.fire("deepseafoam:dive-complete");
+    assert.equal(f.requests.length, 1);
+    f.requests[0].reject(new DOMException("Gesture required", "NotAllowedError"));
+    await settle();
+    f.doc.fire(type, event);
+    assert.equal(f.requests.length, 1);
+    f.doc.fire("pointerup", { isTrusted: true });
+    f.finish(); await settle();
+    assert.equal(f.label.textContent, "Pause music");
+  }
+});
+
+test("scripted scrolls, synthetic input, pinch zoom and empty wheel events do not consume the retry", async () => {
+  const f = fixture();
+  f.requests[0].reject(new DOMException("Gesture required", "NotAllowedError"));
+  await settle();
+  f.doc.fire("scroll", { isTrusted: true });
+  f.win.fire("scroll", { isTrusted: true });
+  for (const [type, event] of scrollGestures) {
+    f.doc.fire(type, { ...event, isTrusted: false });
+    for (const modifier of ["ctrlKey", "metaKey", "altKey"]) {
+      f.doc.fire(type, { ...event, [modifier]: true });
+    }
+  }
+  f.doc.fire("touchmove", { isTrusted: true, touches: [{}, {}] });
+  f.doc.fire("touchmove", { isTrusted: true, touches: [] });
+  f.doc.fire("wheel", { isTrusted: true, deltaX: 0, deltaY: 0 });
+  assert.equal(f.requests.length, 1);
+  f.doc.fire("wheel", { isTrusted: true, deltaX: 80, deltaY: 0 });
+  assert.equal(f.requests.length, 2, "horizontal trackpad scrolling also qualifies");
+  f.finish(); await settle();
+  assert.equal(f.label.textContent, "Pause music");
+});
+
+test("scrolling over the music control is not mistaken for clicking Cancel", async () => {
+  for (const [type, event] of scrollGestures) {
+    const f = fixture();
+    f.requests[0].reject(new DOMException("Gesture required", "NotAllowedError"));
+    await settle();
+    f.doc.fire(type, { ...event, target: f.button });
+    assert.equal(f.requests.length, 2);
+    f.click();
+    f.finish(); await settle();
+    assert.equal(f.audio.paused, true, "Cancel still wins over a pending scroll-started play");
+    f.doc.fire("click", { isTrusted: true });
+    assert.equal(f.requests.length, 2);
+  }
+});
+
+test("scrolling cannot undo cancellation, pause, lifecycle silence or real media failure", async t => {
+  t.mock.method(console, "warn", () => {});
+  for (const scenario of ["cancel", "pause", "hidden", "history", "visibility", "pagehide", "error"]) {
+    const f = fixture({
+      hidden: scenario === "hidden",
+      navigationType: scenario === "history" ? "back_forward" : "navigate",
+      diveState: scenario === "cancel" ? "running" : "complete"
+    });
+    if (scenario === "cancel") f.click();
+    if (scenario === "pause") { f.finish(); await settle(); f.click(); }
+    if (scenario === "visibility") {
+      f.doc.hidden = true; f.doc.fire("visibilitychange");
+      f.doc.hidden = false; f.doc.fire("visibilitychange");
+    }
+    if (scenario === "pagehide") { f.win.fire("pagehide"); f.win.fire("pageshow"); }
+    if (scenario === "error") {
+      f.audio.error = { code: 2 };
+      f.audio.fire("error");
+    }
+    const count = f.requests.length;
+    for (const [type, event] of scrollGestures) f.doc.fire(type, event);
+    f.doc.body.dataset.diveState = "complete";
+    f.doc.fire("deepseafoam:dive-complete");
+    assert.equal(f.requests.length, count, scenario);
+    assert.equal(f.audio.paused, true, scenario);
+    f.controller.destroy();
+  }
 });
 
 test("leaving during the dive cancels its queued music", () => {

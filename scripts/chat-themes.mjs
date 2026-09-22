@@ -175,9 +175,10 @@ export function addChatThemes({ palette, add, solid, overlay, derived }) {
   add("targets/discord/DeepSeaFoam.theme.css", `/**
  * @name DeepSeaFoam
  * @author Zanark
- * @description Unofficial DeepSeaFoam recolor for existing modified Discord desktop clients.
+ * @description Unofficial DeepSeaFoam theme for existing BetterDiscord or Vencord desktop clients.
  * @version ${palette.version}
  * @source https://github.com/Zanark/DeepSeaFoam
+ * @website https://zanark.github.io/DeepSeaFoam/
  */
 
 /* Generated from palette/deepseafoam.json.

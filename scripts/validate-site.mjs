@@ -49,9 +49,10 @@ const canonical = JSON.parse(await readFile(path.join(root, "palette", "deepseaf
 const manifest = JSON.parse(manifestText);
 const { icons } = JSON.parse(await readFile(path.join(root, "docs", "application-icons.json"), "utf8"));
 const appIds = ["vscode", "visual-studio", "obsidian", "terminal", "firefox",
-  "discord", "telegram", "slack", "chrome", "jetbrains", "sublime-text", "alacritty", "monkeytype"];
+  "discord", "telegram", "slack", "chrome", "jetbrains", "sublime-text", "alacritty", "monkeytype",
+  "notepad-plus-plus", "zsh", "rofi", "xfce-terminal", "termux", "github-pages", "godot", "nova-launcher"];
 if (icons.length !== appIds.length || icons.some((icon, index) => icon.id !== appIds[index])) {
-  throw new Error("Application icon provenance must cover all thirteen cards exactly once");
+  throw new Error("Application icon provenance must cover all twenty-one cards exactly once");
 }
 if ((html.match(/class="app-card app-/g) ?? []).length !== appIds.length ||
     !html.includes(`<dt>${appIds.length}</dt><dd>app targets</dd>`)) {
@@ -60,24 +61,63 @@ if ((html.match(/class="app-card app-/g) ?? []).length !== appIds.length ||
 for (const icon of icons) {
   const card = html.match(new RegExp(`<a class="app-card app-${icon.id}"[^>]*>[\\s\\S]*?</a>`))?.[0];
   if (!card) throw new Error(`Missing application card: ${icon.id}`);
-  if (!/^[a-z-]+\.svg$/.test(icon.file)) throw new Error(`Invalid icon filename: ${icon.file}`);
+  if (!/^[a-z-]+\.(svg|webp)$/.test(icon.file)) throw new Error(`Invalid icon filename: ${icon.file}`);
   const bytes = await readFile(path.join(site, "icons", icon.file));
   if (createHash("sha256").update(bytes).digest("hex") !== icon.sha256) {
     throw new Error(`Application artwork differs from its recorded asset hash: ${icon.file}`);
   }
-  const svg = bytes.toString("utf8");
-  if (icon.id === "monkeytype") {
-    const original = svg.replace(/^<svg fill="#e2b714" /, "<svg ").replace(/\r\n$/, "");
-    if (icon.derivation?.type !== "root-fill" || icon.derivation.fill !== "#e2b714" ||
-        icon.derivation.trailingNewline !== "CRLF" || !svg.startsWith('<svg fill="#e2b714" ') ||
-        !svg.endsWith("\r\n") || createHash("sha256").update(original).digest("hex") !== icon.sourceSha256) {
-      throw new Error("Monkeytype may change only the documented root fill and final newline, not source geometry");
+  let svg = bytes.toString("utf8");
+  if (icon.raster) {
+    if (!/^docs\/icon-sources\/[a-z-]+\.svg$/.test(icon.raster.source) ||
+        icon.raster.format !== "lossless-webp" || !icon.file.endsWith(".webp") ||
+        bytes.toString("ascii", 0, 4) !== "RIFF" || bytes.toString("ascii", 8, 12) !== "WEBP" ||
+        bytes.toString("ascii", 12, 16) !== "VP8L" || bytes[20] !== 0x2f) {
+      throw new Error(`Invalid lossless icon raster: ${icon.id}`);
+    }
+    const dimensions = bytes.readUInt32LE(21);
+    if ((dimensions & 0x3fff) + 1 !== icon.raster.width ||
+        ((dimensions >>> 14) & 0x3fff) + 1 !== icon.raster.height ||
+        icon.raster.width !== 144 || icon.raster.height !== 144) {
+      throw new Error(`Icon raster dimensions must preserve the 144px source: ${icon.id}`);
+    }
+    const source = await readFile(path.join(root, icon.raster.source));
+    if (createHash("sha256").update(source).digest("hex") !== icon.raster.sha256) {
+      throw new Error(`Icon SVG render source changed: ${icon.id}`);
+    }
+    svg = source.toString("utf8");
+  } else if (!icon.file.endsWith(".svg")) {
+    throw new Error(`Raster icon is missing its source/derivation: ${icon.id}`);
+  }
+  if (icon.derivation?.type === "root-fill") {
+    const { fill, trailingNewline } = icon.derivation;
+    if (!/^#[\da-f]{6}$/.test(fill) || !["LF", "CRLF"].includes(trailingNewline)) {
+      throw new Error(`Invalid documented root-fill derivation: ${icon.id}`);
+    }
+    const ending = trailingNewline === "CRLF" ? "\r\n" : "\n";
+    const prefix = `<svg fill="${fill}" `;
+    const original = svg.startsWith(prefix) && svg.endsWith(ending)
+      ? `<svg ${svg.slice(prefix.length, -ending.length)}` : "";
+    if (!original || createHash("sha256").update(original).digest("hex") !== icon.sourceSha256) {
+      throw new Error(`${icon.id} may change only the documented root fill and final newline, not source geometry`);
     }
     const license = await readFile(path.join(site, "icons", icon.license));
-    if (icon.license !== "LICENSE-logos.txt" || !license.toString("utf8").startsWith("CC0 1.0 Universal") ||
-        createHash("sha256").update(license).digest("hex") !== icon.licenseSha256) {
-      throw new Error("Monkeytype must retain the verified shared full CC0 license");
+    if (createHash("sha256").update(license).digest("hex") !== icon.licenseSha256 ||
+        (icon.licenseType === "CC-BY-4.0"
+          ? !license.toString("utf8").includes("creativecommons.org/licenses/by/4.0/")
+          : icon.license !== "LICENSE-logos.txt" || !license.toString("utf8").startsWith("CC0 1.0 Universal"))) {
+      throw new Error(`The verified icon license must be retained: ${icon.id}`);
     }
+  }
+  if (icon.id === "monkeytype" && (icon.derivation?.fill !== "#e2b714" ||
+      icon.derivation.trailingNewline !== "CRLF")) throw new Error("Preserve the existing Monkeytype derivation");
+  if (["rofi", "nova-launcher"].includes(icon.id) &&
+      (icon.sourceKind !== "original-text-identifier" || icon.license !== "LICENSE-identifiers.txt" ||
+       !svg.includes("not an official logo"))) {
+    throw new Error(`Unverified product artwork must not replace the disclosed text identifier: ${icon.id}`);
+  }
+  if (icon.id === "termux" && (icon.sourceKind !== "wikimedia-pd-shape" ||
+      icon.rightsSource !== "https://commons.wikimedia.org/wiki/File:Termux.svg")) {
+    throw new Error("Termux must retain its specific Commons PD-shape provenance");
   }
   const references = [
     ...[...svg.matchAll(/\bhref=["']([^"']+)["']/g)].map((match) => match[1]),
@@ -88,7 +128,7 @@ for (const icon of icons) {
     throw new Error(`Application icon must be a self-contained, passive SVG: ${icon.file}`);
   }
   if (!card?.includes(`src="icons/${icon.file}"`) || !card.includes('loading="lazy" alt=""')) {
-    throw new Error(`Application card must use its local decorative SVG: ${icon.id}`);
+    throw new Error(`Application card must use its local decorative artwork: ${icon.id}`);
   }
   if (icon.license) await access(path.join(site, "icons", icon.license));
 }
@@ -198,7 +238,7 @@ for (const marker of [
   '<script src="ocean.js?v=dive-music" type="module"></script>',
   '<script src="water.js?v=touch-water" type="module"></script>',
   '<script src="nautilus.js?v=nautilus-behind-content" type="module"></script>',
-  '<script src="music.js?v=dive-music" type="module"></script>',
+  '<script src="music.js?v=scroll-music" type="module"></script>',
   'class="nautilus-zone"',
   'class="blobfish-zone"',
   'class="angler-zone"',
@@ -301,14 +341,14 @@ const assets = await listAssets(site);
 const totalBytes = (await Promise.all(assets.map(async (file) => (await stat(file)).size)))
   .reduce((total, size) => total + size, 0);
 
-// The track is counted in the total cap; retain the original cap for every other asset.
+// The eight added cards/icons receive 16 KiB; photo and all-file caps stay fixed.
 const budget = 3 * 1024 * 1024;
 if (totalBytes > budget) {
   throw new Error(`Website exceeds the 3 MiB all-file asset budget: ${totalBytes} bytes`);
 }
 const nonAudioBytes = totalBytes - musicBytes.length;
-if (nonAudioBytes > 304 * 1024) throw new Error(`Non-audio assets exceed 304 KiB: ${nonAudioBytes} bytes`);
+if (nonAudioBytes > 320 * 1024) throw new Error(`Non-audio assets exceed 320 KiB: ${nonAudioBytes} bytes`);
 const interfaceBytes = nonAudioBytes - photoBytes.length;
-if (interfaceBytes > 256 * 1024) throw new Error(`Assets other than audio/photo exceed 256 KiB: ${interfaceBytes} bytes`);
+if (interfaceBytes > 272 * 1024) throw new Error(`Assets other than audio/photo exceed 272 KiB: ${interfaceBytes} bytes`);
 
 console.log(`Validated static website: ${totalBytes} bytes across ${assets.length} files; ${nonAudioBytes} non-audio bytes (${photoBytes.length} photo; ${interfaceBytes} other).`);

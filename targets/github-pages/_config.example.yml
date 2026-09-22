@@ -1,0 +1,15 @@
+# Merge selected keys into an existing Jekyll configuration; do not replace it.
+title: "Your site"
+description: "Your site description"
+lang: en
+baseurl: ""
+# For a project site, set baseurl to "/your-repository-name".
+# Keep your own url, plugins, collections and other existing configuration.
+deepseafoam_nav:
+  - title: Home
+    url: /
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: deepseafoam

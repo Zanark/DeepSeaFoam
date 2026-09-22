@@ -22,6 +22,12 @@ Version **0.5.0** expands the collection to **twelve application targets**, addi
 
 Version **0.6.0** adds **Monkeytype**, bringing the collection to **thirteen targets** with the same palette. Its native colors-only share link uses warm typing text, seafoam signals and readable secondary gray without resetting unrelated settings. See the [install/restore guide](targets/monkeytype/README.md) and [0.6.0 release notes](docs/releases/v0.6.0.md). Local export readiness does not imply upstream acceptance.
 
+Version **0.7.0** expands the collection to **21 targets**: Notepad++, Zsh, rofi,
+Xfce4 Terminal, Termux, GitHub Pages, Godot Engine and a **manual Nova Launcher
+preset**. BetterDiscord explicitly reuses the existing Discord theme, with an
+identical named download rather than a duplicate palette. No palette colors change.
+See the [0.7.0 release notes](docs/releases/v0.7.0.md) for format and support boundaries.
+
 ## The underwater showcase
 
 The [website](https://zanark.github.io/DeepSeaFoam/) interprets the theme as a quiet underwater workstation. Its hero opens without an eyebrow, with a short four-line poem and a document-green (`#45D072`) **Find your app** link beside **Explore the palette**. Application exports follow the palette immediately; the interaction study remains below them. The former four principle cards, signal legend, and heritage/extension section are removed from the page, not from the theme's documented mappings.
@@ -36,15 +42,26 @@ The click-only anglerfish follows the interaction study. The **blobfish now live
 
 The blobfish is a **user-supplied transparent illustration**, cleaned of isolated specks, cropped, and resized to a 640×345 WebP. The fish has no CSS opacity reduction or filter; its painted colors are not dimmed for concealment. Its original artist and license were not supplied; no blanket project license is asserted. [Processing metadata](docs/showcase-artwork.json), the optional [Pillow preparation script](scripts/prepare-blobfish.py), and the [artwork notice](site/artwork-NOTICE.txt) document that boundary. The private source image is not distributed with the repository.
 
-Scenery belongs **only to the showcase**, not the application exports. The site includes the owner's supplied **2:56 background music** as a **2,817,068-byte MP3** rather than the 33.8 MB WAV. On eligible fresh visible loads, music **preloads during the descent and attempts audible playback after the dive completes**. Skipped, deep-linked or reduced-motion openings can complete immediately. If browser policy blocks autoplay, the request stays ready and retries on a genuine tap or key after completion; you do not have to find **Play music**. Browsers can still forbid audible playback without interaction: this is not a policy bypass or a guarantee of zero-click sound. **Cancel music** cancels queued/loading playback; **Pause music** preserves position and prevents later gestures from restarting it. Hiding/leaving the page and history restoration also suppress automatic retries; a fresh load or reload is eligible again. Playback loops at 35% element volume where supported; phone hardware volume remains authoritative.
+Scenery belongs **only to the showcase**, not the application exports. The site includes the owner's supplied **2:56 background music** as a **2,817,068-byte MP3** rather than the 33.8 MB WAV. On eligible fresh visible loads, music **preloads during the descent and attempts audible playback after the dive completes**. Skipped, deep-linked or reduced-motion openings can complete immediately. If browser policy blocks autoplay, the request stays ready for the **first scroll gesture**, tap, click or key press; you do not have to find **Play music**. Wheel/trackpad movement and single-finger swipes share one scroll attempt, not repeated retries on every scroll frame. Scripted page movement does not trigger it. Some browsers do not accept scrolling as permission for sound and still require a tap, click or key: this is not a policy bypass or a guarantee of zero-click sound. **Cancel music** cancels queued/loading playback; **Pause music** preserves position and prevents later gestures from restarting it. Hiding/leaving the page and history restoration also suppress automatic retries; a fresh load or reload is eligible again. Playback loops at 35% element volume where supported; phone hardware volume remains authoritative.
 
-**Pause motion** and reduced motion do not mute music; finishing or bypassing the intro only gates its initial automatic request. Music and motion buttons have a subtle **static seafoam border and halo**, independent of animation preferences. Gesture recovery ignores synthetic events, key repeats and modified shortcuts, does not prevent ordinary interactions, and excludes the music button to avoid play-then-pause races. Real failures show **Retry music** rather than retrying on later page gestures. The player retains explicit controls and live status; without JavaScript, a direct MP3 link replaces them. The music's original artist/license were not supplied; it remains outside the original theme/code MIT grant. [Media provenance](docs/showcase-artwork.json) and the [artwork/audio notice](site/artwork-NOTICE.txt) record that boundary.
+**Pause motion** and reduced motion do not mute music; finishing or bypassing the intro only gates its initial automatic request. Music and motion buttons have a subtle **static seafoam border and halo**, independent of animation preferences. Gesture recovery ignores synthetic events, key repeats, modified shortcuts and multi-touch scrolling, does not prevent ordinary interactions, and excludes music-button activations to avoid play-then-pause races. Scrolling over the button is not an activation. Real failures show **Retry music** rather than retrying on later page gestures. The player retains explicit controls and live status; without JavaScript, a direct MP3 link replaces them. The music's original artist/license were not supplied; it remains outside the original theme/code MIT grant. [Media provenance](docs/showcase-artwork.json) and the [artwork/audio notice](site/artwork-NOTICE.txt) record that boundary.
 
-The **3 MiB all-file cap counts the music and every other deployed file**. The visible photographic reference has an explicit **48 KiB allowance**, while **256 KiB remains the limit for everything except audio and that photo**: at most 304 KiB of non-audio assets, including every notice and license. The photo is a locally hosted, lazy-loaded preview, not a request for the 5.5 MB original or an external image service. There is no video, WebGL, or runtime library dependency. **Pause motion** freezes scenery and clears transient wakes; reduced motion skips the descent. **Skip descent**, Escape, Tab, navigation, or scrolling also bypasses the opening. Without JavaScript, the page, photo and native creature reveals remain usable; the dynamic palette instead links to the README swatches.
+The **3 MiB all-file cap counts the music and every other deployed file**. The visible photograph keeps its **48 KiB allowance**. Version 0.7.0 explicitly adds **16 KiB for the eight new cards, identifiers and notices**, taking the other-asset limit from 256 to **272 KiB** and maximum non-audio assets to **320 KiB**. No licenses are excluded. The photo is locally hosted and lazy-loaded, not a request for the 5.5 MB original or an external image service. There is no video, WebGL, or runtime library dependency. **Pause motion** freezes scenery and clears transient wakes; reduced motion skips the descent. **Skip descent**, Escape, Tab, navigation, or scrolling also bypasses the opening. Without JavaScript, the page, photo and native creature reveals remain usable; the dynamic palette instead links to the README swatches.
 
 The design essay distinguishes Solarized's designer rationale, maritime night-lookout guidance, a 2013 display-polarity study's abstract, and WCAG contrast guidance. None tests DeepSeaFoam or establishes universal comfort or eye-health benefits. See the [showcase architecture, motion lifecycle, artwork pipeline, and evidence limits](docs/SHOWCASE.md).
 
-The thirteen application cards use locally hosted, lazy-loaded product SVGs. Twelve retain their original artwork from Devicon, SVG Logos, Browser Logos, and the Windows Terminal, Alacritty and Obsidian projects. Monkeytype uses the Simple Icons CC0 mark with only a fill added in verified brand yellow `#e2b714` for visibility; its geometry is unchanged. The existing `LICENSE-logos.txt` already supplies the same complete CC0 1.0 Universal terms, so no duplicate license or budget increase is needed. [Pinned sources, original/asset hashes and derivation details](docs/application-icons.json) preserve provenance; [notices and full license texts](site/icons/NOTICE.txt) accompany the assets. Product marks belong to their owners; CC0 grants no trademark rights and no endorsement is implied. Obsidian's [brand guidelines](https://obsidian.md/brand) prohibit modifying its mark and require contacting its owner for commercial use.
+The 21 cards use local, lazy-loaded artwork: nineteen product marks and two clearly
+documented original text identifiers for rofi and Nova Launcher, not invented
+official logos. Existing artwork is preserved. Five added Simple Icons marks receive
+only their metadata brand-color root fill; Godot's mark retains its **CC BY 4.0**
+credit/license, distinct from the shared CC0 marks. GitHub Pages' dark mark has a
+white backing. Three large new marks use lossless 144px WebP renderings, with their
+SVG sources preserved outside the deployed site to protect the 3 MiB cap. Termux's
+unmodified geometric mark retains its Commons PD-shape provenance.
+[Pinned sources, hashes and derivations](docs/application-icons.json)
+and [notices/licenses](site/icons/NOTICE.txt) record the boundaries. Product marks
+belong to their owners; no endorsement is implied. Obsidian's
+[brand guidelines](https://obsidian.md/brand) still apply to its unmodified mark.
 
 ## Download
 
@@ -54,7 +71,7 @@ The original theme files and generator code are now available under the [MIT lic
 
 Version **0.5.1** packages that license without changing theme colors. Existing releases are not replaced. [Publication routes and current status](docs/PUBLISHING.md) distinguish downloadable files, submitted listings and approved directory entries.
 
-Download **0.6.0** packages from the [GitHub release](https://github.com/Zanark/DeepSeaFoam/releases/tag/v0.6.0). The Monkeytype ZIP includes its native share link and restore guide; [built-in preset PR #8421](https://github.com/monkeytypegame/monkeytype/pull/8421) is submitted and awaiting review:
+Download packages from the [latest GitHub release](https://github.com/Zanark/DeepSeaFoam/releases/latest), or build **0.7.0** locally with `npm run package:release`. Published releases remain immutable. Monkeytype's [built-in preset PR #8421](https://github.com/monkeytypegame/monkeytype/pull/8421) is separate from its downloadable native share link:
 
 | Asset | Intended use |
 | --- | --- |
@@ -64,6 +81,7 @@ Download **0.6.0** packages from the [GitHub release](https://github.com/Zanark/
 | `DeepSeaFoam-VisualStudio-<version>.vstheme` | Visual Studio theme source for Color Theme Designer / VSIX packaging |
 | `DeepSeaFoam-Firefox-<version>.zip` | Firefox static-theme source; permanent installation requires Mozilla signing |
 | `DeepSeaFoam-Discord-<version>.theme.css` | Optional unofficial CSS for already-modified Discord clients |
+| `DeepSeaFoam-BetterDiscord-<version>.theme.css` | Byte-identical Discord theme alias; install one, not both |
 | `DeepSeaFoam-TelegramDesktop-<version>.tdesktop-theme` | Native colors-only Telegram Desktop theme |
 | `DeepSeaFoam-Slack-<version>.txt` | Four-color string for Slack's native custom-theme controls |
 | `DeepSeaFoam-Chromium-<version>.zip` | Extractable Chrome/Edge theme source for Load unpacked |
@@ -71,11 +89,19 @@ Download **0.6.0** packages from the [GitHub release](https://github.com/Zanark/
 | `DeepSeaFoam-SublimeText-<version>.sublime-color-scheme` | Sublime Text 4 editor/syntax color scheme |
 | `DeepSeaFoam-Alacritty-<version>.toml` | Colors-only fragment imported into an existing Alacritty config |
 | `DeepSeaFoam-Monkeytype-<version>.zip` | Native colors-only share payload, URL, install/restore guide and MIT license |
+| `DeepSeaFoam-NotepadPlusPlus-<version>.xml` | Native Style Configurator theme |
+| `DeepSeaFoam-Zsh-<version>.zip` | Dependency-free prompt, install/restore guide and license |
+| `DeepSeaFoam-Rofi-<version>.rasi` | Native Rasi theme based on the default layout |
+| `DeepSeaFoam-Xfce4Terminal-<version>.theme` | Native terminal color preset |
+| `DeepSeaFoam-Termux-<version>.zip` | Native `colors.properties`, guide and license |
+| `DeepSeaFoam-GitHubPages-<version>.zip` | Static HTML/CSS starter, optional Jekyll layout and guide |
+| `DeepSeaFoam-Godot-<version>.tet` | Native script-editor syntax theme; not a game Theme resource |
+| `DeepSeaFoam-NovaLauncher-<version>.zip` | **Manual** color reference and guide; not a Nova backup/import file |
 | `DeepSeaFoam-<version>.zip` | Complete palette, documentation, generator, and all application exports |
 | `DeepSeaFoam-Themes-LICENSE.txt` | MIT license for original theme files; retain with redistributed single-file exports |
 | `SHA256SUMS.txt` | SHA-256 checksums for every release asset |
 
-The showcase on `main` and GitHub Pages can advance independently of immutable source bundles. Website-only refinements do not require a palette version bump or replacement artifacts; **0.6.0 is a new native version for the Monkeytype target**, leaving all earlier releases untouched.
+The showcase on `main` and GitHub Pages can advance independently of immutable source bundles. Website-only refinements do not require a palette version bump or replacement artifacts; **0.7.0 is a new native-export version**, not a palette-color change. Earlier releases and the historical Instagram campaign remain untouched.
 
 ## Supported applications
 
@@ -86,7 +112,7 @@ The showcase on `main` and GitHub Pages can advance independently of immutable s
 | [Obsidian](targets/obsidian/README.md) | `manifest.json` + `theme.css` | Workspace chrome, editor, reading view, controls, graph |
 | [Windows Terminal](targets/windows-terminal/README.md) | Color-scheme JSON | Terminal background, foreground, selection, cursor, ANSI colors |
 | [Firefox](targets/firefox/README.md) | Static WebExtension theme | Browser chrome, tabs, fields, popups, sidebar, Firefox new-tab surface |
-| [Discord](targets/discord/README.md) | `.theme.css` (unofficial) | Optional CSS for modified desktop clients; not a native Discord importer |
+| [Discord / BetterDiscord](targets/discord/README.md) | `.theme.css` (unofficial) | BetterDiscord or Vencord CSS; not a stock Discord importer |
 | [Telegram Desktop](targets/telegram/README.md) | `.tdesktop-theme` | Desktop navigation, chat/message surfaces, text and controls |
 | [Slack](targets/slack/README.md) | Native custom-color preset | Only Slack's exposed theme controls, not a whole-client CSS replacement |
 | [Chrome / Edge](targets/chromium/README.md) | Chromium theme manifest | Browser-owned chrome; no website injection or permissions |
@@ -94,6 +120,14 @@ The showcase on `main` and GitHub Pages can advance independently of immutable s
 | [Sublime Text](targets/sublime-text/README.md) | `.sublime-color-scheme` | Editor and syntax; pair with the built-in Adaptive UI |
 | [Alacritty](targets/alacritty/README.md) | TOML color fragment | Terminal, selection, cursor and the same higher-contrast ANSI palette |
 | [Monkeytype](targets/monkeytype/README.md) | Native custom-theme share URL + JSON payload | Ten native color slots; no full-settings import, background or custom CSS replacement |
+| [Notepad++](targets/notepad-plus-plus/README.md) | Native XML | Editor, 22 language lexers plus search results; chrome is separate |
+| [Zsh](targets/zsh/README.md) | `.zsh-theme` | Prompt only; plain Zsh and optional Oh My Zsh |
+| [rofi](targets/rofi/README.md) | `.rasi` | Default layout, text and normal/active/urgent selection states |
+| [Xfce4 Terminal](targets/xfce4-terminal/README.md) | `[Scheme]` preset | Shared terminal/ANSI colors; not GTK chrome |
+| [Termux](targets/termux/README.md) | `colors.properties` | Background, foreground, cursor and 16 ANSI colors; no selection key |
+| [GitHub Pages](targets/github-pages/README.md) | HTML/CSS plus optional Jekyll layout | Your hosted site, not github.com or a remote-theme registration |
+| [Godot Engine](targets/godot/README.md) | `.tet` | Built-in script editor; optional manual chrome, not game assets |
+| [Nova Launcher](targets/nova-launcher/README.md) | **Manual** text/background/accent recipe | Version-dependent Android launcher controls; no backup or icon pack |
 
 These are export files, not proof of runtime validation in every application version. Nothing in this repository installs a theme or modifies live application settings.
 

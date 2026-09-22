@@ -2,7 +2,12 @@
 
 This document separates exact core mappings from application-specific design work. Property names are implementation details; semantic roles are the source of truth.
 
-Version **0.5.0** added seven application targets; **0.6.0** adds Monkeytype as the thirteenth. Neither changes any of the 27 core values, four syntax heritage colors or 19 terminal-extension colors. Installation, removal and format references live in each target's README. Thirteen targets do not mean thirteen identical or universally supported importers.
+Version **0.5.0** added seven targets; **0.6.0** added Monkeytype. **0.7.0 brings
+the collection to 21 targets**, including a manual Nova Launcher preset, and
+makes the existing BetterDiscord route explicit without counting it twice.
+These expansions change none of the 27 core values, four syntax heritage colors
+or 19 terminal colors. Target guides distinguish importers, prompts, site starters
+and manual recipes; target count is not a universal compatibility claim.
 
 ## Terminal-derived vivid signals (0.4.2)
 
@@ -111,6 +116,34 @@ Pinned official sources: [array conversion](https://github.com/monkeytypegame/mo
 [typing rules](https://github.com/monkeytypegame/monkeytype/blob/91bd24bb8513785c7364cbea29296ff7adafac41/frontend/src/styles/test.scss#L115-L176),
 [flip/colorful rules](https://github.com/monkeytypegame/monkeytype/blob/91bd24bb8513785c7364cbea29296ff7adafac41/frontend/src/styles/test.scss#L278-L302).
 
+## Additional native and manual mappings (0.7.0)
+
+The additional editor, Linux, web and manual emitters use the same supplied-palette
+accessors and shared compositing helper. Their guides are generated too. Licensing
+is added centrally; no emitter reads installed application settings.
+
+| Target | Mapping | Native boundary |
+| --- | --- | --- |
+| Notepad++ | Base editor, panel gutters/current line, opaque UI-selection composite; shared core/heritage syntax roles | Six-digit XML; 23 lexer sections/53 global styles. Dark Mode chrome is a separate manual recipe |
+| Zsh | Warm user, faint host, seafoam path/prompt, rose nonzero exit status | One literal PROMPT assignment, no hooks, framework, ANSI-buffer or configuration replacement |
+| rofi | Base normal rows, panel structure/alternates, warm selected-normal text, accent active and rose urgent states | Explicit default Rasi layout; custom geometry is not retained by loading another theme |
+| Xfce4 Terminal | Base buffer, all 19 terminal values, exact ANSI order | Native Scheme loader can reset omitted color properties; guide documents that consequence |
+| Termux | Base buffer, terminal foreground/cursor and all 16 ANSI slots | Only 19 recognized properties; selection stays host-controlled |
+| GitHub Pages | Base content, panel header/footer/cards, shared action/selection/syntax roles | Static website CSS plus optional Jekyll layout using relative_url; no github.com reskin or remote-theme claim |
+| Godot Engine | Base script surface, panel completion/current line, shared syntax, native alpha-last selection/overlays | 49 .tet ConfigFile keys; editor chrome is manual and host-derived, game resources are untouched |
+| Nova Launcher | Mist app-label text; optional matching base/panel/accent controls | Manual-only RGB reference. Current official text paths are separated from historical, version-dependent background paths |
+| BetterDiscord | Existing Discord semantic-variable mapping | The named release file is an identical alias, not a second target or approved listing |
+
+Notepad++, Godot and the web syntax rules retain the established cross-editor
+relationship: seafoam strings, document-green keywords, warning-yellow numeric
+literals, warm functions and blue types. Native escape/property/type distinctions
+use the syntax-heritage group deliberately. A launcher or terminal does not inherit
+editor syntax merely to consume every core color.
+
+Nova's text file is **not** a Nova import format. No full backup, icon pack,
+wallpaper, gestures or launcher layout is replaced. No undocumented alpha-byte
+ordering is claimed for Nova's current picker.
+
 ## Syntax heritage extension
 
 The original interface did not define language syntax. Editor exports retain the following Solarized heritage values as an explicitly labeled extension:
@@ -126,7 +159,11 @@ These four extension colors are unchanged in 0.4.2. Syntax roles sourced from th
 
 ## Higher-contrast terminal extension
 
-Windows Terminal, VS Code's integrated terminal and Alacritty share the canonical `terminal` group: all 16 ANSI colors plus foreground, cursor and selection. They retain the supplied **Solarized Dark Higher Contrast** colors, with `#000F13` replacing the reference's `#001E27` background. See the [visible terminal swatches](../README.md#higher-contrast-terminals).
+Windows Terminal, VS Code's integrated terminal, Alacritty and Xfce4 Terminal share
+all 19 values in the canonical terminal group. Termux uses its supported foreground,
+cursor and 16 ANSI slots but exposes no selection property. Zsh's prompt is separate
+from emulator colors. All terminal buffers use `#000F13` instead of the reference's
+`#001E27`. See the [visible terminal swatches](../README.md#higher-contrast-terminals).
 
 Introduced in 0.3.0, this extension supplies stronger bright variants, `#9CC2C3` text, warm `#EAE3CB` / `#FCF4DC` whites, and an orange `#F34B00` cursor. It remains a separate stored group even though 0.4.2 uses four entries as sources for derived core signals. **All 19 terminal colors and the Windows Terminal scheme content remain unchanged in 0.5.0.** UI selection is `#00A59126`; terminals retain opaque `#003748`. Alacritty uses its native `magenta` key for the source's `purple`, without changing the value.
 

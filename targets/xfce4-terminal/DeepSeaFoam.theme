@@ -1,0 +1,13 @@
+# Generated from palette/deepseafoam.json. Native color preset, not terminalrc.
+[Scheme]
+Name=DeepSeaFoam
+ColorForeground=#9CC2C3
+ColorBackground=#000F13
+ColorCursor=#F34B00
+ColorCursorForeground=#000F13
+ColorCursorUseDefault=FALSE
+ColorSelection=#9CC2C3
+ColorSelectionBackground=#003748
+ColorSelectionUseDefault=FALSE
+ColorPalette=#002831;#F54F65;#6CBE6C;#EDAE29;#2176C7;#C61C6F;#259286;#EAE3CB;#006488;#F5858C;#51EF84;#FFF96E;#178EC8;#E24D8E;#00B39E;#FCF4DC
+ColorUseTheme=FALSE

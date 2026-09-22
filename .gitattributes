@@ -1,3 +1,4 @@
 # Preserve downloaded artwork and notices, including upstream CRLF endings.
 site/icons/*.svg -text whitespace=trailing-space,space-before-tab,cr-at-eol
 site/icons/LICENSE-*.txt -text whitespace=trailing-space,space-before-tab,cr-at-eol
+docs/icon-sources/*.svg -text whitespace=trailing-space,space-before-tab,cr-at-eol

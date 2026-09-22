@@ -5,6 +5,10 @@ import { rgb, hsl, shadeColor, composite, contrast } from "./colors.mjs";
 import { addChatThemes } from "./chat-themes.mjs";
 import { addDesktopThemes } from "./desktop-themes.mjs";
 import { addMonkeytypeTheme } from "./monkeytype-theme.mjs";
+import { addAdditionalEditorThemes } from "./additional-editor-themes.mjs";
+import { addLinuxThemes } from "./linux-themes.mjs";
+import { addWebTheme } from "./web-theme.mjs";
+import { addManualThemes } from "./manual-themes.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const palette = JSON.parse(await readFile(path.join(root, "palette", "deepseafoam.json"), "utf8"));
@@ -686,6 +690,10 @@ const exportContext = { palette, add, json, solid, overlay, derived, heritage, t
 addChatThemes(exportContext);
 addDesktopThemes(exportContext);
 addMonkeytypeTheme(exportContext);
+addAdditionalEditorThemes(exportContext);
+addLinuxThemes(exportContext);
+addWebTheme(exportContext);
+addManualThemes(exportContext);
 
 const targetNames = new Set([...outputs.keys()]
   .filter(file => file.startsWith("targets/")).map(file => file.split("/")[1]));

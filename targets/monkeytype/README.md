@@ -1,6 +1,6 @@
 # DeepSeaFoam for Monkeytype
 
-Generated from the canonical palette, version **0.6.0**. Do not edit
+Generated from the canonical palette, version **0.7.0**. Do not edit
 these generated files by hand. This is a native **colors-only custom theme**,
 not a full-settings import, browser extension, custom CSS or built-in preset.
 Upstream submission/acceptance is tracked separately in

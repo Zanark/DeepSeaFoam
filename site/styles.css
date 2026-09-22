@@ -1254,6 +1254,10 @@
     border-radius: 8px;
   }
 
+  .app-github-pages .app-card-top img {
+    background: #fff;
+  }
+
   .app-card h3 {
     color: var(--dsf-solid-warm);
     font-family: var(--display);

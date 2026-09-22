@@ -17,7 +17,7 @@ license choice cannot be assumed valid for every store's listing-license menu.
 | Obsidian | [Community directory](https://docs.obsidian.md/Themes/App+themes/Submit+your+theme) | Current route is community.obsidian.md, not the historical theme-list PR. Needs root metadata/license, matching version tag and separate manifest/theme release attachments, real screenshot, account linking and owner policy acceptance. |
 | Windows Terminal | [Community gallery PR #115](https://github.com/atomcorp/themes/pull/115) | Submitted, open and awaiting review. Not yet a live gallery entry; this is not an official Microsoft marketplace. |
 | Firefox | [AMO static themes](https://extensionworkshop.com/documentation/publish/submitting-an-add-on/) | Needs Mozilla account/agreement and owner-approved listing license. Static-theme API licenses use CC choices or All Rights Reserved, not arbitrary MIT/custom licenses. |
-| Discord | [BetterDiscord guidelines](https://docs.betterdiscord.app/themes/publishing/guidelines) | Existing generated variable-only CSS is ineligible. Do not disguise it or submit it. Native Discord theme sharing is a different, limited feature. |
+| Discord / BetterDiscord | [BetterDiscord guidelines](https://docs.betterdiscord.app/themes/publishing/guidelines) | Local `.theme.css` installation is supported; the named release alias is identical. Existing generated variable-only CSS is ineligible for the directory. Do not disguise it or submit it. |
 | Telegram Desktop | [Official theme editor](https://core.telegram.org/themes) | Logged-in owner can create a cloud theme/share link. Uploading the file alone does not create a managed cloud theme. No app-theme marketplace submission. |
 | Slack | [Native sharing](https://slack.com/help/articles/205166337-Change-your-Slack-theme) | Theme Colors -> Share, not Slack Marketplace. A CSV preset is not a Slack app. |
 | Chrome / Edge | [Chrome Web Store](https://developer.chrome.com/docs/webstore/publish) | Chrome needs an eligible account, owner declarations and mandatory store artwork. Edge can use Chromium themes; separate third-party Edge Add-ons theme eligibility is not established. |
@@ -25,6 +25,14 @@ license choice cannot be assumed valid for every store's listing-license menu.
 | Sublime Text | [Package Control PR #9570](https://github.com/sublimehq/package_control_channel/pull/9570) | Submitted and awaiting review. [Distribution repository/tag 0.5.1](https://github.com/Zanark/DeepSeaFoam-SublimeText/tree/0.5.1) is public; channel acceptance and upstream workflow approval are pending. |
 | Alacritty | [Official-project theme collection](https://github.com/alacritty/alacritty-theme#contributing) | Collection does not accept submissions from theme authors. Wait for genuine independent community interest. |
 | Monkeytype | [Built-in preset PR #8421](https://github.com/monkeytypegame/monkeytype/pull/8421) / [native share guide](../targets/monkeytype/README.md) | **Submitted and awaiting review.** Native colors-only sharing works without login now; the built-in preset is not yet merged or deployed. The main upstream CI workflow requires maintainer approval. |
+| Notepad++ | [Native XML install](../targets/notepad-plus-plus/README.md) | Local Style Configurator theme; no new upstream listing submitted. |
+| Zsh | [Prompt source / optional Oh My Zsh](../targets/zsh/README.md) | Local dependency-free prompt. No framework installation or upstream acceptance claimed. |
+| rofi | [Native Rasi install](../targets/rofi/README.md) | Local theme file, not a marketplace listing. |
+| Xfce4 Terminal | [Native preset install](../targets/xfce4-terminal/README.md) | Local Scheme file; no desktop-wide theme or store registration. |
+| Termux | [Native colors.properties](../targets/termux/README.md) | Manual colors-file copy; no paid styling add-on or submission needed. |
+| GitHub Pages | [Static/Jekyll starter](../targets/github-pages/README.md) | Copy into your own site. Not a registered theme-picker entry, gem or root remote_theme repository. |
+| Godot Engine | [Native .tet import](../targets/godot/README.md) | Script-editor colors, not a runtime Theme resource or Asset Library submission. |
+| Nova Launcher | [Manual recipe](../targets/nova-launcher/README.md) | No documented safe colors-only import. No APK, backup, icon pack or marketplace listing is supplied. |
 
 ### Monkeytype submission boundary
 
@@ -62,8 +70,8 @@ updates need a higher version rather than replacing or resubmitting 0.5.1.
 
 The historical 0.5.1 kit remains at
 `dist\marketplace\vscode\DeepSeaFoam-VSCode-0.5.1.vsix`; do not resubmit it.
-For the prepared 0.6.0 update, run `npm run package:release`, then use
-`dist\releases\0.6.0\marketplace\vscode\DeepSeaFoam-VSCode-0.6.0.vsix`.
+For the prepared 0.7.0 update, run `npm run package:release`, then use
+`dist\releases\0.7.0\marketplace\vscode\DeepSeaFoam-VSCode-0.7.0.vsix`.
 The folder also contains the [upload instructions](../publishing/vscode/UPLOAD.txt),
 [listing copy](../publishing/vscode/LISTING.txt) and the original seaweed/foam
 mark rendered as a 128px PNG. The VSIX already contains its manifest, theme,
@@ -72,8 +80,10 @@ website study is not misrepresented as an actual VS Code screenshot.
 
 The packager recreates only `dist\releases\<version>\`, never the whole `dist`
 tree. Other versions and the Instagram delivery remain untouched. Current
-packages include `DeepSeaFoam-Monkeytype-0.6.0.zip` with the payload, link,
-guide and license at the archive root. Packaging does not publish a GitHub
+packages include `DeepSeaFoam-Monkeytype-0.7.0.zip` with the payload, link,
+guide and license at the archive root, plus eight new target exports and an
+identical BetterDiscord alias. Nova's ZIP is a manual guide, not an importer.
+Packaging does not publish a GitHub
 release or update a marketplace listing.
 
 Never put tokens in the repository, scripts, release notes, screenshots, issue

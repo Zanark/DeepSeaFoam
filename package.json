@@ -1,11 +1,11 @@
 {
   "name": "deepseafoam",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "type": "module",
   "scripts": {
     "generate": "node scripts/generate.mjs",
-    "test": "node scripts/generate.mjs --check && node scripts/validate-site.mjs && node --test scripts/test-ocean.mjs scripts/test-water.mjs scripts/test-colors.mjs scripts/test-nautilus.mjs scripts/test-targets.mjs scripts/test-music.mjs",
+    "test": "node scripts/generate.mjs --check && node scripts/validate-site.mjs && node --test scripts/test-ocean.mjs scripts/test-water.mjs scripts/test-colors.mjs scripts/test-nautilus.mjs scripts/test-targets.mjs scripts/test-music.mjs scripts/test-additional-editor-themes.mjs scripts/test-linux-themes.mjs scripts/test-web-theme.mjs scripts/test-manual-themes.mjs",
     "package:release": "pwsh -NoProfile -File scripts/package-release.ps1"
   }
 }

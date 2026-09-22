@@ -111,6 +111,151 @@
         "trailingNewline": "CRLF",
         "note": "Added only a root fill attribute using the official favicon's brand yellow for visibility: the source has no fill and otherwise defaults to black on the dark card. Original path data, title and viewBox are unchanged; a final CRLF was appended. This is a disclosed Simple Icons derivative, not the official favicon or an unmodified upstream SVG."
       }
+    },
+    {
+      "id": "notepad-plus-plus",
+      "file": "notepad-plus-plus.webp",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/icons/notepadplusplus.svg",
+      "sourceSha256": "71231e9de5e46f9c264490f56ae45e2bad69d8416ce7f86fde2c10007e564e07",
+      "sha256": "a8e917a1f7ee42eafbb2bb4b1776bb31f82929dceba9e295ba0486ad06f7d9a7",
+      "license": "LICENSE-logos.txt",
+      "licenseSha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+      "licenseSource": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/LICENSE.md",
+      "licenseType": "CC0-1.0",
+      "retrieved": "2026-09-22",
+      "derivation": {
+        "type": "root-fill",
+        "fill": "#90e59a",
+        "colorSource": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/data/simple-icons.json",
+        "trailingNewline": "LF",
+        "note": "Only the Simple Icons metadata brand-color root fill and one final LF are added; source geometry is unchanged. This is a disclosed derivative, not an unmodified official asset."
+      },
+      "raster": {
+        "source": "docs/icon-sources/notepad-plus-plus.svg",
+        "sha256": "49f7cc2ca3ec7351395e7c502d72bd71053eeebe93b7a232f9b1d97816a63aa3",
+        "width": 144,
+        "height": 144,
+        "format": "lossless-webp",
+        "note": "The preserved SVG derivative is rendered at 144px in sRGB Edge; lossless WebP preserves every rendered RGBA pixel. Native display content is 34 CSS pixels. No source geometry or aspect ratio is changed."
+      }
+    },
+    {
+      "id": "zsh",
+      "file": "zsh.svg",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/icons/zsh.svg",
+      "sourceSha256": "c0c836eafe90c77964d8db37297332ac2c38e54c85fa873169e5f3ddb1ff2241",
+      "sha256": "cb075b760f08cf9910b7c17fb239eac9ec4b59306aa72eaf5ffef82b0531a826",
+      "license": "LICENSE-logos.txt",
+      "licenseSha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+      "licenseSource": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/LICENSE.md",
+      "licenseType": "CC0-1.0",
+      "retrieved": "2026-09-22",
+      "derivation": {
+        "type": "root-fill",
+        "fill": "#f15a24",
+        "colorSource": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/data/simple-icons.json",
+        "trailingNewline": "LF",
+        "note": "Only the Simple Icons metadata brand-color root fill and one final LF are added; source geometry is unchanged. This is a disclosed derivative, not an unmodified official asset."
+      }
+    },
+    {
+      "id": "rofi",
+      "file": "rofi.svg",
+      "sourceKind": "original-text-identifier",
+      "sha256": "84ffb96f284c475990000a3e6e4be4cd78ee990ba89681e85307622c73dde41c",
+      "license": "LICENSE-identifiers.txt",
+      "note": "Original text-only identifier, not the application's logo. No unverified upstream artwork is redistributed."
+    },
+    {
+      "id": "xfce-terminal",
+      "file": "xfce-terminal.webp",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/icons/xfce.svg",
+      "sourceSha256": "9990f9124f207febead54643b9c2add6227f0272cdbddd5cef3e17a88bd14a69",
+      "sha256": "f7ba9a164d00fcc4d87f76a8f429e90163453019d01acfee1bc922ead0a3b977",
+      "license": "LICENSE-logos.txt",
+      "licenseSha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+      "licenseSource": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/LICENSE.md",
+      "licenseType": "CC0-1.0",
+      "retrieved": "2026-09-22",
+      "derivation": {
+        "type": "root-fill",
+        "fill": "#2284f2",
+        "colorSource": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/data/simple-icons.json",
+        "trailingNewline": "LF",
+        "note": "Only the Simple Icons metadata brand-color root fill and one final LF are added; source geometry is unchanged. This is a disclosed derivative, not an unmodified official asset."
+      },
+      "raster": {
+        "source": "docs/icon-sources/xfce-terminal.svg",
+        "sha256": "c82dfe1e9dd64c90440c9619bbaace1d33885ed9a15b2bd7f2a48f1ddaae3ff6",
+        "width": 144,
+        "height": 144,
+        "format": "lossless-webp",
+        "note": "The preserved SVG derivative is rendered at 144px in sRGB Edge; lossless WebP preserves every rendered RGBA pixel. Native display content is 34 CSS pixels. No source geometry or aspect ratio is changed."
+      }
+    },
+    {
+      "id": "termux",
+      "file": "termux.svg",
+      "source": "https://upload.wikimedia.org/wikipedia/commons/b/b5/Termux.svg",
+      "sha256": "fc27451df59a7bdaa9e52d771320588587ad8982d01d8cdf1f10429266dd104b",
+      "sourceKind": "wikimedia-pd-shape",
+      "retrieved": "2026-09-22",
+      "rightsSource": "https://commons.wikimedia.org/wiki/File:Termux.svg",
+      "note": "Unmodified Termux.com geometric logo from Wikimedia Commons. Commons identifies this specific asset as public domain (PD shape), while separately noting the app repository's GPLv3. No permission for unrelated Termux assets or trademark endorsement is inferred."
+    },
+    {
+      "id": "github-pages",
+      "file": "github-pages.webp",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/icons/githubpages.svg",
+      "sourceSha256": "3a01e00a019d4a5003be15b119884bad940a0e3bffa47dbb5f69b8e0827c356a",
+      "sha256": "72ce57faeaf365006927e3c93b8cd07e65db345fa31e1124c7e9c01a5556c1cd",
+      "license": "LICENSE-logos.txt",
+      "licenseSha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+      "licenseSource": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/LICENSE.md",
+      "licenseType": "CC0-1.0",
+      "retrieved": "2026-09-22",
+      "derivation": {
+        "type": "root-fill",
+        "fill": "#222222",
+        "colorSource": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/data/simple-icons.json",
+        "trailingNewline": "LF",
+        "note": "Only the Simple Icons metadata brand-color root fill and one final LF are added; source geometry is unchanged. This is a disclosed derivative, not an unmodified official asset."
+      },
+      "raster": {
+        "source": "docs/icon-sources/github-pages.svg",
+        "sha256": "a3a9aa01226633000effd66ff6fc52d4af7b3836f78dea8307a6743c146da9b0",
+        "width": 144,
+        "height": 144,
+        "format": "lossless-webp",
+        "note": "The preserved SVG derivative is rendered at 144px in sRGB Edge; lossless WebP preserves every rendered RGBA pixel. Native display content is 34 CSS pixels. No source geometry or aspect ratio is changed."
+      }
+    },
+    {
+      "id": "godot",
+      "file": "godot.svg",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/icons/godotengine.svg",
+      "sourceSha256": "95757647fedf1440fd24cc32a00f592ead4b050f8a63fdfcc46fbcd3a2952ffb",
+      "sha256": "885bd7ba5e6d58a1bc9067a7d38c5643d203d69e77920206840b9a3fff68a1fe",
+      "license": "LICENSE-godot.txt",
+      "licenseSha256": "ecbabe930d468f0552a079cdb2cbd1eefe66f03d0aedbb13293bd1b1ec15b67c",
+      "licenseSource": "https://raw.githubusercontent.com/godotengine/godot/ed1daf0bf001b61586d9930840f2f1394092c079/misc/logo/LICENSE.txt",
+      "licenseType": "CC-BY-4.0",
+      "retrieved": "2026-09-22",
+      "derivation": {
+        "type": "root-fill",
+        "fill": "#478cbf",
+        "colorSource": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/data/simple-icons.json",
+        "trailingNewline": "LF",
+        "note": "Only the Simple Icons metadata brand-color root fill and one final LF are added; source geometry is unchanged. This is a disclosed derivative, not an unmodified official asset."
+      }
+    },
+    {
+      "id": "nova-launcher",
+      "file": "nova-launcher.svg",
+      "sourceKind": "original-text-identifier",
+      "sha256": "38a8c3095141720e0c2493eeb5faab39c27326bb7f445e8b625da1cbb63d1a8f",
+      "license": "LICENSE-identifiers.txt",
+      "note": "Original text-only identifier, not the application's logo. No unverified upstream artwork is redistributed."
     }
   ]
 }

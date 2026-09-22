@@ -8,6 +8,7 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
   let disposed = false;
   let generation = 0;
   let state = "paused";
+  let scrollAttempted = false;
   let automaticPending = !doc.hidden &&
     win.performance?.getEntriesByType("navigation")[0]?.type !== "back_forward";
   const listeners = [];
@@ -40,7 +41,9 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
     const blocked = automatic && error?.name === "NotAllowedError";
     automaticPending = blocked;
     const message = blocked
-      ? "Sound is ready. Tap anywhere or press a key to start."
+      ? scrollAttempted
+        ? "Your browser still blocks sound. Tap, click or press a key."
+        : "Sound is ready. Scroll, tap or click to try music."
       : error?.name === "NotAllowedError"
         ? "Your browser blocked the music. Press Retry music to try again."
         : "Music could not play. Check your connection and press Retry music.";
@@ -78,7 +81,13 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
   }
   function interact(event) {
     if (!automaticPending || !event.isTrusted || event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
-    if (button.contains(event.target)) {
+    if (event.type === "wheel" || event.type === "touchmove") {
+      if (scrollAttempted ||
+          (event.type === "wheel" && !event.deltaX && !event.deltaY) ||
+          (event.type === "touchmove" && event.touches?.length !== 1)) return;
+      // One scroll-gesture attempt, not a retry on every frame or scripted scroll.
+      scrollAttempted = true;
+    } else if (button.contains(event.target)) {
       // Let the control's click cancel queued music or explicitly start blocked music.
       if (event.type !== "keydown" || event.key === " " || event.key === "Enter") automaticPending = false;
       return;
@@ -86,7 +95,7 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
     startAutomatic();
   }
   listen(doc, "deepseafoam:dive-complete", startAutomatic);
-  for (const type of ["pointerdown", "pointerup", "touchend", "keydown", "click"]) {
+  for (const type of ["pointerdown", "pointerup", "touchend", "keydown", "click", "wheel", "touchmove"]) {
     doc.addEventListener(type, interact, { capture: true, passive: true });
     listeners.push(() => doc.removeEventListener(type, interact, true));
   }

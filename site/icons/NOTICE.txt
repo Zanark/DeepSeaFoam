@@ -15,5 +15,19 @@ unchanged and a final CRLF was appended. This is not an unmodified upstream SVG.
 The official favicon supplied only the color reference; its artwork is not reused.
 CC0 does not grant trademark rights. No affiliation or endorsement is implied.
 
+Notepad++ / Zsh / Xfce / GitHub Pages: Simple Icons; LICENSE-logos.txt (CC0).
+Godot Engine: logo copyright 2017 Andrea Calabro, CC BY 4.0; see the exact
+upstream credit and license link in LICENSE-godot.txt and https://godotengine.org/press/
+These five Simple Icons derivatives add only their metadata brand-color root fill
+and one final LF; original path data is unchanged. Xfce's project mark identifies
+Xfce4 Terminal. GitHub Pages' dark mark has a white CSS backing for legibility.
+Notepad++, Xfce and GitHub Pages are 144px lossless WebP renderings of those SVGs,
+preserved under docs/icon-sources; they are not unmodified source SVG downloads.
+Termux: unmodified Termux.com geometric mark via Wikimedia Commons, which marks
+this specific asset PD shape: https://commons.wikimedia.org/wiki/File:Termux.svg
+The app repository's GPL does not imply a blanket license for unrelated assets.
+rofi / Nova Launcher: original text identifiers, NOT official logos.
+No unverified product artwork is reused for these two; LICENSE-identifiers.txt.
+
 Pinned sources and SHA-256 hashes:
 https://github.com/Zanark/DeepSeaFoam/blob/main/docs/application-icons.json

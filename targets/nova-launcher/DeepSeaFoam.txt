@@ -1,0 +1,20 @@
+DeepSeaFoam 0.7.0 - Nova Launcher MANUAL color reference
+
+NOT an import file, Nova backup, APK or icon pack.
+Canonical six-digit RGB values; use your installed color picker's supported input.
+Current Nova picker alpha syntax is not verified. These are opaque RGB references.
+
+Workspace / drawer: #000F13
+Panels / search surfaces: #001E26
+Accent / focus: #00A591
+App-label text: #93A1A1
+Optional lower-emphasis text: #839496
+Optional emphasis: #EEE8D5
+
+Start with the two documented label controls:
+Nova Settings > Style > Home Screen > Text
+Nova Settings > Style > App Drawer > Text
+Use #93A1A1 for both. See README.md for optional version-dependent controls.
+
+Back up first. Preserve your wallpaper, layout, icons, widgets, gestures and accounts.
+Restore your saved colors to undo; a full Nova backup can also restore unrelated settings.
