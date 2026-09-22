@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { rgb, hsl, shadeColor, composite, contrast } from "./colors.mjs";
 import { addChatThemes } from "./chat-themes.mjs";
 import { addDesktopThemes } from "./desktop-themes.mjs";
+import { addMonkeytypeTheme } from "./monkeytype-theme.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const palette = JSON.parse(await readFile(path.join(root, "palette", "deepseafoam.json"), "utf8"));
@@ -684,6 +685,7 @@ add("targets/visual-studio/DeepSeaFoam.vstheme", vsTheme);
 const exportContext = { palette, add, json, solid, overlay, derived, heritage, terminal, syntaxRules: vscodeTheme.tokenColors };
 addChatThemes(exportContext);
 addDesktopThemes(exportContext);
+addMonkeytypeTheme(exportContext);
 
 const targetNames = new Set([...outputs.keys()]
   .filter(file => file.startsWith("targets/")).map(file => file.split("/")[1]));

@@ -42,6 +42,6 @@
     "encoder": "FFmpeg 7.1 / libmp3lame",
     "bytes": 2817068,
     "sha256": "10a981e9ffb903b1ff230585d602cbf746a21b33cb9055f43ab4b1f2c2aea7fa",
-    "use": "Website-only looping playback, attempted automatically on fresh visible page loads. Browser autoplay restrictions fall back to Play music. Not part of native themes or their MIT grant."
+    "use": "Website-only looping playback. Eligible fresh visible loads preload during the intro and attempt playback after dive completion; skipped or reduced-motion intros can complete immediately. If autoplay is blocked, a pending request retries on genuine page gestures without requiring the Play button, subject to browser policy. Explicit cancel/pause, real failures, hidden/pagehide and history restoration suppress automatic retries. Not part of native themes or their MIT grant."
   }
 }

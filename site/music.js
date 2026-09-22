@@ -8,6 +8,8 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
   let disposed = false;
   let generation = 0;
   let state = "paused";
+  let automaticPending = !doc.hidden &&
+    win.performance?.getEntriesByType("navigation")[0]?.type !== "back_forward";
   const listeners = [];
 
   function listen(target, type, handler) {
@@ -19,11 +21,12 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
     state = next;
     button.dataset.state = next;
     button.setAttribute("aria-busy", String(next === "loading"));
-    label.textContent = { paused: "Play music", blocked: "Play music", loading: "Cancel music", playing: "Pause music", error: "Retry music" }[next];
+    label.textContent = { paused: "Play music", blocked: "Play music", queued: "Cancel music", loading: "Cancel music", playing: "Pause music", error: "Retry music" }[next];
     status.textContent = message;
   }
 
   function pause() {
+    automaticPending = false;
     wanted = false;
     generation++;
     audio.pause();
@@ -35,8 +38,9 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
     generation++;
     audio.pause();
     const blocked = automatic && error?.name === "NotAllowedError";
+    automaticPending = blocked;
     const message = blocked
-      ? "Your browser requires a tap. Press Play music."
+      ? "Sound is ready. Tap anywhere or press a key to start."
       : error?.name === "NotAllowedError"
         ? "Your browser blocked the music. Press Retry music to try again."
         : "Music could not play. Check your connection and press Retry music.";
@@ -46,6 +50,7 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
 
   async function play(automatic = false) {
     if (doc.hidden || disposed) return;
+    if (!automatic) automaticPending = false;
     wanted = true;
     const ticket = ++generation;
     render("loading", "Loading music. Press Cancel music to stop.");
@@ -62,11 +67,31 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
       audio.pause();
       return;
     }
-    if (ticket === generation && !audio.paused) render("playing");
+    if (ticket === generation && !audio.paused) {
+      automaticPending = false;
+      render("playing");
+    }
   }
 
+  function startAutomatic() {
+    if (automaticPending && !wanted && doc.body?.dataset.diveState === "complete") void play(true);
+  }
+  function interact(event) {
+    if (!automaticPending || !event.isTrusted || event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
+    if (button.contains(event.target)) {
+      // Let the control's click cancel queued music or explicitly start blocked music.
+      if (event.type !== "keydown" || event.key === " " || event.key === "Enter") automaticPending = false;
+      return;
+    }
+    startAutomatic();
+  }
+  listen(doc, "deepseafoam:dive-complete", startAutomatic);
+  for (const type of ["pointerdown", "pointerup", "touchend", "keydown", "click"]) {
+    doc.addEventListener(type, interact, { capture: true, passive: true });
+    listeners.push(() => doc.removeEventListener(type, interact, true));
+  }
   listen(button, "click", () => {
-    if (wanted) pause();
+    if (wanted || state === "queued") pause();
     else void play();
   });
   listen(audio, "playing", () => {
@@ -74,7 +99,10 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
       pause();
       return;
     }
-    if (!audio.paused) render("playing");
+    if (!audio.paused) {
+      automaticPending = false;
+      render("playing");
+    }
   });
   listen(audio, "waiting", () => {
     if (wanted) render("loading", "Buffering music. Press Cancel music to stop.");
@@ -82,12 +110,13 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
   listen(audio, "pause", () => {
     if (!audio.paused || state === "error" || state === "blocked") return;
     wanted = false;
+    automaticPending = false;
     generation++;
     render("paused");
   });
   listen(audio, "ended", pause);
   listen(audio, "error", () => {
-    if (wanted && audio.error) fail(audio.error);
+    if ((wanted || automaticPending) && audio.error) fail(audio.error);
   });
   listen(doc, "visibilitychange", () => {
     if (doc.hidden) pause();
@@ -99,8 +128,12 @@ export function mountMusic({ audio, controls, button, label, status, doc = audio
   status.hidden = false;
   render("paused");
   controls.hidden = false;
-  // History restoration must not undo the lifecycle pause, even without bfcache.
-  if (win.performance?.getEntriesByType("navigation")[0]?.type !== "back_forward") void play(true);
+  if (automaticPending) {
+    audio.preload = "auto";
+    audio.setAttribute("src", audio.dataset.src);
+    render("queued", "Music starts after the dive. Cancel music to stay quiet.");
+    startAutomatic();
+  }
 
   return {
     destroy() {

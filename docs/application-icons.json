@@ -91,6 +91,26 @@
       "sha256": "9d9cf883f2c2251ca9820d1744fc6f64afde59c181d8333adf2943e6ea19727c",
       "license": "LICENSE-alacritty.txt",
       "retrieved": "2026-09-22"
+    },
+    {
+      "id": "monkeytype",
+      "file": "monkeytype.svg",
+      "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/icons/monkeytype.svg",
+      "sourceSha256": "ccc6a19915ec5d1782a76df47610c7d0c5357292cf8f07293acf722cd2ecbc86",
+      "sha256": "fddc220691f395d730422d00d5d4646f2884da63ff0b0fc287211fa4a5f6c1b6",
+      "license": "LICENSE-logos.txt",
+      "licenseSha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+      "licenseSource": "https://raw.githubusercontent.com/simple-icons/simple-icons/b86d5c9a0bdd4f3f5c30898a63654dd32f39fd76/LICENSE.md",
+      "licenseSourceSha256": "9046848b63a5c92bff14e4accca80bd987e0623b74adf9226ce5198d312b79d5",
+      "licenseComparison": "The complete CC0 1.0 Universal terms match the existing LICENSE-logos.txt after normalizing wrapping, Markdown headings, quotation marks, list numbering and its corresponding internal reference, and the HTTP/HTTPS CC0 notice URL. Reuse that full text without a duplicate license. CC0 does not grant trademark rights.",
+      "retrieved": "2026-09-22",
+      "derivation": {
+        "type": "root-fill",
+        "fill": "#e2b714",
+        "colorSource": "https://raw.githubusercontent.com/monkeytypegame/monkeytype/91bd24bb8513785c7364cbea29296ff7adafac41/frontend/static/images/favicon/favicon.svg",
+        "trailingNewline": "CRLF",
+        "note": "Added only a root fill attribute using the official favicon's brand yellow for visibility: the source has no fill and otherwise defaults to black on the dark card. Original path data, title and viewBox are unchanged; a final CRLF was appended. This is a disclosed Simple Icons derivative, not the official favicon or an unmodified upstream SVG."
+      }
     }
   ]
 }

@@ -20,6 +20,8 @@ Version [**0.4.0**](docs/releases/v0.4.0.md) introduced pastel signals; [**0.4.1
 
 Version **0.5.0** expands the collection to **twelve application targets**, adding Discord, Telegram Desktop, Slack, Chrome/Edge, JetBrains IDEs, Sublime Text and Alacritty without changing the palette. Discord is explicitly unofficial custom CSS; Slack exposes only a limited native color preset. See the [0.5.0 release notes](docs/releases/v0.5.0.md) and each application's installation and restoration guide.
 
+Version **0.6.0** adds **Monkeytype**, bringing the collection to **thirteen targets** with the same palette. Its native colors-only share link uses warm typing text, seafoam signals and readable secondary gray without resetting unrelated settings. See the [install/restore guide](targets/monkeytype/README.md) and [0.6.0 release notes](docs/releases/v0.6.0.md). Local export readiness does not imply upstream acceptance.
+
 ## The underwater showcase
 
 The [website](https://zanark.github.io/DeepSeaFoam/) interprets the theme as a quiet underwater workstation. Its hero opens without an eyebrow, with a short four-line poem and a document-green (`#45D072`) **Find your app** link beside **Explore the palette**. Application exports follow the palette immediately; the interaction study remains below them. The former four principle cards, signal legend, and heritage/extension section are removed from the page, not from the theme's documented mappings.
@@ -34,15 +36,15 @@ The click-only anglerfish follows the interaction study. The **blobfish now live
 
 The blobfish is a **user-supplied transparent illustration**, cleaned of isolated specks, cropped, and resized to a 640×345 WebP. The fish has no CSS opacity reduction or filter; its painted colors are not dimmed for concealment. Its original artist and license were not supplied; no blanket project license is asserted. [Processing metadata](docs/showcase-artwork.json), the optional [Pillow preparation script](scripts/prepare-blobfish.py), and the [artwork notice](site/artwork-NOTICE.txt) document that boundary. The private source image is not distributed with the repository.
 
-Scenery belongs **only to the showcase**, not the application exports. The site includes the owner's supplied **2:56 background music** as a **2,817,068-byte MP3** rather than the 33.8 MB WAV. Music **starts automatically on a fresh visible page load where the browser allows audible autoplay**. Browsers that require interaction show **Play music** with a short explanation instead; the site does not bypass that restriction. Playback loops; **Pause music** preserves position. Leaving the tab or page pauses it, and returning through visibility changes or history navigation does not resume it automatically. A fresh load or reload attempts playback again. It starts at 35% element volume where supported; phone hardware volume remains authoritative.
+Scenery belongs **only to the showcase**, not the application exports. The site includes the owner's supplied **2:56 background music** as a **2,817,068-byte MP3** rather than the 33.8 MB WAV. On eligible fresh visible loads, music **preloads during the descent and attempts audible playback after the dive completes**. Skipped, deep-linked or reduced-motion openings can complete immediately. If browser policy blocks autoplay, the request stays ready and retries on a genuine tap or key after completion; you do not have to find **Play music**. Browsers can still forbid audible playback without interaction: this is not a policy bypass or a guarantee of zero-click sound. **Cancel music** cancels queued/loading playback; **Pause music** preserves position and prevents later gestures from restarting it. Hiding/leaving the page and history restoration also suppress automatic retries; a fresh load or reload is eligible again. Playback loops at 35% element volume where supported; phone hardware volume remains authoritative.
 
-**Pause motion** and reduced-motion preferences affect scenery, not music. The player exposes loading/cancellation, retryable errors and a live status message; without JavaScript, a direct MP3 link replaces its controls. The music is website-only, and its original artist/license were not supplied; it is excluded from the original theme/code MIT grant. [Media provenance](docs/showcase-artwork.json) and the [artwork/audio notice](site/artwork-NOTICE.txt) record the conversion and rights boundary.
+**Pause motion** and reduced motion do not mute music; finishing or bypassing the intro only gates its initial automatic request. Music and motion buttons have a subtle **static seafoam border and halo**, independent of animation preferences. Gesture recovery ignores synthetic events, key repeats and modified shortcuts, does not prevent ordinary interactions, and excludes the music button to avoid play-then-pause races. Real failures show **Retry music** rather than retrying on later page gestures. The player retains explicit controls and live status; without JavaScript, a direct MP3 link replaces them. The music's original artist/license were not supplied; it remains outside the original theme/code MIT grant. [Media provenance](docs/showcase-artwork.json) and the [artwork/audio notice](site/artwork-NOTICE.txt) record that boundary.
 
-The **3 MiB all-file cap counts the music and every other deployed file**, with the earlier **256 KiB cap retained for non-audio assets**. This explicit increase accommodates the requested soundtrack, which can now download during automatic startup. There is no video, WebGL, external image service, or runtime library dependency. The photographic inspiration remains an external link. **Pause motion** freezes scenery and clears transient wakes; reduced motion skips the descent. **Skip descent**, Escape, Tab, navigation, or scrolling also bypasses the opening. Without JavaScript, the page and native creature reveals remain usable; the dynamic palette instead links to the README swatches.
+The **3 MiB all-file cap counts the music and every other deployed file**, with the earlier **256 KiB cap retained for non-audio assets**. This accommodates the soundtrack, which can download during intro preloading before playback begins. There is no video, WebGL, external image service, or runtime library dependency. The photographic inspiration remains an external link. **Pause motion** freezes scenery and clears transient wakes; reduced motion skips the descent. **Skip descent**, Escape, Tab, navigation, or scrolling also bypasses the opening. Without JavaScript, the page and native creature reveals remain usable; the dynamic palette instead links to the README swatches.
 
 The design essay distinguishes Solarized's designer rationale, maritime night-lookout guidance, a 2013 display-polarity study's abstract, and WCAG contrast guidance. None tests DeepSeaFoam or establishes universal comfort or eye-health benefits. See the [showcase architecture, motion lifecycle, artwork pipeline, and evidence limits](docs/SHOWCASE.md).
 
-The twelve application cards use locally hosted, lazy-loaded SVGs in their original colors, sourced from Devicon, SVG Logos, Browser Logos, and the Windows Terminal, Alacritty and Obsidian projects. [Pinned source URLs and checksums](docs/application-icons.json) preserve provenance; [notices and license files](site/icons/NOTICE.txt) accompany the assets. Product marks belong to their respective owners and do not imply endorsement. Obsidian's [brand guidelines](https://obsidian.md/brand) prohibit modifying its mark and require contacting its owner for commercial use.
+The thirteen application cards use locally hosted, lazy-loaded product SVGs. Twelve retain their original artwork from Devicon, SVG Logos, Browser Logos, and the Windows Terminal, Alacritty and Obsidian projects. Monkeytype uses the Simple Icons CC0 mark with only a fill added in verified brand yellow `#e2b714` for visibility; its geometry is unchanged. The existing `LICENSE-logos.txt` already supplies the same complete CC0 1.0 Universal terms, so no duplicate license or budget increase is needed. [Pinned sources, original/asset hashes and derivation details](docs/application-icons.json) preserve provenance; [notices and full license texts](site/icons/NOTICE.txt) accompany the assets. Product marks belong to their owners; CC0 grants no trademark rights and no endorsement is implied. Obsidian's [brand guidelines](https://obsidian.md/brand) prohibit modifying its mark and require contacting its owner for commercial use.
 
 ## Download
 
@@ -52,7 +54,7 @@ The original theme files and generator code are now available under the [MIT lic
 
 Version **0.5.1** packages that license without changing theme colors. Existing releases are not replaced. [Publication routes and current status](docs/PUBLISHING.md) distinguish downloadable files, submitted listings and approved directory entries.
 
-Download the current packages from the [latest GitHub release](https://github.com/Zanark/DeepSeaFoam/releases/latest):
+Download **0.6.0** packages from the [GitHub release](https://github.com/Zanark/DeepSeaFoam/releases/tag/v0.6.0). The Monkeytype ZIP includes its native share link and restore guide; [built-in preset PR #8421](https://github.com/monkeytypegame/monkeytype/pull/8421) is submitted and awaiting review:
 
 | Asset | Intended use |
 | --- | --- |
@@ -68,11 +70,12 @@ Download the current packages from the [latest GitHub release](https://github.co
 | `DeepSeaFoam-JetBrains-<version>.jar` | Resource-only theme plugin for JetBrains 2025.3+ |
 | `DeepSeaFoam-SublimeText-<version>.sublime-color-scheme` | Sublime Text 4 editor/syntax color scheme |
 | `DeepSeaFoam-Alacritty-<version>.toml` | Colors-only fragment imported into an existing Alacritty config |
+| `DeepSeaFoam-Monkeytype-<version>.zip` | Native colors-only share payload, URL, install/restore guide and MIT license |
 | `DeepSeaFoam-<version>.zip` | Complete palette, documentation, generator, and all application exports |
 | `DeepSeaFoam-Themes-LICENSE.txt` | MIT license for original theme files; retain with redistributed single-file exports |
 | `SHA256SUMS.txt` | SHA-256 checksums for every release asset |
 
-The showcase on `main` and GitHub Pages can advance independently of immutable source bundles. Website-only refinements do not require a palette version bump or replacement artifacts; **0.5.0 is a new release for the additional application exports**, leaving all earlier assets untouched.
+The showcase on `main` and GitHub Pages can advance independently of immutable source bundles. Website-only refinements do not require a palette version bump or replacement artifacts; **0.6.0 is a new native version for the Monkeytype target**, leaving all earlier releases untouched.
 
 ## Supported applications
 
@@ -90,6 +93,7 @@ The showcase on `main` and GitHub Pages can advance independently of immutable s
 | [JetBrains IDEs](targets/jetbrains/README.md) | Theme-only plugin | IDE chrome plus editor color scheme |
 | [Sublime Text](targets/sublime-text/README.md) | `.sublime-color-scheme` | Editor and syntax; pair with the built-in Adaptive UI |
 | [Alacritty](targets/alacritty/README.md) | TOML color fragment | Terminal, selection, cursor and the same higher-contrast ANSI palette |
+| [Monkeytype](targets/monkeytype/README.md) | Native custom-theme share URL + JSON payload | Ten native color slots; no full-settings import, background or custom CSS replacement |
 
 These are export files, not proof of runtime validation in every application version. Nothing in this repository installs a theme or modifies live application settings.
 
@@ -173,7 +177,7 @@ These colors keep image and transparency previews visually neutral. They are not
 
 Code editors and terminals require roles that SpriteCanvas never defined. The canonical source separates the retained Solarized **syntax heritage extension** from the **higher-contrast terminal extension**. The four heritage syntax colors stay unchanged in 0.4.2, while strings, keywords, numbers, and diagnostics mapped from the core inherit the vivid terminal-derived signals. `signalAdaptation` records each terminal source and its proportional shade scale; derived UI selection/error colors are recorded separately.
 
-See [application mappings](docs/MAPPINGS.md) for the surface decisions, extension roles, source references and unsupported boundaries across all twelve targets.
+See [application mappings](docs/MAPPINGS.md) for the surface decisions, extension roles, source references and unsupported boundaries across all thirteen targets.
 
 Run:
 
@@ -183,7 +187,7 @@ npm test
 npm run package:release
 ```
 
-`generate` rebuilds the application exports and all core/terminal SVG swatches. `test` checks theme invariants, contrast pairs, swatches, generated freshness, the export and site contracts, and scene controllers including nautilus drift. `package:release` creates the downloadable files under ignored `dist\`.
+`generate` rebuilds the application exports and all core/terminal SVG swatches. `test` checks theme invariants, contrast pairs, swatches, generated freshness, the export and site contracts, and scene controllers including nautilus drift. `package:release` recreates **only** `dist\releases\<version>\` (currently `dist\releases\0.6.0\`), preserving sibling releases and unrelated `dist\instagram\` / historical deliverables. Its manual VS Code kit is under that version's `marketplace\vscode\` folder. It does not upload, publish, or replace existing remote assets.
 
 ## Porting rules
 

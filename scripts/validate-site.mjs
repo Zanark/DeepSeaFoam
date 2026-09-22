@@ -49,21 +49,36 @@ const canonical = JSON.parse(await readFile(path.join(root, "palette", "deepseaf
 const manifest = JSON.parse(manifestText);
 const { icons } = JSON.parse(await readFile(path.join(root, "docs", "application-icons.json"), "utf8"));
 const appIds = ["vscode", "visual-studio", "obsidian", "terminal", "firefox",
-  "discord", "telegram", "slack", "chrome", "jetbrains", "sublime-text", "alacritty"];
+  "discord", "telegram", "slack", "chrome", "jetbrains", "sublime-text", "alacritty", "monkeytype"];
 if (icons.length !== appIds.length || icons.some((icon, index) => icon.id !== appIds[index])) {
-  throw new Error("Application icon provenance must cover all twelve cards exactly once");
+  throw new Error("Application icon provenance must cover all thirteen cards exactly once");
 }
 if ((html.match(/class="app-card app-/g) ?? []).length !== appIds.length ||
     !html.includes(`<dt>${appIds.length}</dt><dd>app targets</dd>`)) {
   throw new Error("The application cards and displayed target count must agree");
 }
 for (const icon of icons) {
+  const card = html.match(new RegExp(`<a class="app-card app-${icon.id}"[^>]*>[\\s\\S]*?</a>`))?.[0];
+  if (!card) throw new Error(`Missing application card: ${icon.id}`);
   if (!/^[a-z-]+\.svg$/.test(icon.file)) throw new Error(`Invalid icon filename: ${icon.file}`);
   const bytes = await readFile(path.join(site, "icons", icon.file));
   if (createHash("sha256").update(bytes).digest("hex") !== icon.sha256) {
-    throw new Error(`Application artwork differs from its recorded upstream SVG: ${icon.file}`);
+    throw new Error(`Application artwork differs from its recorded asset hash: ${icon.file}`);
   }
   const svg = bytes.toString("utf8");
+  if (icon.id === "monkeytype") {
+    const original = svg.replace(/^<svg fill="#e2b714" /, "<svg ").replace(/\r\n$/, "");
+    if (icon.derivation?.type !== "root-fill" || icon.derivation.fill !== "#e2b714" ||
+        icon.derivation.trailingNewline !== "CRLF" || !svg.startsWith('<svg fill="#e2b714" ') ||
+        !svg.endsWith("\r\n") || createHash("sha256").update(original).digest("hex") !== icon.sourceSha256) {
+      throw new Error("Monkeytype may change only the documented root fill and final newline, not source geometry");
+    }
+    const license = await readFile(path.join(site, "icons", icon.license));
+    if (icon.license !== "LICENSE-logos.txt" || !license.toString("utf8").startsWith("CC0 1.0 Universal") ||
+        createHash("sha256").update(license).digest("hex") !== icon.licenseSha256) {
+      throw new Error("Monkeytype must retain the verified shared full CC0 license");
+    }
+  }
   const references = [
     ...[...svg.matchAll(/\bhref=["']([^"']+)["']/g)].map((match) => match[1]),
     ...[...svg.matchAll(/url\(["']?([^"')]+)["']?\)/g)].map((match) => match[1])
@@ -72,7 +87,6 @@ for (const icon of icons) {
       references.some((reference) => !reference.startsWith("#"))) {
     throw new Error(`Application icon must be a self-contained, passive SVG: ${icon.file}`);
   }
-  const card = html.match(new RegExp(`<a class="app-card app-${icon.id}"[^>]*>[\\s\\S]*?</a>`))?.[0];
   if (!card?.includes(`src="icons/${icon.file}"`) || !card.includes('loading="lazy" alt=""')) {
     throw new Error(`Application card must use its local decorative SVG: ${icon.id}`);
   }
@@ -159,10 +173,11 @@ for (const marker of [
   'id="skip-dive"',
   '<div class="bubble-field" aria-hidden="true">',
   '<canvas class="water-surface" aria-hidden="true"></canvas>',
-  '<script src="ocean.js?v=touch-water" type="module"></script>',
+  '<body data-dive-state="pending">',
+  '<script src="ocean.js?v=dive-music" type="module"></script>',
   '<script src="water.js?v=touch-water" type="module"></script>',
   '<script src="nautilus.js?v=nautilus-behind-content" type="module"></script>',
-  '<script src="music.js?v=default-music" type="module"></script>',
+  '<script src="music.js?v=dive-music" type="module"></script>',
   'class="nautilus-zone"',
   'class="blobfish-zone"',
   'class="angler-zone"',
@@ -198,7 +213,7 @@ if (html.indexOf('class="nautilus-zone"') > html.indexOf("<main") ||
     !html.includes('class="nautilus-zone" aria-hidden="true"') ||
     !/main,\s*footer\s*\{[^}]*position:\s*relative;[^}]*z-index:\s*2/.test(css) ||
     !/\.nautilus-zone\s*\{[^}]*position:\s*fixed;[^}]*z-index:\s*1;[^}]*pointer-events:\s*none/.test(css) ||
-    !html.includes('href="ocean.css?v=default-music"')) {
+    !html.includes('href="ocean.css?v=dive-music"')) {
   throw new Error("Nautilus must roam in a pointer-transparent root layer below readable content");
 }
 const hideout = html.match(/<section class="blobfish-zone"[\s\S]*?<\/section>/)?.[0] ?? "";

@@ -15,6 +15,8 @@ class Events {
   fire(type, event = {}) {
     for (const callback of this.listeners.get(type) ?? []) callback(event);
   }
+  dispatched = [];
+  dispatchEvent(event) { this.dispatched.push(event.type); this.fire(event.type, event); }
 }
 
 function scene({ reduced = false, hash = "", scroll = 0 } = {}) {
@@ -27,6 +29,7 @@ function scene({ reduced = false, hash = "", scroll = 0 } = {}) {
     properties = new Map();
     firstChild = { textContent: "" };
     children = [];
+    dataset = {};
     parentElement = null;
     get childElementCount() { return this.children.length; }
     get firstElementChild() { return this.children[0]; }
@@ -58,6 +61,7 @@ function scene({ reduced = false, hash = "", scroll = 0 } = {}) {
     "#skip-dive", "#replay-dive", "#depth-value", "#depth-zone", ".brand"
   ].map(selector => [selector, new Element()]));
   document.body = new Element();
+  document.body.dataset.diveState = "pending";
   document.documentElement = { scrollHeight: 5000 };
   document.querySelector = selector => elements.get(selector);
   document.createElement = () => new Element();
@@ -70,7 +74,7 @@ function scene({ reduced = false, hash = "", scroll = 0 } = {}) {
   let id = 0;
   let now = 0;
   const globals = {
-    document, window, Element, location: { hash }, innerHeight: 1000, innerWidth: 1000, scrollY: scroll,
+    document, window, Element, Event, location: { hash }, innerHeight: 1000, innerWidth: 1000, scrollY: scroll,
     matchMedia: query => query.includes("reduced-motion") ? media : fine,
     setTimeout: (callback, delay) => { timers.set(++id, { callback, delay }); return id; },
     clearTimeout: key => timers.delete(key),
@@ -93,11 +97,17 @@ test("opening descent is bounded and progressively reveals controls", () => {
   assert.equal(s.document.body.classList.contains("is-diving"), true);
   assert.equal(s.el(".dive-controls").hidden, false);
   assert.equal(s.el("#skip-dive").hidden, false);
+  assert.equal(s.document.body.dataset.diveState, "running");
+  assert.deepEqual(s.document.dispatched, []);
   const [timer] = s.timers.values();
   assert.equal(timer.delay, 2850);
   timer.callback();
   assert.equal(s.document.body.classList.contains("is-diving"), false);
   assert.equal(s.el("#skip-dive").hidden, true);
+  assert.equal(s.document.body.dataset.diveState, "complete");
+  assert.deepEqual(s.document.dispatched, ["deepseafoam:dive-complete"]);
+  s.document.fire("keydown", { key: "Escape" });
+  assert.equal(s.document.dispatched.length, 1);
 });
 
 test("reduced motion skips the dive and reacts to preference changes", () => {
@@ -105,17 +115,20 @@ test("reduced motion skips the dive and reacts to preference changes", () => {
   assert.equal(s.timers.size, 0);
   assert.equal(s.document.body.classList.contains("motion-paused"), true);
   assert.equal(s.el("#motion-toggle").disabled, true);
+  assert.equal(s.document.body.dataset.diveState, "complete");
   s.media.matches = false;
   s.media.fire("change");
   assert.equal(s.el("#motion-toggle").disabled, false);
   assert.equal(s.document.body.classList.contains("motion-paused"), false);
   assert.equal(s.timers.size, 0);
+  assert.equal(s.document.body.dataset.diveState, "complete");
 });
 
 test("pause stops an in-flight descent; resume does not replay it", () => {
   const s = scene();
   s.el("#motion-toggle").fire("click");
   assert.equal(s.timers.size, 0);
+  assert.deepEqual(s.document.dispatched, ["deepseafoam:dive-complete"]);
   assert.equal(s.el("#motion-toggle").attributes.get("aria-pressed"), "true");
   assert.equal(s.document.body.classList.contains("is-diving"), false);
   s.el("#motion-toggle").fire("click");
@@ -123,11 +136,19 @@ test("pause stops an in-flight descent; resume does not replay it", () => {
   assert.equal(s.timers.size, 0);
 });
 
+test("navigation cancels the dive without requesting music startup", () => {
+  const s = scene();
+  s.window.fire("pagehide", { type: "pagehide" });
+  assert.equal(s.document.body.dataset.diveState, "complete");
+  assert.deepEqual(s.document.dispatched, []);
+});
+
 test("deep links and restored scroll positions bypass the opening", () => {
   for (const options of [{ hash: "#palette" }, { scroll: 900 }]) {
     const s = scene(options);
     assert.equal(s.document.body.classList.contains("is-diving"), false);
     assert.equal(s.timers.size, 0);
+    assert.equal(s.document.body.dataset.diveState, "complete");
   }
 });
 
@@ -161,6 +182,7 @@ test("hidden pages pause their scenery and finish any opening", () => {
   s.document.fire("visibilitychange");
   assert.equal(s.document.body.classList.contains("page-hidden"), true);
   assert.equal(s.timers.size, 0);
+  assert.deepEqual(s.document.dispatched, []);
   s.document.hidden = false;
   s.document.fire("visibilitychange");
   assert.equal(s.document.body.classList.contains("page-hidden"), false);

@@ -15,14 +15,14 @@
     <link rel="manifest" href="site.webmanifest?v=seaweed-foam-cluster">
     <link rel="stylesheet" href="palette.css">
     <link rel="stylesheet" href="styles.css?v=0.5.0">
-    <link rel="stylesheet" href="ocean.css?v=default-music">
+    <link rel="stylesheet" href="ocean.css?v=dive-music">
     <script src="app.js" type="module"></script>
-    <script src="ocean.js?v=touch-water" type="module"></script>
+    <script src="ocean.js?v=dive-music" type="module"></script>
     <script src="water.js?v=touch-water" type="module"></script>
     <script src="nautilus.js?v=nautilus-behind-content" type="module"></script>
-    <script src="music.js?v=default-music" type="module"></script>
+    <script src="music.js?v=dive-music" type="module"></script>
   </head>
-  <body>
+  <body data-dive-state="pending">
     <a class="skip-link" href="#main">Skip to the theme</a>
 
     <div class="ocean-world" aria-hidden="true">
@@ -95,7 +95,7 @@
         <button id="motion-toggle" type="button" aria-pressed="false"><span aria-hidden="true">Ⅱ</span> <span class="motion-label">Pause motion</span></button>
       </div>
       <div class="music-controls" hidden>
-        <button id="music-toggle" type="button" aria-controls="background-music" aria-describedby="music-status" title="Music starts automatically where allowed. Use your device volume controls."><span aria-hidden="true">&#9835;</span> <span class="music-label">Play music</span></button>
+        <button id="music-toggle" type="button" aria-controls="background-music" aria-describedby="music-status" title="Music starts after the dive; a first tap or key may be needed. Use your device volume controls."><span aria-hidden="true">&#9835;</span> <span class="music-label">Play music</span></button>
       </div>
       <p class="music-status" id="music-status" role="status"></p>
       <noscript><a class="music-fallback" href="audio/deepseafoam-music.mp3">Listen to the music (MP3)</a></noscript>
@@ -151,7 +151,7 @@
           </div>
           <dl class="hero-facts" aria-label="Project facts">
             <div><dt>27</dt><dd>core values</dd></div>
-            <div><dt>12</dt><dd>app targets</dd></div>
+            <div><dt>13</dt><dd>app targets</dd></div>
             <div><dt>0</dt><dd>runtime dependencies</dd></div>
           </dl>
           <a class="descent-cue" href="#identity"><span></span> SCROLL INTO THE QUIET <b aria-hidden="true">↓</b></a>
@@ -393,6 +393,11 @@
             <div class="app-card-top"><span>12</span><img src="icons/alacritty.svg" width="48" height="48" loading="lazy" alt=""></div>
             <div><h3>Alacritty</h3><p>TOML colors matching our higher-contrast terminal palette.</p></div>
             <span class="app-link">Explore export <b>↗</b></span>
+          </a>
+          <a class="app-card app-monkeytype" href="https://github.com/Zanark/DeepSeaFoam/tree/main/targets/monkeytype">
+            <div class="app-card-top"><span>13</span><img src="icons/monkeytype.svg" width="48" height="48" loading="lazy" alt=""></div>
+            <div><h3>Monkeytype</h3><p>Colors-only share link. Warm typing text, seafoam signals; your other settings stay yours.</p></div>
+            <span class="app-link">Install or restore colors <b>↗</b></span>
           </a>
         </div>
       </section>

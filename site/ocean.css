@@ -297,6 +297,7 @@
     text-decoration: none;
   }
   .scene-controls button:hover, .music-fallback:hover { background: var(--dsf-overlay-hover); }
+  #motion-toggle, #music-toggle { border: 1px solid color-mix(in srgb, var(--dsf-solid-accent) 70%, var(--dsf-solid-panel)); box-shadow: 0 0 9px color-mix(in srgb, var(--dsf-solid-accent) 18%, transparent); }
   .scene-controls button > span:first-child { color: var(--dsf-solid-accent); margin-right: 7px; }
   #skip-dive, .music-status { position: absolute; bottom: calc(100% + 8px); right: 0; background: #00131BF5; border: 1px solid var(--dsf-overlay-separator); border-radius: 7px; }
   .music-status { width: min(280px, calc(100vw - 36px)); margin: 0; padding: 8px 10px; color: var(--dsf-solid-text); font: .65rem/1.5 var(--mono); }

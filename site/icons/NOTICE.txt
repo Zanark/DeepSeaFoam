@@ -9,6 +9,11 @@ Discord / Telegram / Sublime Text: SVG Logos collection; see LICENSE-logos.txt.
 Alacritty: official project mark; see LICENSE-alacritty.txt.
 Obsidian: official, unmodified mark; https://obsidian.md/brand
 Obsidian's guidelines require contacting its owner for commercial use.
+Monkeytype: Simple Icons, CC0 1.0 Universal; shared full text in LICENSE-logos.txt.
+Root fill added in verified brand yellow #e2b714 for visibility; path data is
+unchanged and a final CRLF was appended. This is not an unmodified upstream SVG.
+The official favicon supplied only the color reference; its artwork is not reused.
+CC0 does not grant trademark rights. No affiliation or endorsement is implied.
 
 Pinned sources and SHA-256 hashes:
 https://github.com/Zanark/DeepSeaFoam/blob/main/docs/application-icons.json

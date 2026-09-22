@@ -2,7 +2,7 @@
 <idea-plugin>
   <id>io.github.zanark.deepseafoam</id>
   <name>DeepSeaFoam</name>
-  <version>0.5.1</version>
+  <version>0.6.0</version>
   <vendor url="https://github.com/Zanark/DeepSeaFoam">Zanark</vendor>
   <description>DeepSeaFoam dark UI theme and editor color scheme. Theme resources only; no application code.</description>
   <idea-version since-build="253"/>

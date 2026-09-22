@@ -47,16 +47,22 @@ for (const type of ["animationend", "animationcancel"]) {
   });
 }
 
-function finishDive() {
+function finishDive(event) {
+  const completed = body.dataset.diveState === "complete";
   clearTimeout(diveTimer);
   body.classList.remove("is-diving");
   if (document.activeElement === skip) motionToggle.focus({ preventScroll: true });
   skip.hidden = true;
+  body.dataset.diveState = "complete";
+  if (!completed && !document.hidden && event?.type !== "pagehide") {
+    document.dispatchEvent(new Event("deepseafoam:dive-complete"));
+  }
 }
 
 function dive() {
-  finishDive();
-  if (isStill()) return;
+  clearTimeout(diveTimer);
+  if (isStill()) { finishDive(); return; }
+  body.dataset.diveState = "running";
   body.classList.add("is-diving");
   skip.hidden = false;
   diveTimer = setTimeout(finishDive, 2850);
@@ -157,8 +163,8 @@ document.addEventListener("visibilitychange", () => {
     clearBubbles();
   }
 });
-window.addEventListener("pagehide", () => {
-  finishDive();
+window.addEventListener("pagehide", (event) => {
+  finishDive(event);
   clearBubbles();
 });
 window.addEventListener("pageshow", requestUpdate);
@@ -172,3 +178,4 @@ body.classList.add("ocean-ready");
 syncMotion();
 updateScene();
 if (!location.hash && scrollY < 10) dive();
+else finishDive();

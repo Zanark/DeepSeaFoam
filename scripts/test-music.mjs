@@ -9,12 +9,12 @@ class Events {
     this.listeners.get(type).add(callback);
   }
   removeEventListener(type, callback) { this.listeners.get(type)?.delete(callback); }
-  fire(type) { for (const callback of this.listeners.get(type) ?? []) callback(); }
+  fire(type, event = {}) { for (const callback of this.listeners.get(type) ?? []) callback({ type, ...event }); }
   get listenerCount() { return [...this.listeners.values()].reduce((sum, set) => sum + set.size, 0); }
 }
 
-function fixture({ hidden = false, navigationType = "navigate" } = {}) {
-  const doc = Object.assign(new Events(), { hidden });
+function fixture({ hidden = false, navigationType = "navigate", diveState = "complete" } = {}) {
+  const doc = Object.assign(new Events(), { hidden, body: { dataset: { diveState } } });
   const win = Object.assign(new Events(), {
     performance: { getEntriesByType: () => [{ type: navigationType }] }
   });
@@ -43,6 +43,7 @@ function fixture({ hidden = false, navigationType = "navigate" } = {}) {
     dataset: {}, attributes: {},
     setAttribute(name, value) { this.attributes[name] = value; }
   });
+  button.contains = target => target === button;
   const controls = { hidden: true }, label = { textContent: "" }, status = { textContent: "", hidden: false };
   const controller = mountMusic({ audio, controls, button, label, status });
   return {
@@ -58,7 +59,7 @@ function fixture({ hidden = false, navigationType = "navigate" } = {}) {
 
 const settle = () => new Promise(resolve => setImmediate(resolve));
 
-test("visible page loads attempt music automatically at the default volume", () => {
+test("visible loads with an already-complete intro attempt music at the default volume", () => {
   const f = fixture();
   assert.equal(f.audio.getAttribute("src"), f.audio.dataset.src);
   assert.equal(f.requests.length, 1);
@@ -68,6 +69,33 @@ test("visible page loads attempt music automatically at the default volume", () 
   assert.equal(f.label.textContent, "Cancel music");
   assert.equal(f.status.hidden, false);
   assert.match(f.status.textContent, /Loading/);
+});
+
+test("music preloads but waits for the dive-complete handshake", async () => {
+  const f = fixture({ diveState: "pending" });
+  assert.equal(f.requests.length, 0);
+  assert.equal(f.audio.preload, "auto");
+  assert.equal(f.audio.getAttribute("src"), f.audio.dataset.src);
+  assert.equal(f.label.textContent, "Cancel music");
+  f.doc.fire("pointerdown", { isTrusted: true });
+  assert.equal(f.requests.length, 0, "do not start during a pending/running dive");
+  f.doc.body.dataset.diveState = "complete";
+  f.doc.fire("deepseafoam:dive-complete");
+  assert.equal(f.requests.length, 1);
+  f.finish(); await settle();
+  f.doc.fire("deepseafoam:dive-complete");
+  assert.equal(f.requests.length, 1, "replaying the dive does not restart music");
+});
+
+test("cancelling queued music wins over the same tap finishing the dive", () => {
+  const f = fixture({ diveState: "running" });
+  f.doc.fire("pointerdown", { isTrusted: true, target: f.button });
+  f.doc.body.dataset.diveState = "complete";
+  f.doc.fire("deepseafoam:dive-complete");
+  f.click();
+  f.doc.fire("pointerup", { isTrusted: true });
+  assert.equal(f.requests.length, 0);
+  assert.equal(f.label.textContent, "Play music");
 });
 
 test("hidden loads and history restoration stay paused, while reloads attempt playback", () => {
@@ -148,15 +176,49 @@ test("blocked autoplay offers Play music without treating browser policy as a me
   await settle();
   assert.equal(f.label.textContent, "Play music");
   assert.equal(f.audio.paused, true);
-  assert.match(f.status.textContent, /requires a tap/);
+  assert.match(f.status.textContent, /Tap anywhere/);
   assert.equal(warning.mock.callCount(), 0);
   f.audio.fire("pause");
-  assert.match(f.status.textContent, /requires a tap/, "queued pause events preserve the fallback explanation");
+  assert.match(f.status.textContent, /Tap anywhere/, "queued pause events preserve the fallback explanation");
   f.click(); f.finish(); await settle();
   assert.equal(f.label.textContent, "Pause music");
   assert.equal(f.requests.length, 2);
 });
 
+test("a genuine page interaction retries blocked sound, but synthetic events do not", async () => {
+  const f = fixture();
+  f.requests[0].reject(new DOMException("Gesture required", "NotAllowedError"));
+  await settle();
+  f.doc.fire("pointerup");
+  f.doc.fire("keydown", { isTrusted: true, repeat: true });
+  f.doc.fire("keydown", { isTrusted: true, ctrlKey: true });
+  assert.equal(f.requests.length, 1);
+  f.doc.fire("touchend", { isTrusted: true });
+  assert.equal(f.requests.length, 2);
+  f.finish(); await settle();
+  f.click();
+  f.doc.fire("keydown", { isTrusted: true, key: "a" });
+  assert.equal(f.requests.length, 2, "normal interactions never undo an explicit pause");
+});
+
+test("music-control activation does not race the page-wide startup retry", async () => {
+  const f = fixture();
+  f.requests[0].reject(new DOMException("Gesture required", "NotAllowedError"));
+  await settle();
+  f.doc.fire("pointerdown", { isTrusted: true, target: f.button });
+  assert.equal(f.requests.length, 1);
+  f.click(); f.finish(); await settle();
+  assert.equal(f.label.textContent, "Pause music");
+});
+
+test("leaving during the dive cancels its queued music", () => {
+  const f = fixture({ diveState: "running" });
+  f.win.fire("pagehide");
+  f.doc.body.dataset.diveState = "complete";
+  f.doc.fire("deepseafoam:dive-complete");
+  f.doc.fire("keydown", { isTrusted: true, key: "a" });
+  assert.equal(f.requests.length, 0);
+});
 test("rejected manual playback is visible, announced, logged and retryable", async t => {
   const warning = t.mock.method(console, "warn", () => {});
   const f = fixture();

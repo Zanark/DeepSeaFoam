@@ -2,7 +2,7 @@
 
 This document separates exact core mappings from application-specific design work. Property names are implementation details; semantic roles are the source of truth.
 
-Version **0.5.0** adds seven application targets without changing any of the 27 core values, four syntax heritage colors or 19 terminal-extension colors. Installation, removal and format references live in each target's README. The collection now has twelve targets, not twelve identical or universally supported importers.
+Version **0.5.0** added seven application targets; **0.6.0** adds Monkeytype as the thirteenth. Neither changes any of the 27 core values, four syntax heritage colors or 19 terminal-extension colors. Installation, removal and format references live in each target's README. Thirteen targets do not mean thirteen identical or universally supported importers.
 
 ## Terminal-derived vivid signals (0.4.2)
 
@@ -71,6 +71,45 @@ Telegram UI selection is composited over the base or panel. Outgoing bubbles use
 Discord, Telegram and Slack use document green for particular host presence/status meanings deliberately. This is a port decision, not evidence that the original SpriteCanvas palette defined a universal success-state system. Discord's native Nitro controls are documented separately as a manual approximation, not as an exact DeepSeaFoam importer.
 
 The [target regressions](../scripts/test-targets.mjs) cover generation/nonmutation, palette propagation, supported format shapes, representative contrast pairs, resource references and install/removal documentation. The release builder parses XML before packaging. These boundaries do not constitute an installed-application visual audit.
+
+## Monkeytype native colors (0.6.0)
+
+[`addMonkeytypeTheme`](../scripts/monkeytype-theme.mjs) receives the same canonical
+palette/accessors as the chat and desktop emitters. It emits the native share
+payload object, an ordinary Base64/percent-encoded URL and a generated guide;
+the main generator supplies the MIT license automatically.
+
+| Array index | Native role | Canonical source | Value |
+| --- | --- | --- | --- |
+| 0 | `bg` | `solid.base` | `#000F13` |
+| 1, 2 | `main`, `caret` | `solid.accent` | `#00A591` |
+| 3 | `sub` | `solid.faintText` | `#839496` |
+| 4 | `subAlt` | `solid.panel` | `#001E26` |
+| 5 | `text` | `solid.warm` | `#EEE8D5` |
+| 6, 7, 8, 9 | `error`, `errorExtra`, `colorfulError`, `colorfulErrorExtra` | `solid.error` | `#E84A5F` |
+
+Warm ivory intentionally becomes normal typed text to meet upstream's near-white
+or black text guidance. Normal typing uses `text` for correct letters and `sub`
+for untyped letters; flip swaps them. Colorful mode substitutes `main` for
+`text`, including when flipped; all four combinations retain the same base.
+The four error slots share canonical rose, without adding darker error colors.
+Native roles overlap other UI: main/sub also drive active/secondary controls and
+subAlt supplies supporting surfaces. There are no separate document, warning,
+border or light-edge slots. A host need not consume all eleven interface solids.
+
+The URL decodes to **`{c: [ten colors]}`**, never a naked array or a partial
+full-settings object. The native handler sets only `customThemeColors` and
+`customTheme`; omitting `i`/`s`/`f` preserves separate background preferences.
+Existing custom CSS remains outside this export and can affect appearance.
+No login is required to use the link; account-saved presets are optional.
+A partial settings import would reset unrelated omitted settings, so the
+[guide](../targets/monkeytype/README.md) uses native sharing with explicit
+custom-color backup and preset/custom restoration.
+
+Pinned official sources: [array conversion](https://github.com/monkeytypegame/monkeytype/blob/91bd24bb8513785c7364cbea29296ff7adafac41/frontend/src/ts/controllers/theme-controller.ts#L25-L52),
+[URL handler](https://github.com/monkeytypegame/monkeytype/blob/91bd24bb8513785c7364cbea29296ff7adafac41/frontend/src/ts/controllers/url-handler.tsx#L83-L140),
+[typing rules](https://github.com/monkeytypegame/monkeytype/blob/91bd24bb8513785c7364cbea29296ff7adafac41/frontend/src/styles/test.scss#L115-L176),
+[flip/colorful rules](https://github.com/monkeytypegame/monkeytype/blob/91bd24bb8513785c7364cbea29296ff7adafac41/frontend/src/styles/test.scss#L278-L302).
 
 ## Syntax heritage extension
 

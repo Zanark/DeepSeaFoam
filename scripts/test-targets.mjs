@@ -3,6 +3,7 @@ import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { addChatThemes } from "./chat-themes.mjs";
 import { addDesktopThemes } from "./desktop-themes.mjs";
+import { addMonkeytypeTheme } from "./monkeytype-theme.mjs";
 import { composite, contrast, rgb } from "./colors.mjs";
 
 const root = new URL("../", import.meta.url);
@@ -28,6 +29,7 @@ function generate(source = palette) {
   };
   addChatThemes(context);
   addDesktopThemes(context);
+  addMonkeytypeTheme(context);
   return outputs;
 }
 
@@ -69,7 +71,7 @@ function readable(foreground, background, label) {
 test("additional emitters are deterministic, nonmutating and match every generated file", async () => {
   const before = structuredClone(palette);
   const outputs = generate();
-  assert.equal(outputs.size, 9);
+  assert.equal(outputs.size, 12);
   assert.deepEqual(outputs, generate());
   assert.deepEqual(palette, before);
   for (const [file, content] of outputs) {
@@ -93,6 +95,54 @@ test("each new target derives its colors and metadata from the supplied palette"
   assert.equal(parseColorTables(outputs.get("targets/alacritty/DeepSeaFoam.toml")).primary.background, "#010E12");
   assert.equal(JSON.parse(outputs.get("targets/jetbrains/resources/DeepSeaFoam.theme.json")).ui["Component.focusColor"], "#3CA599");
   assert.ok(outputs.get("targets/jetbrains/resources/META-INF/plugin.xml").includes("<version>9.9.9</version>"));
+  assert.deepEqual(JSON.parse(outputs.get("targets/monkeytype/DeepSeaFoam.json")).c.slice(0, 3),
+    ["#010E12", "#3CA599", "#3CA599"]);
+  assert.ok(outputs.get("targets/monkeytype/README.md").includes("**9.9.9**"));
+});
+
+test("Monkeytype uses the exact native ten-slot colors-only share object", async () => {
+  const payload = JSON.parse(await read("targets/monkeytype/DeepSeaFoam.json"));
+  assert.deepEqual(Object.keys(payload), ["c"]);
+  assert.deepEqual(payload.c, ["base", "accent", "accent", "faintText", "panel", "warm",
+    "error", "error", "error", "error"].map(solid));
+  assert.equal(payload.c.length, 10);
+  for (const color of payload.c) assert.match(color, opaque);
+  assert.deepEqual(payload.c, ["#000F13", "#00A591", "#00A591", "#839496", "#001E26",
+    "#EEE8D5", "#E84A5F", "#E84A5F", "#E84A5F", "#E84A5F"]);
+  for (const index of [1, 2, 3, 5, 6, 7, 8, 9]) {
+    readable(payload.c[index], payload.c[0], `Monkeytype slot ${index} on base`);
+  }
+});
+
+test("Monkeytype share URL round-trips ordinary Base64 and contains no unrelated settings", async () => {
+  const link = await read("targets/monkeytype/DeepSeaFoam.txt");
+  assert.equal(link.trim().split(/\s+/).length, 1);
+  const url = new URL(link.trim());
+  assert.equal(url.origin, "https://monkeytype.com");
+  assert.equal(url.pathname, "/");
+  assert.equal(url.hash, "");
+  assert.deepEqual([...url.searchParams.keys()], ["customTheme"]);
+  const base64 = url.searchParams.get("customTheme");
+  assert.match(base64, /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/);
+  const decoded = JSON.parse(Buffer.from(base64, "base64").toString("utf8"));
+  assert.deepEqual(decoded, JSON.parse(await read("targets/monkeytype/DeepSeaFoam.json")));
+  assert.deepEqual(Object.keys(decoded), ["c"], "No full-settings or background i/s/f payload");
+  assert.ok((await read("targets/monkeytype/README.md")).includes(`](${link.trim()})`));
+});
+
+test("every Monkeytype native slot propagates the supplied palette without mutation", () => {
+  const alternate = structuredClone(palette);
+  const keys = ["base", "accent", "faintText", "panel", "warm", "error"];
+  keys.forEach((key, index) => { alternate.solid[key].value = `#12345${index}`; });
+  const before = structuredClone(alternate);
+  const outputs = generate(alternate);
+  const payload = JSON.parse(outputs.get("targets/monkeytype/DeepSeaFoam.json"));
+  assert.deepEqual(payload.c, ["#123450", "#123451", "#123451", "#123452", "#123453",
+    "#123454", "#123455", "#123455", "#123455", "#123455"]);
+  const url = new URL(outputs.get("targets/monkeytype/DeepSeaFoam.txt").trim());
+  assert.deepEqual(JSON.parse(Buffer.from(url.searchParams.get("customTheme"), "base64").toString("utf8")), payload);
+  for (const color of payload.c) assert.ok(outputs.get("targets/monkeytype/README.md").includes(color));
+  assert.deepEqual(alternate, before);
 });
 
 test("Discord CSS is self-contained, dark-scoped and explicitly unofficial", async () => {
@@ -222,7 +272,7 @@ test("Alacritty is colors-only and preserves every terminal-extension value", as
 });
 
 test("all target guides document restoration and packaging source mirrors stay identical", async () => {
-  for (const target of ["discord", "telegram", "slack", "chromium", "jetbrains", "sublime-text", "alacritty"]) {
+  for (const target of ["discord", "telegram", "slack", "chromium", "jetbrains", "sublime-text", "alacritty", "monkeytype"]) {
     const guide = await read(`targets/${target}/README.md`);
     assert.match(guide, /## Install|## Optional install/);
     assert.match(guide, /## Remove \/ restore/);
@@ -230,12 +280,27 @@ test("all target guides document restoration and packaging source mirrors stay i
   }
   const source = await read("scripts/package-release.ps1");
   assert.equal(await read("scripts/package-release.txt"), source);
+  assert.deepEqual(await readFile(new URL("scripts/package-release.txt", root)),
+    await readFile(new URL("scripts/package-release.ps1", root)));
+  assert.ok(source.includes('$dist = Join-Path (Join-Path $repoRoot "dist\\releases") $Version'),
+    "Packaging must isolate a version's release output without deleting other dist deliverables");
+  assert.equal((source.match(/^\$dist\s*=/gm) ?? []).length, 1);
+  assert.doesNotMatch(source, /Remove-Item[^\r\n]*(?:["']dist\\?["']|\$repoRoot)/);
+  for (const name of ["DeepSeaFoam.json", "DeepSeaFoam.txt", "README.md", "LICENSE"]) {
+    assert.ok(source.includes(`"targets\\monkeytype\\${name}"`));
+  }
+  assert.ok(source.includes('"DeepSeaFoam-Monkeytype-$Version.zip"'));
+  const guide = await read("targets/monkeytype/README.md");
+  for (const phrase of ["no account login", "resets unrelated omitted settings",
+    "backed-up native share link", "not a naked array", "custom CSS remain"]) {
+    assert.ok(guide.includes(phrase), phrase);
+  }
 });
 
 test("all theme distributions carry the approved MIT license without relicensing showcase artwork", async () => {
   const license = (await read("licenses/MIT.txt")).replace(/\r\n/g, "\n");
   assert.match(license, /^MIT License/);
-  for (const target of ["vscode", "visual-studio", "obsidian", "windows-terminal", "firefox", "discord", "telegram", "slack", "chromium", "jetbrains", "sublime-text", "alacritty"]) {
+  for (const target of ["vscode", "visual-studio", "obsidian", "windows-terminal", "firefox", "discord", "telegram", "slack", "chromium", "jetbrains", "sublime-text", "alacritty", "monkeytype"]) {
     assert.equal((await read(`targets/${target}/LICENSE`)).replace(/\r\n/g, "\n"), license, target);
   }
   assert.equal((await read("targets/jetbrains/resources/META-INF/LICENSE")).replace(/\r\n/g, "\n"), license);

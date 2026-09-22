@@ -17,11 +17,11 @@ if ($Version -ne $package.version) {
     throw "Release version must match the generated package version ($($package.version))."
 }
 
-$dist = Join-Path $repoRoot "dist"
+$dist = Join-Path (Join-Path $repoRoot "dist\releases") $Version
 if (Test-Path $dist) {
     Remove-Item -Recurse -Force $dist
 }
-New-Item -ItemType Directory -Path $dist | Out-Null
+New-Item -ItemType Directory -Path $dist -Force | Out-Null
 
 Push-Location $repoRoot
 try {
@@ -77,6 +77,16 @@ try {
             (Join-Path $dist "DeepSeaFoam-$($asset.Name)-$Version.$($asset.Extension)")
     }
     Copy-Item (Join-Path $repoRoot "licenses\MIT.txt") (Join-Path $dist "DeepSeaFoam-Themes-LICENSE.txt")
+
+    Compress-Archive `
+        -Path @(
+            (Join-Path $repoRoot "targets\monkeytype\DeepSeaFoam.json"),
+            (Join-Path $repoRoot "targets\monkeytype\DeepSeaFoam.txt"),
+            (Join-Path $repoRoot "targets\monkeytype\README.md"),
+            (Join-Path $repoRoot "targets\monkeytype\LICENSE")
+        ) `
+        -DestinationPath (Join-Path $dist "DeepSeaFoam-Monkeytype-$Version.zip") `
+        -CompressionLevel Optimal
 
     Compress-Archive `
         -Path @(
