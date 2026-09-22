@@ -213,7 +213,7 @@ if (html.indexOf('class="nautilus-zone"') > html.indexOf("<main") ||
     !html.includes('class="nautilus-zone" aria-hidden="true"') ||
     !/main,\s*footer\s*\{[^}]*position:\s*relative;[^}]*z-index:\s*2/.test(css) ||
     !/\.nautilus-zone\s*\{[^}]*position:\s*fixed;[^}]*z-index:\s*1;[^}]*pointer-events:\s*none/.test(css) ||
-    !html.includes('href="ocean.css?v=dive-music"')) {
+    !html.includes('href="ocean.css?v=foreground-kelp"')) {
   throw new Error("Nautilus must roam in a pointer-transparent root layer below readable content");
 }
 const hideout = html.match(/<section class="blobfish-zone"[\s\S]*?<\/section>/)?.[0] ?? "";
@@ -237,6 +237,13 @@ for (const [depth, minimum] of [["far", 6], ["middle", 4], ["near", 2]]) {
   if (plants.length < minimum || plants.some(([plant]) => !plant.includes('alt=""'))) {
     throw new Error(`The ${depth} kelp bed needs at least ${minimum} decorative local plants`);
   }
+}
+const foreground = css.match(/\.ocean-foreground\s*\{([^}]+)\}/)?.[1] ?? "";
+if (!html.includes('class="ocean-foreground" aria-hidden="true"') ||
+    !foreground.includes("--kelp-edge: clamp(20px, calc((100vw - var(--content)) / 2 - 18px), 128px)") ||
+    !foreground.includes("transparent var(--kelp-edge), transparent calc(100% - var(--kelp-edge))") ||
+    !css.includes("animation: near-sway") || !css.includes("filter: blur(5px) brightness(1.6)")) {
+  throw new Error("Lens-close kelp must stay decorative, blurred, gently animated and masked out of the reading corridor");
 }
 
 if (/@import\s|url\(\s*['"]?https?:/i.test(css)) {

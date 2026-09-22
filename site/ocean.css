@@ -108,13 +108,20 @@
   .kelp.sprig:nth-child(even) { scale: -1 1; animation-duration: 12s; }
   .ocean-foreground {
     z-index: 4;
-    /* Lens-close foliage cannot cross the central reading corridor. */
-    mask-image: linear-gradient(90deg, #000, #000 3%, transparent 13%, transparent 87%, #000 97%);
+    inset: max(100px, 12vh) 0 max(150px, 18vh);
+    --kelp-edge: clamp(20px, calc((100vw - var(--content)) / 2 - 18px), 128px);
+    /* Clip the moving foliage to the gutters, clear of reading and fixed controls. */
+    mask-image: linear-gradient(90deg, #000, #000 calc(var(--kelp-edge) * .35), transparent var(--kelp-edge), transparent calc(100% - var(--kelp-edge)), #000 calc(100% - var(--kelp-edge) * .35));
   }
-  .kelp-near { filter: blur(7px); opacity: .85; }
-  .kelp-near .kelp { height: 144%; bottom: -22%; animation-duration: 10s; }
-  .kelp-near .left { left: -15%; rotate: 12deg; }
-  .kelp-near .right { right: -17%; rotate: -8deg; height: 170%; animation-delay: -12s; }
+  .kelp-near { opacity: .85; mask-image: linear-gradient(transparent, #000 12% 80%, transparent); }
+  .kelp-near .kelp {
+    height: 106%;
+    bottom: -8%;
+    filter: blur(5px) brightness(1.6);
+    animation: near-sway 7.5s ease-in-out infinite alternate;
+  }
+  .kelp-near .left { left: var(--kelp-edge); translate: -78% 0; }
+  .kelp-near .right { right: var(--kelp-edge); translate: 78% 0; height: 94%; animation-duration: 9.5s; animation-delay: -5s; }
   .distant-shoal {
     position: absolute;
     top: 23%;
@@ -390,6 +397,7 @@
   }
   @keyframes shaft-drift { from { rotate: -4deg; } to { rotate: 5deg; } }
   @keyframes kelp-sway { from { transform: translateX(-12px) rotate(-8deg) skewX(-4deg); } to { transform: translateX(12px) rotate(9deg) skewX(5deg); } }
+  @keyframes near-sway { from { transform: translate(-6px, 2px) rotate(-4deg) skewX(-2deg); } to { transform: translate(8px, -4px) rotate(4deg) skewX(3deg); } }
   @keyframes shoal-drift { from { transform: translateX(5%) translateY(0); } to { transform: translateX(-60%) translateY(-20px); } }
   @keyframes snow-drift { from { transform: translate(0, 70px); } to { transform: translate(30px, -120px); } }
   @keyframes angler-drift { to { transform: translateY(-9px) rotate(-3deg); } }
@@ -400,17 +408,11 @@
   @keyframes entry-bubble { from { transform: translateY(0) scale(.6); } to { transform: translateY(-130vh) scale(1.4); } }
   @keyframes camera-descent { from { transform: scale(1.16) translateY(6%); } to { transform: none; } }
 
-  @media (min-width: 1700px) {
-    .kelp-near .left { left: -8%; }
-    .kelp-near .right { right: -10%; }
-  }
   @media (max-width: 1100px) {
     .hero { padding-top: 110px; gap: 80px; }
     .hero-copy h1 { font-size: clamp(4rem, 9vw, 6rem); }
     .kelp-middle .left { left: -11%; }
     .kelp-middle .right { right: -11%; }
-    .kelp-near .left { left: -26%; }
-    .kelp-near .right { right: -32%; }
     .depth-gauge { left: 12px; }
     .depth-gauge > div { display: none; }
     .depth-track { height: 70px; }
@@ -425,7 +427,7 @@
     .surface-decision, .palette-section, .applications, .final-cta { width: calc(100% - 32px); border-radius: 8px; }
     .surface-decision .section-shell, .palette-section .section-shell,
     .applications .section-shell, .final-cta .section-shell, .surface-stage { width: calc(100% - 32px); }
-    .principles, .hierarchy, .footer-grid { max-width: calc(100% - 64px); }
+    .principles, .hierarchy, .footer-grid, .footer-bottom { max-width: calc(100% - 64px); }
     .kelp-middle { opacity: .6; }
     .kelp-middle .kelp { height: 88%; }
     .kelp-middle .left { left: -150px; }
@@ -434,10 +436,6 @@
     .kelp-far .right { right: -120px; }
     .kelp-far .sprig { left: calc(var(--x) - 26%); height: calc(var(--h) * .75); }
     .kelp-middle .sprig { left: calc(var(--x) - 17%); opacity: .65; }
-    .kelp-near .kelp { height: 110%; }
-    .kelp-near .left { left: -225px; }
-    .kelp-near .right { right: -235px; }
-    .ocean-foreground { mask-image: linear-gradient(90deg, #000, transparent 8%, transparent 92%, #000); }
     .water-ceiling { top: -14%; height: 50%; }
     .water-light { opacity: calc(var(--water-light) * .85); }
     .reading-shade { background: linear-gradient(90deg, transparent, #00070B99 15% 85%, transparent); }
