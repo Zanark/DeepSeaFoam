@@ -24,7 +24,23 @@
     "height": 5304,
     "license": "https://www.pexels.com/license/",
     "evidence": "Pexels photo-page ImageObject JSON-LD: contentUrl, creator, width and height; retrieved 2026-09-22",
-    "use": "Named by the project owner as visual inspiration. External reference only: no image bytes are bundled or loaded automatically, and palette values are not claimed to be pixel samples."
+    "sourceBytes": 5476996,
+    "sourceSha256": "6574a527ce8e81fa0b9e869170cfb6555c490e83ed74736de66461d610a2b77c",
+    "usePermission": "https://help.pexels.com/hc/en-us/articles/360042295214-Can-I-use-the-photos-and-videos-for-a-commercial-project",
+    "rules": "https://help.pexels.com/hc/en-us/articles/360042332714-What-are-the-rules-for-using-Pexels-photos-or-videos",
+    "licenseEvidence": "Official Pexels help pages retrieved 2026-09-22 permit website/commercial use and state restrictions. The standalone license page returned HTTP 403; its URL is retained, not claimed as freshly reviewed.",
+    "preview": {
+      "file": "inspiration-jj-perks.webp",
+      "codec": "webp",
+      "width": 800,
+      "height": 534,
+      "quality": 65,
+      "bytes": 47570,
+      "sha256": "4cb82cc515a34420795044336e6ff10e8b9745473df5786524878d4b081e38a1",
+      "script": "scripts/prepare-photo.py",
+      "processing": "Full composition resized with Lanczos and encoded as lossy WebP, method 6. No crop or intentional recoloring; metadata stripped. The original JPEG has no embedded ICC profile and orientation is 1."
+    },
+    "use": "Named by the project owner as visual inspiration. A credited, locally hosted preview appears in the page and loads lazily without JavaScript. Only explicit source-link navigation loads the original. No palette-sampling, photographer endorsement or theme/code MIT grant is claimed."
   },
   "music": {
     "file": "audio/deepseafoam-music.mp3",

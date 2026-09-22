@@ -18,3 +18,12 @@ for website playback. Source metadata was stripped; no trimming, gain, speed
 or pitch changes were applied. The original WAV is not distributed here.
 Source/output hashes and the preparation command are recorded in
 docs/showcase-artwork.json and docs/SHOWCASE.md.
+
+Photographic inspiration
+
+"Bay with Orange Seashore Under White and Gray Clouds" by JJ Perks, Pexels 8567869.
+Pexels License: https://www.pexels.com/license/
+The credited, reduced WebP preview retains the full composition. The original
+photograph is linked, not bundled. No photographer endorsement or MIT grant
+for this photograph is implied. Source and processing details are in
+docs/showcase-artwork.json.

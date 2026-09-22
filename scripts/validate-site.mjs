@@ -126,7 +126,28 @@ for (const key of ["page", "photographerPage", "original"]) {
 }
 if (!html.includes(`${photographicInspiration.width} &times; ${photographicInspiration.height}`) ||
     /<(?:img|source)\b[^>]+(?:src|srcset)=["']https?:/i.test(html)) {
-  throw new Error("Credit the original photo dimensions without automatically loading external images");
+  throw new Error("Credit the original photo dimensions and keep runtime images locally hosted");
+}
+const photoBytes = await readFile(path.join(site, "inspiration-jj-perks.webp"));
+const preview = photographicInspiration.preview;
+if (preview?.file !== "inspiration-jj-perks.webp" || preview.codec !== "webp" ||
+    photoBytes.length !== preview.bytes || photoBytes.length > 48 * 1024 ||
+    createHash("sha256").update(photoBytes).digest("hex") !== preview.sha256 ||
+    photoBytes.toString("ascii", 0, 4) !== "RIFF" || photoBytes.readUInt32LE(4) + 8 !== photoBytes.length ||
+    photoBytes.toString("ascii", 8, 16) !== "WEBPVP8 " ||
+    photoBytes.subarray(23, 26).toString("hex") !== "9d012a" ||
+    (photoBytes.readUInt16LE(26) & 0x3fff) !== preview.width ||
+    (photoBytes.readUInt16LE(28) & 0x3fff) !== preview.height) {
+  throw new Error("The local photographic preview must match its recorded WebP dimensions, hash and 48 KiB allowance");
+}
+const photoFigure = html.match(/<figure class="photo-reference" id="photo-reference">[\s\S]*?<\/figure>/)?.[0] ?? "";
+const photoImage = photoFigure.match(/<img\b[^>]*>/)?.[0] ?? "";
+if (!photoImage.includes(`src="${preview.file}"`) ||
+    !photoImage.includes(`width="${preview.width}" height="${preview.height}"`) ||
+    !photoImage.includes('loading="lazy" decoding="async"') || !/alt="[^"]+"/.test(photoImage) ||
+    !photoFigure.includes(`href="${photographicInspiration.photographerPage}"`) ||
+    !photoFigure.includes("<figcaption>")) {
+  throw new Error("The reference needs a visible, credited, local image with reserved dimensions and descriptive alternative text");
 }
 
 if (music.file !== "audio/deepseafoam-music.mp3" || music.codec !== "mp3" || music.bitRate !== 128000 ||
@@ -213,7 +234,7 @@ if (html.indexOf('class="nautilus-zone"') > html.indexOf("<main") ||
     !html.includes('class="nautilus-zone" aria-hidden="true"') ||
     !/main,\s*footer\s*\{[^}]*position:\s*relative;[^}]*z-index:\s*2/.test(css) ||
     !/\.nautilus-zone\s*\{[^}]*position:\s*fixed;[^}]*z-index:\s*1;[^}]*pointer-events:\s*none/.test(css) ||
-    !html.includes('href="ocean.css?v=foreground-kelp"')) {
+    !html.includes('href="ocean.css?v=reference-photo"')) {
   throw new Error("Nautilus must roam in a pointer-transparent root layer below readable content");
 }
 const hideout = html.match(/<section class="blobfish-zone"[\s\S]*?<\/section>/)?.[0] ?? "";
@@ -286,6 +307,8 @@ if (totalBytes > budget) {
   throw new Error(`Website exceeds the 3 MiB all-file asset budget: ${totalBytes} bytes`);
 }
 const nonAudioBytes = totalBytes - musicBytes.length;
-if (nonAudioBytes > 256 * 1024) throw new Error(`Non-audio assets exceed 256 KiB: ${nonAudioBytes} bytes`);
+if (nonAudioBytes > 304 * 1024) throw new Error(`Non-audio assets exceed 304 KiB: ${nonAudioBytes} bytes`);
+const interfaceBytes = nonAudioBytes - photoBytes.length;
+if (interfaceBytes > 256 * 1024) throw new Error(`Assets other than audio/photo exceed 256 KiB: ${interfaceBytes} bytes`);
 
-console.log(`Validated static website: ${totalBytes} bytes across ${assets.length} files; ${nonAudioBytes} non-audio bytes.`);
+console.log(`Validated static website: ${totalBytes} bytes across ${assets.length} files; ${nonAudioBytes} non-audio bytes (${photoBytes.length} photo; ${interfaceBytes} other).`);

@@ -455,4 +455,11 @@
     .water-ceiling { animation: none; }
     .angler-drift { animation: none; }
   }
+  .photo-reference { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); margin-top: 48px; border: 1px solid var(--dsf-solid-border); border-radius: 8px; background: var(--dsf-solid-panel); overflow: hidden; }
+  .photo-reference img { width: 100%; height: auto; }
+  .photo-reference > a:focus-visible { outline-offset: -4px; }
+  .photo-reference figcaption { padding: clamp(20px, 3vw, 32px); align-self: center; font-size: .85rem; }
+  .photo-reference h3 { margin-block: 12px; color: var(--dsf-solid-warm); font-size: 1.45rem; line-height: 1.25; }
+  .photo-reference p + p { margin-top: 16px; }
+  @media (max-width: 780px) { .photo-reference { grid-template-columns: 1fr; } }
 }
