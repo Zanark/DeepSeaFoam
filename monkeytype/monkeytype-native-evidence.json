@@ -1,0 +1,119 @@
+{
+  "capturedAt": "2026-09-22T10:47:38.201Z",
+  "url": "https://monkeytype.com?customTheme=eyJjIjpbIiMwMDBGMTMiLCIjMDBBNTkxIiwiIzAwQTU5MSIsIiM4Mzk0OTYiLCIjMDAxRTI2IiwiI0VFRThENSIsIiNFODRBNUYiLCIjRTg0QTVGIiwiI0U4NEE1RiIsIiNFODRBNUYiXX0%3D",
+  "colors": [
+    "#000F13",
+    "#00A591",
+    "#00A591",
+    "#839496",
+    "#001E26",
+    "#EEE8D5",
+    "#E84A5F",
+    "#E84A5F",
+    "#E84A5F",
+    "#E84A5F"
+  ],
+  "upstreamInspectedCommit": "91bd24bb8513785c7364cbea29296ff7adafac41",
+  "context": "Disposable unsigned-in Edge; optional cookies rejected; native custom-theme route, not a published built-in preset.",
+  "unchangedOtherSettings": true,
+  "restoredFormerPreset": "serika_dark",
+  "screenshots": [
+    {
+      "file": "monkeytype-flip-off-colorful-off.png",
+      "flipTestColors": false,
+      "colorfulMode": false,
+      "colors": {
+        "variables": [
+          "#000F13",
+          "#00A591",
+          "#00A591",
+          "#839496",
+          "#001E26",
+          "#EEE8D5",
+          "#E84A5F",
+          "#E84A5F",
+          "#E84A5F",
+          "#E84A5F"
+        ],
+        "correct": "rgb(238, 232, 213)",
+        "untyped": "rgb(131, 148, 150)",
+        "error": "rgb(232, 74, 95)",
+        "extra": "rgb(232, 74, 95)",
+        "caret": "rgb(0, 165, 145)"
+      }
+    },
+    {
+      "file": "monkeytype-flip-on-colorful-off.png",
+      "flipTestColors": true,
+      "colorfulMode": false,
+      "colors": {
+        "variables": [
+          "#000F13",
+          "#00A591",
+          "#00A591",
+          "#839496",
+          "#001E26",
+          "#EEE8D5",
+          "#E84A5F",
+          "#E84A5F",
+          "#E84A5F",
+          "#E84A5F"
+        ],
+        "correct": "rgb(131, 148, 150)",
+        "untyped": "rgb(238, 232, 213)",
+        "error": "rgb(232, 74, 95)",
+        "extra": "rgb(232, 74, 95)",
+        "caret": "rgb(0, 165, 145)"
+      }
+    },
+    {
+      "file": "monkeytype-flip-off-colorful-on.png",
+      "flipTestColors": false,
+      "colorfulMode": true,
+      "colors": {
+        "variables": [
+          "#000F13",
+          "#00A591",
+          "#00A591",
+          "#839496",
+          "#001E26",
+          "#EEE8D5",
+          "#E84A5F",
+          "#E84A5F",
+          "#E84A5F",
+          "#E84A5F"
+        ],
+        "correct": "rgb(0, 165, 145)",
+        "untyped": "rgb(131, 148, 150)",
+        "error": "rgb(232, 74, 95)",
+        "extra": "rgb(232, 74, 95)",
+        "caret": "rgb(0, 165, 145)"
+      }
+    },
+    {
+      "file": "monkeytype-flip-on-colorful-on.png",
+      "flipTestColors": true,
+      "colorfulMode": true,
+      "colors": {
+        "variables": [
+          "#000F13",
+          "#00A591",
+          "#00A591",
+          "#839496",
+          "#001E26",
+          "#EEE8D5",
+          "#E84A5F",
+          "#E84A5F",
+          "#E84A5F",
+          "#E84A5F"
+        ],
+        "correct": "rgb(131, 148, 150)",
+        "untyped": "rgb(0, 165, 145)",
+        "error": "rgb(232, 74, 95)",
+        "extra": "rgb(232, 74, 95)",
+        "caret": "rgb(0, 165, 145)"
+      }
+    }
+  ],
+  "pageErrors": []
+}
