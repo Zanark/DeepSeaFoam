@@ -22,6 +22,30 @@ The reading path is **hero/workspace → surface hierarchy → editorial rationa
 
 ## Architecture
 
+### Harbor Daylight and visual documentation
+
+The palette section now includes the separate [Harbor Daylight companion](HARBOR-DAYLIGHT.md):
+12 solids and 4 overlays from `palette/harbor-daylight.json`. The dark 27-value inventory,
+terminal extension and native exports are unchanged. The light notes study uses opaque
+paper/sea-glass surfaces, heading-colored selection, and paper ink on accent-filled
+actions (including selected button text). It is a simulated web interface, not a native port.
+Both palettes have copy controls and a no-JavaScript/error link to [the full reference](PALETTE.md).
+The surrounding ocean remains dark; this adds palette data and a light study, not a
+global scene-theme switch.
+
+Author showcase styles in [`scripts/templates/showcase.css`](../scripts/templates/showcase.css).
+Generation removes only blank lines and line indentation into `site/styles.css`, keeping
+the existing 3 MiB / 320 KiB / 272 KiB asset caps without dropping licenses or altering
+media. Escaped CSS line continuations are rejected rather than compacted ambiguously.
+Earlier stylesheet line citations below refer to the authored rules; deployed CSS is
+now compacted. Generated reusable [`palette/harbor-daylight.css`](../palette/harbor-daylight.css)
+scopes its tokens and selection rules to `.harbor-daylight`.
+
+The README uses a local typographic SVG, the 23 dark/light interface swatches and two
+browser captures of these HTML/CSS studies. Images live under `docs/previews`, outside
+the deployed website. Installation, behavior, provenance and full color inventories
+are in the [guide](GUIDE.md) and [color reference](PALETTE.md).
+
 ```mermaid
 ---
 config:
@@ -73,7 +97,7 @@ The two **lens-close foreground plants** frame the viewport without sharing the 
 | Component | Responsibility and source |
 | --- | --- |
 | Palette generation | `sitePalette` includes the three core groups; CSS also exposes the extension variables used by studies. The generator passes shared `exportContext` to `addChatThemes`, `addDesktopThemes` and `addMonkeytypeTheme`, keeping exports tied to canonical roles. Do not hand-edit generated assets. ([scripts/generate.mjs:1–27](../scripts/generate.mjs#L1-L27), [scripts/generate.mjs:689–692](../scripts/generate.mjs#L689-L692), [scripts/generate.mjs:726–766](../scripts/generate.mjs#L726-L766)) |
-| Palette UI | `loadPalette` fetches local JSON; `renderPalette` creates accessible copy buttons. Failure displays a README fallback; `copyValue` has a clipboard fallback. ([site/app.js:10–108](../site/app.js#L10-L108)) |
+| Palette UI | `loadPalette` fetches local JSON; `renderPalette` creates accessible copy buttons for the dark and daylight groups. Failure displays a linked full-reference fallback; `copyValue` has a clipboard fallback. ([site/app.js](../site/app.js)) |
 | Scene controls | `dive`, `finishDive`, `syncMotion`, and `updateScene` own the intro, completion state/event, pause state, narrative depth and bubbles. Completion is not emitted while hidden or handling page departure. ([site/ocean.js:21–114](../site/ocean.js#L21-L114), [site/ocean.js:159–181](../site/ocean.js#L159-L181)) |
 | Background music | `mountMusic` preloads an eligible fresh request, gates playback on dive completion, and retries policy-blocked startup synchronously on eligible genuine gestures. Wheel/trackpad and one-finger swipes share one scroll attempt. Explicit cancel/pause, real failures and lifecycle departure revoke the request; direct controls and status remain. ([site/music.js:7–145](../site/music.js#L7-L145), [scripts/test-music.mjs:68–337](../scripts/test-music.mjs#L68-L337)) |
 | Interactive water | `WaterField.wake` models directional pressure; `tap` creates a smooth depression and displaced rim. Both propagate through the same damped field. `mountWater` renders local-light refraction behind content. This is stylized, not fluid-accuracy validation. ([site/water.js:24–90](../site/water.js#L24-L90), [site/water.js:140–215](../site/water.js#L140-L215), [site/index.html:28–63](../site/index.html#L28-L63), [site/ocean.css:1–16](../site/ocean.css#L1-L16)) |

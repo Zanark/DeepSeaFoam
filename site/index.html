@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="DeepSeaFoam is a quiet, Solarized-derived theme built from near-black teal depth, blue-green structure, seafoam signals, and warm emphasis.">
+    <meta name="description" content="DeepSeaFoam dark themes and Harbor Daylight, a warm-paper light companion. Exact colors, quiet interfaces, one coastal identity.">
     <meta name="theme-color" content="#001E26">
     <meta name="color-scheme" content="dark">
     <meta property="og:title" content="DeepSeaFoam">
@@ -13,10 +13,10 @@
     <title>DeepSeaFoam — quiet depth for focused work</title>
     <link rel="icon" href="mark.svg?v=seaweed-foam-cluster" type="image/svg+xml" sizes="any">
     <link rel="manifest" href="site.webmanifest?v=seaweed-foam-cluster">
-    <link rel="stylesheet" href="palette.css">
-    <link rel="stylesheet" href="styles.css?v=expanded-apps">
+    <link rel="stylesheet" href="palette.css?v=harbor-daylight">
+    <link rel="stylesheet" href="styles.css?v=harbor-daylight">
     <link rel="stylesheet" href="ocean.css?v=reference-photo">
-    <script src="app.js" type="module"></script>
+    <script src="app.js?v=harbor-daylight" type="module"></script>
     <script src="ocean.js?v=dive-music" type="module"></script>
     <script src="water.js?v=touch-water" type="module"></script>
     <script src="nautilus.js?v=nautilus-behind-content" type="module"></script>
@@ -150,9 +150,9 @@
             </div>
           </div>
           <dl class="hero-facts" aria-label="Project facts">
-            <div><dt>27</dt><dd>core values</dd></div>
+            <div><dt>27</dt><dd>dark core values</dd></div>
             <div><dt>21</dt><dd>app targets</dd></div>
-            <div><dt>0</dt><dd>runtime dependencies</dd></div>
+            <div><dt>12</dt><dd>daylight solids</dd></div>
           </dl>
           <a class="descent-cue" href="#identity"><span></span> SCROLL INTO THE QUIET <b aria-hidden="true">↓</b></a>
         </div>
@@ -310,17 +310,52 @@
 
       <section class="palette-section" id="palette" aria-labelledby="palette-title">
         <div class="section-intro section-shell">
-          <p class="eyebrow"><span></span> The complete core inventory</p>
-          <h2 id="palette-title">Twenty-seven values. Every one has a job.</h2>
+          <p class="eyebrow"><span></span> Deep water / Harbor daylight</p>
+          <h2 id="palette-title">One identity.<br>Two kinds of light.</h2>
           <p>
-            Select any swatch to copy its exact value. Transparent colors remain transparent
-            and are previewed against real target surfaces.
+            Twenty-seven dark core values, joined by twelve daylight solids and four light overlays.
+            Select a swatch to copy its exact value. <a href="#daylight">Meet Harbor Daylight &darr;</a>
           </p>
         </div>
         <div class="palette-groups section-shell" id="palette-groups" aria-live="polite">
           <noscript>
-            <p class="noscript-note">Copyable swatches and scene controls need JavaScript. The underwater scene and the rest of the page still work. <a href="https://github.com/Zanark/DeepSeaFoam#core-interface-palette">See all 27 swatches in the repository README.</a></p>
+            <p class="noscript-note">Interactive swatches need JavaScript. <a href="https://github.com/Zanark/DeepSeaFoam/blob/main/docs/PALETTE.md">See every dark and light swatch in the color reference.</a></p>
           </noscript>
+        </div>
+        <div class="daylight-companion section-shell" id="daylight">
+          <div class="palette-group-header">
+            <h3>A little daylight, without losing the sea.</h3>
+            <p>Harbor Daylight pairs warm paper with sea-glass panels and deep tidal ink.
+              A light companion palette, not an inversion of the dark theme.</p>
+          </div>
+          <article class="daylight-study harbor-daylight" aria-label="Harbor Daylight simulated notes interface">
+            <header><span>HARBOR / FIELD NOTES</span><span>LIGHT COMPANION</span></header>
+            <div class="daylight-layout">
+              <div class="daylight-paper">
+                <p class="daylight-kicker">A QUIETER WORKSPACE</p>
+                <h4>Room to think.<br>Light to work by.</h4>
+                <p>Warm paper. Sea-glass structure. A familiar seafoam signal,
+                  grounded in deeper, readable ink.</p>
+                <p><mark>Keep the important things in focus.</mark></p>
+                <a class="daylight-action" href="#daylight-colors">Explore the colors &rarr;</a>
+              </div>
+              <aside class="daylight-sidebar" aria-label="Example document states">
+                <p class="daylight-kicker">TODAY'S FIELD NOTES</p>
+                <h4>Small signals.<br>Clear meaning.</h4>
+                <p class="daylight-document">Document / draft saved</p>
+                <p class="daylight-warning">Caution / review before sharing</p>
+                <p class="daylight-error">Error / missing reference</p>
+                <hr>
+                <p>12 solid colors<br>4 transparent layers<br>One coastal family</p>
+              </aside>
+            </div>
+            <p class="daylight-caption">SIMULATED WEB INTERFACE &middot; NOT A NATIVE APP SCREENSHOT</p>
+          </article>
+          <p class="daylight-note">Existing app downloads remain dark.
+            <a href="https://github.com/Zanark/DeepSeaFoam/blob/main/docs/HARBOR-DAYLIGHT.md">Light roles, reusable CSS and contrast guidance &rarr;</a></p>
+          <div id="daylight-colors" class="palette-groups" aria-live="polite">
+            <noscript><p class="noscript-note"><a href="https://github.com/Zanark/DeepSeaFoam/blob/main/docs/PALETTE.md#harbor-daylight">Read the complete Harbor Daylight palette.</a> This interface study works without JavaScript.</p></noscript>
+          </div>
         </div>
       </section>
 
@@ -329,7 +364,7 @@
           <p class="eyebrow"><span></span> One identity, app-specific formats</p>
           <h2 id="applications-title">Your tools can feel related without pretending to be identical.</h2>
           <p>
-            Each export maps semantic roles to what the host actually exposes.
+            These dark exports map semantic roles to what the host actually exposes.
             Content stays separate from chrome, and limitations are documented instead of hidden.
           </p>
         </div>

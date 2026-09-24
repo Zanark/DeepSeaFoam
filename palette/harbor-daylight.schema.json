@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harbor Daylight companion palette",
+  "type": "object",
+  "required": ["name", "description", "provenance", "solid", "overlay", "aliases", "shared"],
+  "properties": {
+    "name": { "const": "Harbor Daylight" },
+    "description": { "type": "string" },
+    "provenance": { "type": "object" },
+    "solid": { "$ref": "schema.json#/$defs/colorMap", "minProperties": 12, "maxProperties": 12 },
+    "overlay": { "$ref": "schema.json#/$defs/colorMap", "minProperties": 4, "maxProperties": 4 },
+    "aliases": {
+      "type": "object",
+      "required": ["buttonText"],
+      "additionalProperties": false,
+      "properties": { "buttonText": { "const": "paper" } }
+    },
+    "shared": {
+      "type": "object",
+      "required": ["safetyFill", "safetyInk", "sunset", "pearl"],
+      "minProperties": 4,
+      "maxProperties": 4,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["group", "token"],
+        "additionalProperties": false,
+        "properties": {
+          "group": { "enum": ["solid", "heritage"] },
+          "token": { "type": "string" }
+        }
+      }
+    }
+  }
+}

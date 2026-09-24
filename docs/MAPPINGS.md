@@ -163,7 +163,7 @@ Windows Terminal, VS Code's integrated terminal, Alacritty and Xfce4 Terminal sh
 all 19 values in the canonical terminal group. Termux uses its supported foreground,
 cursor and 16 ANSI slots but exposes no selection property. Zsh's prompt is separate
 from emulator colors. All terminal buffers use `#000F13` instead of the reference's
-`#001E27`. See the [visible terminal swatches](../README.md#higher-contrast-terminals).
+`#001E27`. See the [visible terminal swatches](PALETTE.md#higher-contrast-terminals).
 
 Introduced in 0.3.0, this extension supplies stronger bright variants, `#9CC2C3` text, warm `#EAE3CB` / `#FCF4DC` whites, and an orange `#F34B00` cursor. It remains a separate stored group even though 0.4.2 uses four entries as sources for derived core signals. **All 19 terminal colors and the Windows Terminal scheme content remain unchanged in 0.5.0.** UI selection is `#00A59126`; terminals retain opaque `#003748`. Alacritty uses its native `magenta` key for the source's `purple`, without changing the value.
 

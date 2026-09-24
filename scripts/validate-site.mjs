@@ -46,6 +46,7 @@ if (/\.control-row\s*>\s*span\s*\{[^}]*\bcolor\s*:/.test(css)) {
 
 const palette = JSON.parse(paletteText);
 const canonical = JSON.parse(await readFile(path.join(root, "palette", "deepseafoam.json"), "utf8"));
+const light = JSON.parse(await readFile(path.join(root, "palette", "harbor-daylight.json"), "utf8"));
 const manifest = JSON.parse(manifestText);
 const { icons } = JSON.parse(await readFile(path.join(root, "docs", "application-icons.json"), "utf8"));
 const appIds = ["vscode", "visual-studio", "obsidian", "terminal", "firefox",
@@ -211,6 +212,18 @@ if (!audioMarkup.includes('id="background-music"') || !audioMarkup.includes('pre
 const colorCount = palette.groups.reduce((total, group) => total + group.colors.length, 0);
 if (colorCount !== 27) {
   throw new Error(`The website must expose all 27 active colors; found ${colorCount}`);
+}
+for (const group of ["solid", "overlay"]) {
+  const colors = palette.light?.find(entry => entry.id === `light-${group}`)?.colors;
+  if (!colors || colors.length !== Object.keys(light[group]).length ||
+      colors.some(entry => entry.value !== light[group][entry.id]?.value || entry.role !== light[group][entry.id]?.role)) {
+    throw new Error(`Website light ${group} colors must match Harbor Daylight exactly`);
+  }
+}
+for (const marker of ['id="daylight"', 'id="daylight-colors"', 'class="daylight-study harbor-daylight"',
+  "Existing app downloads remain dark.", "SIMULATED WEB INTERFACE", "docs/PALETTE.md",
+  'href="palette.css?v=harbor-daylight"', 'src="app.js?v=harbor-daylight"']) {
+  if (!html.includes(marker)) throw new Error(`Missing light-companion contract: ${marker}`);
 }
 
 for (const id of ["base", "panel", "accent", "document", "warning", "error"]) {

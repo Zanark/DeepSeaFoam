@@ -9,11 +9,14 @@ import { addAdditionalEditorThemes } from "./additional-editor-themes.mjs";
 import { addLinuxThemes } from "./linux-themes.mjs";
 import { addWebTheme } from "./web-theme.mjs";
 import { addManualThemes } from "./manual-themes.mjs";
+import { validateLightPalette, lightPaletteCss, lightPaletteGroups } from "./light-palette.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const palette = JSON.parse(await readFile(path.join(root, "palette", "deepseafoam.json"), "utf8"));
+const lightPalette = JSON.parse(await readFile(path.join(root, "palette", "harbor-daylight.json"), "utf8"));
 const packageMetadata = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
 const themeLicense = await readFile(path.join(root, "licenses", "MIT.txt"), "utf8");
+const showcaseCss = await readFile(path.join(root, "scripts", "templates", "showcase.css"), "utf8");
 const checkOnly = process.argv.includes("--check");
 const outputs = new Map();
 
@@ -25,6 +28,11 @@ const terminal = (name) => color("terminal", name);
 const derived = (name) => color("derived", name);
 const json = (value) => `${JSON.stringify(value, null, 2)}\n`;
 const add = (relativePath, content) => outputs.set(relativePath, content.replace(/\r\n/g, "\n"));
+// Keep the authored CSS readable without shipping indentation and blank lines.
+if (/\\\r?\n/.test(showcaseCss)) throw new Error("Showcase CSS compaction does not support escaped line continuations");
+add("site/styles.css", `/* Generated from scripts/templates/showcase.css. */\n${
+  showcaseCss.split(/\r?\n/).map(line => line.trim()).filter(Boolean).join("\n")
+}\n`);
 const ansiNames = {
   black: "Black", red: "Red", green: "Green", yellow: "Yellow",
   blue: "Blue", purple: "Magenta", cyan: "Cyan", white: "White",
@@ -703,20 +711,26 @@ add("targets/jetbrains/resources/META-INF/LICENSE", themeLicense);
 const activeGroups = ["solid", "overlay", "preview"];
 const swatchGroups = [...activeGroups, "terminal"];
 const swatchDirectory = (group) => group === "terminal" ? "docs/terminal-swatches" : "docs/swatches";
-for (const group of swatchGroups) {
-  for (const entry of Object.values(palette[group])) {
+const swatchSources = [
+  ...swatchGroups.map(group => ({ entries: palette[group], directory: swatchDirectory(group) })),
+  { entries: Object.fromEntries(Object.entries(palette.heritage).filter(([, entry]) => entry.status === "extension")
+    .map(([name, entry]) => [name, { value: entry.value, role: entry.use }])), directory: "docs/syntax-swatches" },
+  ...["solid", "overlay"].map(group => ({ entries: lightPalette[group], directory: "docs/light-swatches" }))
+];
+for (const { entries, directory } of swatchSources) {
+  for (const entry of Object.values(entries)) {
     const value = entry.value.toUpperCase();
     const fileName = `${value.slice(1).toLowerCase()}.svg`;
     const title = `${entry.role}: ${value}`;
     if (value.length === 9) {
       const { rgb, opacity } = rgba(value);
       add(
-        `${swatchDirectory(group)}/${fileName}`,
+        `${directory}/${fileName}`,
         `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="24" viewBox="0 0 64 24" role="img" aria-labelledby="title"><title id="title">${title}</title><defs><pattern id="checker" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="${color("preview", "checkerLight")}"/><path d="M0 0h4v4H0zM4 4h4v4H4z" fill="${color("preview", "checkerDark")}"/></pattern></defs><rect x=".5" y=".5" width="63" height="23" rx="2" fill="url(#checker)" stroke="#586E75"/><rect x=".5" y=".5" width="63" height="23" rx="2" fill="${rgb}" fill-opacity="${opacity}" stroke="#586E75"/></svg>\n`
       );
     } else {
       add(
-        `${swatchDirectory(group)}/${fileName}`,
+        `${directory}/${fileName}`,
         `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="24" viewBox="0 0 64 24" role="img" aria-labelledby="title"><title id="title">${title}</title><rect x=".5" y=".5" width="63" height="23" rx="2" fill="${value}" stroke="#586E75"/></svg>\n`
       );
     }
@@ -726,6 +740,7 @@ for (const group of swatchGroups) {
 const sitePalette = {
   name: palette.name,
   version: palette.version,
+  light: lightPaletteGroups(lightPalette),
   groups: [
     {
       id: "solid",
@@ -736,7 +751,7 @@ const sitePalette = {
     {
       id: "overlay",
       title: "Transparent overlays",
-      description: "RGBA overlays shown over their intended surfaces rather than flattened into opaque substitutes.",
+      description: "Alpha-last RGBA over a neutral checkerboard; the visible result depends on the surface beneath.",
       colors: Object.entries(palette.overlay).map(([id, entry]) => ({ id, ...entry }))
     },
     {
@@ -761,9 +776,62 @@ for (const name of ["foreground", "cursorColor", "selectionBackground", "green",
 }
 add(
   "site/palette.css",
-  `/* Generated from palette/deepseafoam.json. */\n:root {\n${siteVariables.join("\n")}\n}\n`
+  `/* Generated from palette/deepseafoam.json. */\n:root {\n${siteVariables.join("\n")}\n}\n${lightPaletteCss(lightPalette, palette)}`
 );
 add("site/palette.json", `${JSON.stringify(sitePalette)}\n`);
+add("palette/harbor-daylight.css", lightPaletteCss(lightPalette, palette));
+
+const paletteTable = (entries, directory) => [
+  "| Swatch | Role | Value |",
+  "| --- | --- | --- |",
+  ...Object.values(entries).map(entry =>
+    `| ![${entry.role}](${directory}/${entry.value.slice(1).toLowerCase()}.svg) | ${entry.role} | \`${entry.value}\` |`)
+].join("\n");
+add("docs/PALETTE.md", `# DeepSeaFoam color reference
+
+Generated from the [dark source](../palette/deepseafoam.json) and [Harbor Daylight source](../palette/harbor-daylight.json).
+The dark inventory remains 27 core values plus 19 independent terminal values.
+Harbor Daylight adds 12 solids and 4 overlays; it does not recolor existing native exports.
+See [light-role guidance](HARBOR-DAYLIGHT.md), [application mappings](MAPPINGS.md) and the [project guide](GUIDE.md).
+All eight-digit values use alpha-last RGBA. Overlay swatches below use a neutral checkerboard, not a contrast guarantee.
+
+## Core interface palette
+
+${paletteTable(palette.solid, "swatches")}
+
+## Harbor Daylight
+
+${paletteTable(lightPalette.solid, "light-swatches")}
+
+## Daylight overlays
+
+${paletteTable(lightPalette.overlay, "light-swatches")}
+
+Button text reuses paper. Shared safety fill/ink, sunset and pearl reference dark warning/base, heritage orange and light edge.
+Ordinary selection and hovered labels use heading ink. Filled-action selection keeps paper ink on the opaque accent-hover fill.
+
+## Transparent overlays
+
+${paletteTable(palette.overlay, "swatches")}
+
+## Preview-only neutrals
+
+These are preview materials, not the light companion.
+
+${paletteTable(palette.preview, "swatches")}
+
+## Higher-contrast terminals
+
+These retain their supplied non-background values. The workspace stays \`${solid("base")}\`.
+
+${paletteTable(palette.terminal, "terminal-swatches")}
+
+## Syntax heritage
+
+Four retained Solarized extensions; not daylight text roles or terminal replacements.
+
+${paletteTable(swatchSources.find(source => source.directory === "docs/syntax-swatches").entries, "syntax-swatches")}
+`);
 
 function validateSource() {
   if (packageMetadata.version !== palette.version) throw new Error("Package and palette versions must match");
@@ -857,6 +925,7 @@ function validateSource() {
 }
 
 validateSource();
+validateLightPalette(lightPalette, palette);
 
 const mismatches = [];
 for (const [relativePath, content] of outputs) {
@@ -900,16 +969,24 @@ if (checkOnly) {
   }
 
   const readme = await readFile(path.join(root, "README.md"), "utf8");
-  for (const group of swatchGroups) {
-    for (const entry of Object.values(palette[group])) {
-      const swatchPath = `${swatchDirectory(group)}/${entry.value.slice(1).toLowerCase()}.svg`;
-      if (!readme.includes(swatchPath)) {
-        throw new Error(`README is missing visible swatch ${swatchPath}`);
+  const reference = await readFile(path.join(root, "docs", "PALETTE.md"), "utf8");
+  for (const { entries, directory } of swatchSources) {
+    for (const entry of Object.values(entries)) {
+      const swatchPath = `${directory.slice(5)}/${entry.value.slice(1).toLowerCase()}.svg`;
+      if (!reference.includes(swatchPath)) {
+        throw new Error(`Palette reference is missing visible swatch ${swatchPath}`);
+      }
+    }
+  }
+  for (const [entries, directory] of [[palette.solid, "swatches"], [lightPalette.solid, "light-swatches"]]) {
+    for (const entry of Object.values(entries)) {
+      if (!readme.includes(`docs/${directory}/${entry.value.slice(1).toLowerCase()}.svg`) || !readme.includes(entry.value)) {
+        throw new Error(`README is missing interface swatch/value ${entry.value}`);
       }
     }
   }
 
-  console.log(`Validated ${outputs.size} generated files, 27 core values and 19 terminal-extension colors.`);
+  console.log(`Validated ${outputs.size} generated files, 27 dark core, 19 terminal and 16 light colors.`);
 } else {
   console.log(`Generated ${outputs.size} files from palette/deepseafoam.json.`);
 }

@@ -1,0 +1,44 @@
+{
+  "scope": "Browser captures of simulated HTML/CSS studies, not native application screenshots.",
+  "capturedAt": "2026-09-24T18:15:12.249Z",
+  "browser": "153.0.4234.48",
+  "viewport": {
+    "width": 1100,
+    "height": 1600,
+    "deviceScaleFactor": 2
+  },
+  "reducedMotion": true,
+  "modifiedPageStyles": false,
+  "source": [
+    {
+      "file": "site/index.html",
+      "sha256LF": "71b51df9fda4f72540718ad016882006a1b5b9f6976ec3e22b99c710a9986bad"
+    },
+    {
+      "file": "site/styles.css",
+      "sha256LF": "1f67ca49c39ba38165a2985d79f339aeb6f84492572449dc677146d48eef7742"
+    },
+    {
+      "file": "site/palette.css",
+      "sha256LF": "fc53f070ac689e4041eb0bc93e38cae45fb39bde3a4769260f4427ec56acff47"
+    }
+  ],
+  "images": [
+    {
+      "file": "deepseafoam-workspace.png",
+      "selector": ".workstation",
+      "width": 1700,
+      "height": 1200,
+      "bytes": 93070,
+      "sha256": "38594c779d72211ffbe5d2fb9442565d9fe20941f3655f77c0fdf94e89e43c9c"
+    },
+    {
+      "file": "harbor-daylight.png",
+      "selector": ".daylight-study",
+      "width": 1876,
+      "height": 1196,
+      "bytes": 144568,
+      "sha256": "75cb8310fd6b34c46e9c3604158f7c0a89005bb71a6d7046788650fbd39dc1af"
+    }
+  ]
+}

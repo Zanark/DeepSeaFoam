@@ -1,0 +1,39 @@
+{
+  "$schema": "./harbor-daylight.schema.json",
+  "name": "Harbor Daylight",
+  "description": "The warm-paper and sea-glass light companion to DeepSeaFoam.",
+  "provenance": {
+    "origin": "DeepSeaFoam portfolio light companion",
+    "document": "DeepSeaFoam-Portfolio-Light-Palette.md",
+    "revision": "2026-09-24",
+    "adopted": "2026-09-24",
+    "scope": "Palette and web interface studies; existing native application exports remain dark."
+  },
+  "solid": {
+    "background": { "value": "#F3F2E9", "role": "Warm limestone page background" },
+    "surface": { "value": "#E3ECE7", "role": "Sea-glass panels and structure" },
+    "paper": { "value": "#FCFAF2", "role": "Raised paper and filled-action text" },
+    "text": { "value": "#355451", "role": "Deep sea-slate body text" },
+    "muted": { "value": "#536B66", "role": "Readable secondary ink" },
+    "heading": { "value": "#173D3A", "role": "Tidal headings and selected text" },
+    "border": { "value": "#6B857E", "role": "Solid structural edge, not text" },
+    "accent": { "value": "#006F63", "role": "Daylight seafoam interaction" },
+    "accentHover": { "value": "#00594F", "role": "Deeper kelp action hover" },
+    "document": { "value": "#247449", "role": "Labeled document indicator" },
+    "warning": { "value": "#77600E", "role": "Ochre caution ink" },
+    "error": { "value": "#AD3E55", "role": "Berry error ink" }
+  },
+  "overlay": {
+    "separator": { "value": "#6B857E66", "role": "Decorative separator, 40% alpha" },
+    "hover": { "value": "#6B857E1A", "role": "Hover wash; use heading ink" },
+    "selection": { "value": "#006F631F", "role": "Text selection; use heading ink" },
+    "shadow": { "value": "#00000014", "role": "Transparent black shadow" }
+  },
+  "aliases": { "buttonText": "paper" },
+  "shared": {
+    "safetyFill": { "group": "solid", "token": "warning" },
+    "safetyInk": { "group": "solid", "token": "base" },
+    "sunset": { "group": "heritage", "token": "orange" },
+    "pearl": { "group": "solid", "token": "lightEdge" }
+  }
+}

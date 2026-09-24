@@ -1,4 +1,5 @@
 const paletteRoot = document.querySelector("#palette-groups");
+const daylightRoot = document.querySelector("#daylight-colors");
 const toast = document.querySelector("#copy-toast");
 let toastTimer;
 
@@ -30,12 +31,12 @@ async function copyValue(value) {
 function createSwatch(groupId, entry) {
   const button = document.createElement("button");
   button.type = "button";
-  button.className = `color-swatch ${groupId === "overlay" ? "overlay" : ""}`;
+  button.className = `color-swatch ${groupId.endsWith("overlay") ? groupId : ""}`;
   button.style.setProperty("--swatch-color", entry.value);
   button.setAttribute("aria-label", `Copy ${entry.value}, ${entry.role}`);
 
   const preview = document.createElement("span");
-  preview.className = "swatch-preview";
+  preview.className = `swatch-preview${groupId === "light-overlay" ? " harbor-daylight" : ""}`;
   preview.setAttribute("aria-hidden", "true");
 
   const info = document.createElement("span");
@@ -57,10 +58,10 @@ function createSwatch(groupId, entry) {
   return button;
 }
 
-function renderPalette(data) {
+function renderPalette(groups, root) {
   const fragment = document.createDocumentFragment();
 
-  for (const group of data.groups) {
+  for (const group of groups) {
     const section = document.createElement("section");
     section.className = "palette-group";
     section.setAttribute("aria-labelledby", `palette-${group.id}`);
@@ -86,21 +87,28 @@ function renderPalette(data) {
     fragment.append(section);
   }
 
-  paletteRoot.replaceChildren(fragment);
+  root.replaceChildren(fragment);
 }
 
 async function loadPalette() {
   try {
-    const response = await fetch("palette.json");
+    const response = await fetch("palette.json?v=harbor-daylight");
     if (!response.ok) {
       throw new Error(`Palette request failed with ${response.status}`);
     }
-    renderPalette(await response.json());
+    const data = await response.json();
+    renderPalette(data.groups, paletteRoot);
+    renderPalette(data.light, daylightRoot);
   } catch (error) {
-    const message = document.createElement("p");
-    message.className = "noscript-note";
-    message.textContent = "The interactive palette could not be loaded. The complete palette remains available in the repository README.";
-    paletteRoot.replaceChildren(message);
+    for (const root of [paletteRoot, daylightRoot]) {
+      const message = document.createElement("p");
+      message.className = "noscript-note";
+      const link = document.createElement("a");
+      link.href = "https://github.com/Zanark/DeepSeaFoam/blob/main/docs/PALETTE.md";
+      link.textContent = "Read the complete dark and light color reference.";
+      message.append("The interactive palette could not be loaded. ", link);
+      root.replaceChildren(message);
+    }
     console.error(error);
   }
 }

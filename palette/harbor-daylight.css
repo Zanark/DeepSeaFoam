@@ -1,0 +1,29 @@
+/* Generated from palette/harbor-daylight.json and shared dark roles. */
+.harbor-daylight {
+  color-scheme: light;
+  --background: #F3F2E9;
+  --surface: #E3ECE7;
+  --paper: #FCFAF2;
+  --text: #355451;
+  --muted: #536B66;
+  --heading: #173D3A;
+  --border: #6B857E;
+  --accent: #006F63;
+  --accent-hover: #00594F;
+  --document: #247449;
+  --warning: #77600E;
+  --error: #AD3E55;
+  --separator: #6B857E66;
+  --hover: #6B857E1A;
+  --selection: #006F631F;
+  --shadow: #00000014;
+  --button-text: #FCFAF2;
+  --safety-fill: #EBE565;
+  --safety-ink: #000F13;
+  --sunset: #CB4B16;
+  --pearl: #FDF6E3;
+}
+.harbor-daylight::selection,
+.harbor-daylight ::selection { color: var(--heading); background: var(--selection); }
+.harbor-daylight .daylight-action::selection,
+.harbor-daylight .daylight-action *::selection { color: var(--button-text); background: var(--accent-hover); }
