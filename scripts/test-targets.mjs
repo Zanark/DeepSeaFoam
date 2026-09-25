@@ -5,6 +5,7 @@ import { addChatThemes } from "./chat-themes.mjs";
 import { addDesktopThemes } from "./desktop-themes.mjs";
 import { addMonkeytypeTheme } from "./monkeytype-theme.mjs";
 import { composite, contrast, rgb } from "./colors.mjs";
+import { decorateMarkdown } from "./markdown-swatches.mjs";
 
 const root = new URL("../", import.meta.url);
 const read = file => readFile(new URL(file, root), "utf8");
@@ -75,7 +76,8 @@ test("additional emitters are deterministic, nonmutating and match every generat
   assert.deepEqual(outputs, generate());
   assert.deepEqual(palette, before);
   for (const [file, content] of outputs) {
-    assert.equal((await read(file)).replace(/\r\n/g, "\n"), content, file);
+    const expected = file.endsWith(".md") ? decorateMarkdown(content, file).content : content;
+    assert.equal((await read(file)).replace(/\r\n/g, "\n"), expected, file);
   }
 });
 
@@ -313,4 +315,45 @@ test("all theme distributions carry the approved MIT license without relicensing
   assert.equal(icon.readUInt32BE(16), 128);
   assert.equal(icon.readUInt32BE(20), 128);
   assert.match(await read("LICENSE"), /does not relicense third-party material/);
+});
+
+test("VS Code packaging resolves README images and links within its monorepo target", async () => {
+  const source = await read("scripts/package-release.ps1");
+  const command = source.match(/^\s*npx --yes "@vscode\/vsce@4\.0\.0" package (?:[^\r\n]*`\r?\n)*[^\r\n]*/m)?.[0];
+  assert.ok(command, "The release must invoke the pinned VS Code packager");
+  assert.match(command, /--baseImagesUrl "https:\/\/raw\.githubusercontent\.com\/Zanark\/DeepSeaFoam\/main\/targets\/vscode"/);
+  assert.match(command, /--baseContentUrl "https:\/\/github\.com\/Zanark\/DeepSeaFoam\/blob\/main\/targets\/vscode"/);
+  assert.doesNotMatch(command, /--no-rewrite-relative-links/);
+});
+
+test("explicit release packages include optional swatch directories at the README root", async () => {
+  const source = await read("scripts/package-release.ps1");
+  const archives = new Map([...source.matchAll(
+    /Compress-Archive\s+`\s+-Path @\(([\s\S]*?)\)\s+`\s+-DestinationPath \(Join-Path \$dist "DeepSeaFoam-(\w+)-\$Version\.zip"\)/g
+  )].map(([, files, name]) => [name, files]));
+  for (const [name, target, nativeFiles] of [
+    ["Monkeytype", "monkeytype", ["DeepSeaFoam.json", "DeepSeaFoam.txt", "README.md", "LICENSE"]],
+    ["Chromium", "chromium", ["manifest.json", "README.md", "LICENSE"]]
+  ]) {
+    const files = archives.get(name);
+    assert.ok(files, `${name} must retain its explicit archive-root file list`);
+    const paths = [...files.matchAll(/Join-Path \$repoRoot "([^"]+)"/g)].map(([, path]) => path);
+    assert.deepEqual(paths, [...nativeFiles, "swatches", "swatches"].map(file => `targets\\${target}\\${file}`),
+      `${name} must include the directory itself, not flatten its images or include browser caches`);
+    assert.ok(files.includes(`if (Test-Path (Join-Path $repoRoot "targets\\${target}\\swatches") -PathType Container) {`),
+      `${name} must still package successfully when its README has no swatches`);
+    assert.match(files, /\{\s+Join-Path \$repoRoot "targets\\(?:monkeytype|chromium)\\swatches"\s+\}/);
+  }
+});
+
+test("Obsidian release staging keeps optional swatches inside the theme folder", async () => {
+  const source = await read("scripts/package-release.ps1");
+  const staging = source.slice(source.indexOf("    $obsidianRoot = "), source.indexOf("    $bundleRoot = "));
+  assert.ok(staging.includes('$obsidianTheme = Join-Path $obsidianRoot "DeepSeaFoam"'));
+  for (const file of ["manifest.json", "theme.css", "README.md", "LICENSE"]) {
+    assert.ok(staging.includes(`Copy-Item (Join-Path $repoRoot "targets\\obsidian\\${file}") $obsidianTheme`));
+  }
+  assert.match(staging,
+    /if \(Test-Path \(Join-Path \$repoRoot "targets\\obsidian\\swatches"\) -PathType Container\) \{\s+Copy-Item \(Join-Path \$repoRoot "targets\\obsidian\\swatches"\) \$obsidianTheme -Recurse\s+\}\s+Compress-Archive\s+`\s+-Path \$obsidianTheme\s+`\s+-DestinationPath \(Join-Path \$dist "DeepSeaFoam-Obsidian-\$Version\.zip"\)/
+  );
 });

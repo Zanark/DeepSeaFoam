@@ -6,10 +6,10 @@
 
 | Position | Slack role | Palette mapping |
 | --- | --- | --- |
-| 1 | System navigation | Panel `#001E26` |
-| 2 | Selected items | Accent `#00A591` |
-| 3 | Presence indication | Document `#45D072` |
-| 4 | Notifications | Error `#E84A5F` |
+| 1 | System navigation | Panel <img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26` |
+| 2 | Selected items | Accent <img src="swatches/00a591.png" width="32" height="12" alt="Color swatch"> `#00A591` |
+| 3 | Presence indication | Document <img src="swatches/45d072.png" width="32" height="12" alt="Color swatch"> `#45D072` |
+| 4 | Notifications | Error <img src="swatches/e84a5f.png" width="32" height="12" alt="Color swatch"> `#E84A5F` |
 
 Presence uses document green as a deliberate host-specific mapping. The string contains no legacy eight/ten-color fields, booleans or dark-mode flag.
 

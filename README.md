@@ -13,38 +13,38 @@
 
 ## DeepSeaFoam · dark
 
-| Color | Role | Hex |
-| :--- | :--- | :--- |
-| ![Near-black teal](docs/swatches/000f13.svg) | Workspace | `#000F13` |
-| ![Deep blue-green](docs/swatches/001e26.svg) | Panel | `#001E26` |
-| ![Soft gray](docs/swatches/93a1a1.svg) | Text | `#93A1A1` |
-| ![Distant gray](docs/swatches/839496.svg) | Secondary text | `#839496` |
-| ![Warm ivory](docs/swatches/eee8d5.svg) | Warm emphasis | `#EEE8D5` |
-| ![Pale pearl](docs/swatches/fdf6e3.svg) | Light selection edge | `#FDF6E3` |
-| ![Submerged slate](docs/swatches/586e75.svg) | Border | `#586E75` |
-| ![Vivid seafoam](docs/swatches/00a591.svg) | Accent | `#00A591` |
-| ![Vivid green](docs/swatches/45d072.svg) | Document indicator | `#45D072` |
-| ![Bright yellow](docs/swatches/ebe565.svg) | Warning | `#EBE565` |
-| ![Vivid rose](docs/swatches/e84a5f.svg) | Error | `#E84A5F` |
+| Role | Color |
+| :--- | :--- |
+| Workspace | ![Near-black teal](docs/swatches/000f13.svg) `#000F13` |
+| Panel | ![Deep blue-green](docs/swatches/001e26.svg) `#001E26` |
+| Text | ![Soft gray](docs/swatches/93a1a1.svg) `#93A1A1` |
+| Secondary text | ![Distant gray](docs/swatches/839496.svg) `#839496` |
+| Warm emphasis | ![Warm ivory](docs/swatches/eee8d5.svg) `#EEE8D5` |
+| Light selection edge | ![Pale pearl](docs/swatches/fdf6e3.svg) `#FDF6E3` |
+| Border | ![Submerged slate](docs/swatches/586e75.svg) `#586E75` |
+| Accent | ![Vivid seafoam](docs/swatches/00a591.svg) `#00A591` |
+| Document indicator | ![Vivid green](docs/swatches/45d072.svg) `#45D072` |
+| Warning | ![Bright yellow](docs/swatches/ebe565.svg) `#EBE565` |
+| Error | ![Vivid rose](docs/swatches/e84a5f.svg) `#E84A5F` |
 
 ## Harbor Daylight · light
 
 An adopted light companion; [web study, not 21 light app ports](docs/HARBOR-DAYLIGHT.md).
 
-| Color | Role | Hex |
-| :--- | :--- | :--- |
-| ![Warm limestone](docs/light-swatches/f3f2e9.svg) | Background | `#F3F2E9` |
-| ![Sea glass](docs/light-swatches/e3ece7.svg) | Surface | `#E3ECE7` |
-| ![Sunlit ivory](docs/light-swatches/fcfaf2.svg) | Paper / button text | `#FCFAF2` |
-| ![Deep sea-slate](docs/light-swatches/355451.svg) | Text | `#355451` |
-| ![Quiet green-gray](docs/light-swatches/536b66.svg) | Muted text | `#536B66` |
-| ![Deep tidal teal](docs/light-swatches/173d3a.svg) | Heading | `#173D3A` |
-| ![Sea-stone](docs/light-swatches/6b857e.svg) | Border | `#6B857E` |
-| ![Daylight seafoam](docs/light-swatches/006f63.svg) | Accent | `#006F63` |
-| ![Deep kelp](docs/light-swatches/00594f.svg) | Accent hover | `#00594F` |
-| ![Document green](docs/light-swatches/247449.svg) | Document indicator | `#247449` |
-| ![Ochre](docs/light-swatches/77600e.svg) | Warning | `#77600E` |
-| ![Berry rose](docs/light-swatches/ad3e55.svg) | Error | `#AD3E55` |
+| Role | Color |
+| :--- | :--- |
+| Background | ![Warm limestone](docs/light-swatches/f3f2e9.svg) `#F3F2E9` |
+| Surface | ![Sea glass](docs/light-swatches/e3ece7.svg) `#E3ECE7` |
+| Paper / button text | ![Sunlit ivory](docs/light-swatches/fcfaf2.svg) `#FCFAF2` |
+| Text | ![Deep sea-slate](docs/light-swatches/355451.svg) `#355451` |
+| Muted text | ![Quiet green-gray](docs/light-swatches/536b66.svg) `#536B66` |
+| Heading | ![Deep tidal teal](docs/light-swatches/173d3a.svg) `#173D3A` |
+| Border | ![Sea-stone](docs/light-swatches/6b857e.svg) `#6B857E` |
+| Accent | ![Daylight seafoam](docs/light-swatches/006f63.svg) `#006F63` |
+| Accent hover | ![Deep kelp](docs/light-swatches/00594f.svg) `#00594F` |
+| Document indicator | ![Document green](docs/light-swatches/247449.svg) `#247449` |
+| Warning | ![Ochre](docs/light-swatches/77600e.svg) `#77600E` |
+| Error | ![Berry rose](docs/light-swatches/ad3e55.svg) `#AD3E55` |
 
 ## In practice
 

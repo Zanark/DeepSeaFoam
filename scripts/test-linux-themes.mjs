@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { decorateMarkdown } from "./markdown-swatches.mjs";
 import { readFile } from "node:fs/promises";
 import { addLinuxThemes } from "./linux-themes.mjs";
 import { composite, contrast } from "./colors.mjs";
@@ -162,7 +163,8 @@ test("Linux emitter has exactly eight deterministic, nonmutating, fresh outputs"
   assert.deepEqual(output, generate(source));
   assert.deepEqual(source, before);
   for (const [file, content] of output) {
-    assert.equal((await read(file)).replace(/\r\n/g, "\n"), content, file);
+    assert.equal((await read(file)).replace(/\r\n/g, "\n"),
+      file.endsWith(".md") ? decorateMarkdown(content, file).content : content, file);
   }
 });
 

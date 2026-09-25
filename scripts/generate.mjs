@@ -10,6 +10,7 @@ import { addLinuxThemes } from "./linux-themes.mjs";
 import { addWebTheme } from "./web-theme.mjs";
 import { addManualThemes } from "./manual-themes.mjs";
 import { validateLightPalette, lightPaletteCss, lightPaletteGroups } from "./light-palette.mjs";
+import { swatchSvg, addMarkdownSwatches } from "./markdown-swatches.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const palette = JSON.parse(await readFile(path.join(root, "palette", "deepseafoam.json"), "utf8"));
@@ -69,7 +70,7 @@ const vscodePackage = {
     type: "git",
     url: "https://github.com/Zanark/DeepSeaFoam.git"
   },
-  files: ["themes/**", "README.md", "LICENSE", "icon.png"],
+  files: ["themes/**", "swatches/**", "README.md", "LICENSE", "icon.png"],
   engines: { vscode: "^1.90.0" },
   categories: ["Themes"],
   extensionKind: ["ui"],
@@ -717,23 +718,17 @@ const swatchSources = [
     .map(([name, entry]) => [name, { value: entry.value, role: entry.use }])), directory: "docs/syntax-swatches" },
   ...["solid", "overlay"].map(group => ({ entries: lightPalette[group], directory: "docs/light-swatches" }))
 ];
+const swatchOptions = {
+  checkerLight: color("preview", "checkerLight"),
+  checkerDark: color("preview", "checkerDark"),
+  border: solid("border")
+};
 for (const { entries, directory } of swatchSources) {
   for (const entry of Object.values(entries)) {
     const value = entry.value.toUpperCase();
     const fileName = `${value.slice(1).toLowerCase()}.svg`;
     const title = `${entry.role}: ${value}`;
-    if (value.length === 9) {
-      const { rgb, opacity } = rgba(value);
-      add(
-        `${directory}/${fileName}`,
-        `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="24" viewBox="0 0 64 24" role="img" aria-labelledby="title"><title id="title">${title}</title><defs><pattern id="checker" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="${color("preview", "checkerLight")}"/><path d="M0 0h4v4H0zM4 4h4v4H4z" fill="${color("preview", "checkerDark")}"/></pattern></defs><rect x=".5" y=".5" width="63" height="23" rx="2" fill="url(#checker)" stroke="#586E75"/><rect x=".5" y=".5" width="63" height="23" rx="2" fill="${rgb}" fill-opacity="${opacity}" stroke="#586E75"/></svg>\n`
-      );
-    } else {
-      add(
-        `${directory}/${fileName}`,
-        `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="24" viewBox="0 0 64 24" role="img" aria-labelledby="title"><title id="title">${title}</title><rect x=".5" y=".5" width="63" height="23" rx="2" fill="${value}" stroke="#586E75"/></svg>\n`
-      );
-    }
+    add(`${directory}/${fileName}`, swatchSvg(value, title, swatchOptions));
   }
 }
 
@@ -782,10 +777,10 @@ add("site/palette.json", `${JSON.stringify(sitePalette)}\n`);
 add("palette/harbor-daylight.css", lightPaletteCss(lightPalette, palette));
 
 const paletteTable = (entries, directory) => [
-  "| Swatch | Role | Value |",
-  "| --- | --- | --- |",
+  "| Role | Color |",
+  "| --- | --- |",
   ...Object.values(entries).map(entry =>
-    `| ![${entry.role}](${directory}/${entry.value.slice(1).toLowerCase()}.svg) | ${entry.role} | \`${entry.value}\` |`)
+    `| ${entry.role} | ![${entry.role}](${directory}/${entry.value.slice(1).toLowerCase()}.svg) \`${entry.value}\` |`)
 ].join("\n");
 add("docs/PALETTE.md", `# DeepSeaFoam color reference
 
@@ -926,6 +921,7 @@ function validateSource() {
 
 validateSource();
 validateLightPalette(lightPalette, palette);
+const markdownCount = await addMarkdownSwatches(root, outputs, swatchOptions);
 
 const mismatches = [];
 for (const [relativePath, content] of outputs) {
@@ -933,12 +929,14 @@ for (const [relativePath, content] of outputs) {
   if (checkOnly) {
     let existing;
     try {
-      existing = (await readFile(absolutePath, "utf8")).replace(/\r\n/g, "\n");
-    } catch {
+      existing = Buffer.isBuffer(content) ? await readFile(absolutePath)
+        : (await readFile(absolutePath, "utf8")).replace(/\r\n/g, "\n");
+    } catch (error) {
+      if (error.code !== "ENOENT") throw error;
       mismatches.push(`${relativePath} is missing`);
       continue;
     }
-    if (existing !== content) {
+    if (Buffer.isBuffer(content) ? !existing.equals(content) : existing !== content) {
       mismatches.push(`${relativePath} is out of date`);
     }
   } else {
@@ -986,7 +984,7 @@ if (checkOnly) {
     }
   }
 
-  console.log(`Validated ${outputs.size} generated files, 27 dark core, 19 terminal and 16 light colors.`);
+  console.log(`Validated ${outputs.size} generated files and swatch coverage in all ${markdownCount} Markdown files; 27 dark core, 19 terminal and 16 light colors.`);
 } else {
   console.log(`Generated ${outputs.size} files from palette/deepseafoam.json.`);
 }

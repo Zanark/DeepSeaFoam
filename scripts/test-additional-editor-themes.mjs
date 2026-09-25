@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { decorateMarkdown } from "./markdown-swatches.mjs";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { addAdditionalEditorThemes } from "./additional-editor-themes.mjs";
@@ -216,7 +217,10 @@ test("editor ports emit exactly four deterministic, current, nonmutating artifac
   assert.deepEqual([...outputs.keys()], paths);
   assert.deepEqual(outputs, generate(source));
   assert.deepEqual(source, before);
-  for (const [file, content] of outputs) assert.equal((await read(file)).replace(/\r\n/g, "\n"), content, file);
+  for (const [file, content] of outputs) {
+    assert.equal((await read(file)).replace(/\r\n/g, "\n"),
+      file.endsWith(".md") ? decorateMarkdown(content, file).content : content, file);
+  }
 });
 
 test("Notepad++ XML recognizes every lexer, style ID, keyword class and global entry", () => {

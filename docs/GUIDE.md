@@ -9,7 +9,7 @@ description: "Installation, application boundaries, design, development, showcas
 
 ## Overview
 
-A quiet workstation beneath deep water, with small seafoam-colored signals and warm light illuminating what matters. DeepSeaFoam is derived from [Ethan Schoonover's Solarized palette](https://ethanschoonover.com/solarized/), but it is not Solarized Dark renamed. Its defining relationship is an extremely dark teal workspace (`#000F13`) surrounded by slightly lighter blue-green structure (`#001E26`), with restrained seafoam interaction signals (`#00A591`) and selective warm emphasis.
+A quiet workstation beneath deep water, with small seafoam-colored signals and warm light illuminating what matters. DeepSeaFoam is derived from [Ethan Schoonover's Solarized palette](https://ethanschoonover.com/solarized/), but it is not Solarized Dark renamed. Its defining relationship is an extremely dark teal workspace (<img src="swatches/000f13.svg" width="32" height="12" alt="Color swatch"> `#000F13`) surrounded by slightly lighter blue-green structure (<img src="swatches/001e26.svg" width="32" height="12" alt="Color swatch"> `#001E26`), with restrained seafoam interaction signals (<img src="swatches/00a591.svg" width="32" height="12" alt="Color swatch"> `#00A591`) and selective warm emphasis.
 
 Application exports keep working surfaces flat: no ocean decoration, colored glow, gradients or textures, and no recoloring of documents, artwork, images, videos or exported content. The cinematic scenery belongs only to the website.
 
@@ -89,7 +89,7 @@ The [full palette reference](PALETTE.md) contains visible swatches and copyable 
 
 [`palette/deepseafoam.json`](../palette/deepseafoam.json) remains the canonical source for dark application exports. Its core inventory is **11 interface solids + 8 overlays + 8 preview neutrals = 27 values**. The four retained Solarized syntax-heritage colors and the higher-contrast terminal extension are separate groups. [`palette/harbor-daylight.json`](../palette/harbor-daylight.json) records the adopted **12-solid + 4-overlay** light companion without rewriting the dark source.
 
-The terminal extension was inspired by the supplied **Solarized Dark Higher Contrast** scheme: brighter mist text, richer ANSI colors, warm whites and an orange cursor. DeepSeaFoam deliberately replaces the reference background `#001E27` with `#000F13`, preserving its other 19 terminal values. Terminal exports share that scheme where their native format supports the roles; host omissions are documented in the guides. In Alacritty, `purple` maps to native `magenta`.
+The terminal extension was inspired by the supplied **Solarized Dark Higher Contrast** scheme: brighter mist text, richer ANSI colors, warm whites and an orange cursor. DeepSeaFoam deliberately replaces the reference background <img src="color-swatches/001e27.svg" width="32" height="12" alt="Color swatch"> `#001E27` with <img src="swatches/000f13.svg" width="32" height="12" alt="Color swatch"> `#000F13`, preserving its other 19 terminal values. Terminal exports share that scheme where their native format supports the roles; host omissions are documented in the guides. In Alacritty, `purple` maps to native `magenta`.
 
 The four terminal-derived core signals use recorded `signalAdaptation` shade scales; UI selection and error adaptations are recorded separately. Core-backed strings, keywords, numbers and diagnostics inherit those vivid signals. The heritage syntax colors do not silently restore the full Solarized palette. See [semantic mappings across all 21 targets](MAPPINGS.md) for host surfaces, extensions, references and unsupported boundaries.
 
@@ -101,7 +101,19 @@ npm test
 npm run package:release
 ```
 
-`generate` rebuilds application exports, palette references and local SVG swatches; do not hand-edit generated outputs. `test` checks generated freshness, theme invariants, contrast pairs, export/site contracts and scene controllers. `package:release` recreates **only** `dist\releases\<version>\` (currently `dist\releases\0.7.0\`), preserving sibling releases and unrelated `dist\instagram\` / historical deliverables. Its manual VS Code kit is under that version's `marketplace\vscode\` folder. Packaging does not upload, publish or replace remote assets. Commands are defined in [package.json](../package.json#L6-L9); the version-local output boundary is enforced in [package-release.ps1](../scripts/package-release.ps1#L6-L24).
+`generate` rebuilds application exports, palette references and local swatches; do not hand-edit generated outputs. It also pairs every Markdown color mention with a visible swatch, including prose, composites and historical release notes. `test` checks this coverage, generated freshness, theme invariants, contrast pairs, export/site contracts and scene controllers. `package:release` recreates **only** `dist\releases\<version>\` (currently `dist\releases\0.7.0\`), preserving sibling releases and unrelated `dist\instagram\` / historical deliverables. Its manual VS Code kit is under that version's `marketplace\vscode\` folder. Packaging does not upload, publish or replace remote assets. Commands are defined in [package.json](../package.json#L6-L9); the version-local output boundary is enforced in [package-release.ps1](../scripts/package-release.ps1#L6-L24).
+
+Swatches sit beside the copyable values, not in a remote image service. Existing
+palette SVGs are reused; derived and historical values get generated
+`docs/color-swatches` assets. Target guides keep local `swatches` PNGs so source
+and ZIP guides work offline. VS Code packaging rewrites its README image URLs to
+the public `targets/vscode` directory; PNGs satisfy its SVG restrictions.
+Transparent colors use a neutral checkerboard, not an assumed application
+background or a contrast guarantee. Explicit ARGB examples keep their native
+notation while showing the equivalent RGBA color. Fenced examples and Mermaid
+source remain intact, with a color key immediately below each example.
+The scan covers maintained Markdown throughout the repository, excluding private
+`.agent-context`, dependencies, Git internals and immutable `dist` deliveries.
 
 Author website styles in [`scripts/templates/showcase.css`](../scripts/templates/showcase.css);
 generation removes indentation and blank lines into `site/styles.css` to retain the

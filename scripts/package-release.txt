@@ -40,7 +40,10 @@ try {
 
     Push-Location (Join-Path $repoRoot "targets\vscode")
     try {
-        npx --yes "@vscode/vsce@4.0.0" package --no-dependencies --out (Join-Path $dist "DeepSeaFoam-VSCode-$Version.vsix")
+        npx --yes "@vscode/vsce@4.0.0" package --no-dependencies `
+            --baseImagesUrl "https://raw.githubusercontent.com/Zanark/DeepSeaFoam/main/targets/vscode" `
+            --baseContentUrl "https://github.com/Zanark/DeepSeaFoam/blob/main/targets/vscode" `
+            --out (Join-Path $dist "DeepSeaFoam-VSCode-$Version.vsix")
         if ($LASTEXITCODE -ne 0) {
             throw "VS Code packaging failed."
         }
@@ -104,6 +107,9 @@ try {
             (Join-Path $repoRoot "targets\monkeytype\DeepSeaFoam.txt"),
             (Join-Path $repoRoot "targets\monkeytype\README.md"),
             (Join-Path $repoRoot "targets\monkeytype\LICENSE")
+            if (Test-Path (Join-Path $repoRoot "targets\monkeytype\swatches") -PathType Container) {
+                Join-Path $repoRoot "targets\monkeytype\swatches"
+            }
         ) `
         -DestinationPath (Join-Path $dist "DeepSeaFoam-Monkeytype-$Version.zip") `
         -CompressionLevel Optimal
@@ -113,6 +119,9 @@ try {
             (Join-Path $repoRoot "targets\chromium\manifest.json"),
             (Join-Path $repoRoot "targets\chromium\README.md"),
             (Join-Path $repoRoot "targets\chromium\LICENSE")
+            if (Test-Path (Join-Path $repoRoot "targets\chromium\swatches") -PathType Container) {
+                Join-Path $repoRoot "targets\chromium\swatches"
+            }
         ) `
         -DestinationPath (Join-Path $dist "DeepSeaFoam-Chromium-$Version.zip") `
         -CompressionLevel Optimal
@@ -130,6 +139,9 @@ try {
     Copy-Item (Join-Path $repoRoot "targets\obsidian\theme.css") $obsidianTheme
     Copy-Item (Join-Path $repoRoot "targets\obsidian\README.md") $obsidianTheme
     Copy-Item (Join-Path $repoRoot "targets\obsidian\LICENSE") $obsidianTheme
+    if (Test-Path (Join-Path $repoRoot "targets\obsidian\swatches") -PathType Container) {
+        Copy-Item (Join-Path $repoRoot "targets\obsidian\swatches") $obsidianTheme -Recurse
+    }
     Compress-Archive `
         -Path $obsidianTheme `
         -DestinationPath (Join-Path $dist "DeepSeaFoam-Obsidian-$Version.zip") `

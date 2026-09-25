@@ -52,15 +52,15 @@ No fictitious Markdown lexer or invented style IDs are included.
 
 | Role | Mapping |
 | --- | --- |
-| Editor / surrounding gutters | base `#000F13` / panel `#001E26` |
-| Ordinary / comment / emphasized text | `#93A1A1` / `#839496` / `#EEE8D5` |
-| Keywords / strings | document `#45D072` / accent `#00A591` |
-| Numbers and literal constants | warning `#EBE565` |
-| Types / escapes and markup entities | heritage blue `#268BD2` / magenta `#D33682` |
-| Operators and attributes / preprocessor and regex | heritage violet `#6C71C4` / orange `#CB4B16` |
-| Selection / selected foreground | `#002526` / `#EEE8D5` |
-| Caret / current line / indent and edge guide | `#FDF6E3` / `#001E26` / `#23353A` |
-| Saved / modified / invalid or deleted | `#45D072` / `#EBE565` / `#E84A5F` |
+| Editor / surrounding gutters | base <img src="swatches/000f13.png" width="32" height="12" alt="Color swatch"> `#000F13` / panel <img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26` |
+| Ordinary / comment / emphasized text | <img src="swatches/93a1a1.png" width="32" height="12" alt="Color swatch"> `#93A1A1` / <img src="swatches/839496.png" width="32" height="12" alt="Color swatch"> `#839496` / <img src="swatches/eee8d5.png" width="32" height="12" alt="Color swatch"> `#EEE8D5` |
+| Keywords / strings | document <img src="swatches/45d072.png" width="32" height="12" alt="Color swatch"> `#45D072` / accent <img src="swatches/00a591.png" width="32" height="12" alt="Color swatch"> `#00A591` |
+| Numbers and literal constants | warning <img src="swatches/ebe565.png" width="32" height="12" alt="Color swatch"> `#EBE565` |
+| Types / escapes and markup entities | heritage blue <img src="swatches/268bd2.png" width="32" height="12" alt="Color swatch"> `#268BD2` / magenta <img src="swatches/d33682.png" width="32" height="12" alt="Color swatch"> `#D33682` |
+| Operators and attributes / preprocessor and regex | heritage violet <img src="swatches/6c71c4.png" width="32" height="12" alt="Color swatch"> `#6C71C4` / orange <img src="swatches/cb4b16.png" width="32" height="12" alt="Color swatch"> `#CB4B16` |
+| Selection / selected foreground | <img src="swatches/002526.png" width="32" height="12" alt="Color swatch"> `#002526` / <img src="swatches/eee8d5.png" width="32" height="12" alt="Color swatch"> `#EEE8D5` |
+| Caret / current line / indent and edge guide | <img src="swatches/fdf6e3.png" width="32" height="12" alt="Color swatch"> `#FDF6E3` / <img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26` / <img src="swatches/23353a.png" width="32" height="12" alt="Color swatch"> `#23353A` |
+| Saved / modified / invalid or deleted | <img src="swatches/45d072.png" width="32" height="12" alt="Color swatch"> `#45D072` / <img src="swatches/ebe565.png" width="32" height="12" alt="Color swatch"> `#EBE565` / <img src="swatches/e84a5f.png" width="32" height="12" alt="Color swatch"> `#E84A5F` |
 
 Syntax follows the repository's shared editor mappings: document-green keywords,
 seafoam strings, warning-yellow numbers/constants, warm functions and blue types.
@@ -72,8 +72,8 @@ Search-result file headers and diff command headers retain accent; diff addition
 retain document green rather than borrowing the string color.
 
 XML colors are six-digit **RRGGBB without #**, not RGBA. Selection composites
-`#00A59126` over base; search-result hits composite it over
-panel (`#003236`). Indent/edge guides composite the canonical separator.
+<img src="swatches/00a59126.png" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#00A59126` over base; search-result hits composite it over
+panel (<img src="swatches/003236.png" width="32" height="12" alt="Color swatch"> `#003236`). Indent/edge guides composite the canonical separator.
 The host applies its own indicator opacity (100/255 in the checked source) to
 smart/find/tag/mark highlights; those styles deliberately contain the uncomposited
 signal colors, avoiding a second alpha reduction. Five mark styles and both
@@ -95,13 +95,13 @@ For an optional closer match, record every previous value first, then use
 
 | Native tone control | Suggested color |
 | --- | --- |
-| Top / Main | `#001E26` |
-| Active | `#000F13` |
-| Menu hot track | `#003236` |
-| Error | `#23252E` |
-| Text / Darker text / Disabled text | `#93A1A1` / `#839496` / `#586E75` |
-| Link / Edge highlight | `#00A591` |
-| Edge / Edge disabled | `#586E75` / `#233E46` |
+| Top / Main | <img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26` |
+| Active | <img src="swatches/000f13.png" width="32" height="12" alt="Color swatch"> `#000F13` |
+| Menu hot track | <img src="swatches/003236.png" width="32" height="12" alt="Color swatch"> `#003236` |
+| Error | <img src="swatches/23252e.png" width="32" height="12" alt="Color swatch"> `#23252E` |
+| Text / Darker text / Disabled text | <img src="swatches/93a1a1.png" width="32" height="12" alt="Color swatch"> `#93A1A1` / <img src="swatches/839496.png" width="32" height="12" alt="Color swatch"> `#839496` / <img src="swatches/586e75.png" width="32" height="12" alt="Color swatch"> `#586E75` |
+| Link / Edge highlight | <img src="swatches/00a591.png" width="32" height="12" alt="Color swatch"> `#00A591` |
+| Edge / Edge disabled | <img src="swatches/586e75.png" width="32" height="12" alt="Color swatch"> `#586E75` / <img src="swatches/233e46.png" width="32" height="12" alt="Color swatch"> `#233E46` |
 
 These are manual suggestions, not settings applied by the theme. Leave unrelated
 preferences, document contents and media untouched.

@@ -4,7 +4,7 @@
 
 `DeepSeaFoam.tdesktop-theme` is a **native, plain-text, colors-only Telegram Desktop theme**, including the Windows desktop client. It covers core windows, menus/forms, chat lists, folder navigation, message bubbles/metadata, the composer and Telegram-rendered notifications.
 
-Workspace and panel surfaces remain `#000F13` and `#001E26`. UI selection and outgoing bubbles use opaque composites of `derived.textSelection` over those surfaces, not terminal-only colors. Selected outgoing messages receive another selection layer. Warm links/selected text and brighter outgoing timestamps preserve readability on these fills.
+Workspace and panel surfaces remain <img src="swatches/000f13.png" width="32" height="12" alt="Color swatch"> `#000F13` and <img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26`. UI selection and outgoing bubbles use opaque composites of `derived.textSelection` over those surfaces, not terminal-only colors. Selected outgoing messages receive another selection layer. Warm links/selected text and brighter outgoing timestamps preserve readability on these fills.
 
 Green presence, delivery and success indicators intentionally reuse `solid.document` as a host-specific mapping, not a new canonical role. Service messages explicitly use warm text rather than the dark foreground used on accent-filled buttons.
 

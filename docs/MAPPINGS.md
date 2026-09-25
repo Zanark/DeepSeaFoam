@@ -15,47 +15,47 @@ Version 0.4.2 uses the approved higher-contrast terminal group as its direct ref
 
 | Role | Terminal source (unchanged) | Scale | Current (0.4.2) |
 | --- | --- | --- | --- |
-| Accent / focus | `brightCyan` / `#00B39E` | 0.94 | `#00A591` vivid seafoam |
-| Document indicator | `brightGreen` / `#51EF84` | 0.90 | `#45D072` vivid green |
-| Warning | `brightYellow` / `#FFF96E` | 0.94 | `#EBE565` bright yellow |
-| Error | `red` / `#F54F65` | 0.96 | `#E84A5F` vivid rose |
+| Accent / focus | `brightCyan` / <img src="terminal-swatches/00b39e.svg" width="32" height="12" alt="Color swatch"> `#00B39E` | 0.94 | <img src="swatches/00a591.svg" width="32" height="12" alt="Color swatch"> `#00A591` vivid seafoam |
+| Document indicator | `brightGreen` / <img src="terminal-swatches/51ef84.svg" width="32" height="12" alt="Color swatch"> `#51EF84` | 0.90 | <img src="swatches/45d072.svg" width="32" height="12" alt="Color swatch"> `#45D072` vivid green |
+| Warning | `brightYellow` / <img src="terminal-swatches/fff96e.svg" width="32" height="12" alt="Color swatch"> `#FFF96E` | 0.94 | <img src="swatches/ebe565.svg" width="32" height="12" alt="Color swatch"> `#EBE565` bright yellow |
+| Error | `red` / <img src="terminal-swatches/f54f65.svg" width="32" height="12" alt="Color swatch"> `#F54F65` | 0.96 | <img src="swatches/e84a5f.svg" width="32" height="12" alt="Color swatch"> `#E84A5F` vivid rose |
 
 Convert each terminal source from sRGB to OKLCH, multiply **both lightness and chroma** by its role's scale, preserve hue, then convert back to sRGB and round to 8-bit channels. This proportional shade keeps the source's color character without mixing in white/gray or forcing equal lightness/chroma across roles. In [`palette/deepseafoam.json`](../palette/deepseafoam.json), `signalAdaptation` records `space: "oklch"`, `method: "proportional-shade"`, `sourceGroup: "terminal"`, and each role's `source` / `scale`.
 
-The inventory remains **27 core values**. All seven neutral solids (base, panel, text, faint text, warm emphasis, light edge, border), the other overlays, and all preview neutrals stay unchanged. The symmetry guide follows the accent as `#00A59188`, retaining alpha `88`. SpriteCanvas remains a read-only origin, not a target of this tuning.
+The inventory remains **27 core values**. All seven neutral solids (base, panel, text, faint text, warm emphasis, light edge, border), the other overlays, and all preview neutrals stay unchanged. The symmetry guide follows the accent as <img src="swatches/00a59188.svg" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#00A59188`, retaining alpha `88`. SpriteCanvas remains a read-only origin, not a target of this tuning.
 
 ## Surface hierarchy
 
 | Semantic surface | VS Code | Visual Studio | Obsidian | Windows Terminal | Firefox |
 | --- | --- | --- | --- | --- | --- |
-| Primary work area `#000F13` | Editor, terminal, active tab, inputs | Code editor, output and command windows | Note editor and reading view | Terminal buffer | Tab strip behind inactive tabs, address field, new-tab surface |
-| Surrounding panel `#001E26` | Activity bar, sidebars, panels, title/tab bars | Shell, tool windows, headers, tree views | Sidebars, ribbon, tabs, status, prompts, menus | Not separately exposed | Selected tab, toolbar, popups, sidebar |
-| Focus / active signal `#00A591` | Focus border, active markers, links | Semantic accent, environment border | Focus outline, active navigation, links | Cursor and ANSI use the terminal extension | Active-tab line, focused field border, attention icons |
-| Primary text `#93A1A1` | Ordinary labels and editor text | Shell, editor, and tool-window text | Ordinary note and chrome text | `#9CC2C3` terminal foreground | Ordinary chrome text |
-| Warm emphasis `#EEE8D5` | Active titles, headings, error-message text | Headers and selected text | Headings and active tabs | `#EAE3CB` / `#FCF4DC` terminal whites | Selected tab and focused-field text |
+| Primary work area <img src="swatches/000f13.svg" width="32" height="12" alt="Color swatch"> `#000F13` | Editor, terminal, active tab, inputs | Code editor, output and command windows | Note editor and reading view | Terminal buffer | Tab strip behind inactive tabs, address field, new-tab surface |
+| Surrounding panel <img src="swatches/001e26.svg" width="32" height="12" alt="Color swatch"> `#001E26` | Activity bar, sidebars, panels, title/tab bars | Shell, tool windows, headers, tree views | Sidebars, ribbon, tabs, status, prompts, menus | Not separately exposed | Selected tab, toolbar, popups, sidebar |
+| Focus / active signal <img src="swatches/00a591.svg" width="32" height="12" alt="Color swatch"> `#00A591` | Focus border, active markers, links | Semantic accent, environment border | Focus outline, active navigation, links | Cursor and ANSI use the terminal extension | Active-tab line, focused field border, attention icons |
+| Primary text <img src="swatches/93a1a1.svg" width="32" height="12" alt="Color swatch"> `#93A1A1` | Ordinary labels and editor text | Shell, editor, and tool-window text | Ordinary note and chrome text | <img src="terminal-swatches/9cc2c3.svg" width="32" height="12" alt="Color swatch"> `#9CC2C3` terminal foreground | Ordinary chrome text |
+| Warm emphasis <img src="swatches/eee8d5.svg" width="32" height="12" alt="Color swatch"> `#EEE8D5` | Active titles, headings, error-message text | Headers and selected text | Headings and active tabs | <img src="terminal-swatches/eae3cb.svg" width="32" height="12" alt="Color swatch"> `#EAE3CB` / <img src="terminal-swatches/fcf4dc.svg" width="32" height="12" alt="Color swatch"> `#FCF4DC` terminal whites | Selected tab and focused-field text |
 
-The 0.2.0 base is intentionally near-black teal rather than the original pure black. Windows Terminal exposes one text buffer rather than a content area surrounded by application panels. Its background therefore uses `#000F13`; forcing the lighter panel color into the buffer would invert the hierarchy.
+The 0.2.0 base is intentionally near-black teal rather than the original pure black. Windows Terminal exposes one text buffer rather than a content area surrounded by application panels. Its background therefore uses <img src="swatches/000f13.svg" width="32" height="12" alt="Color swatch"> `#000F13`; forcing the lighter panel color into the buffer would invert the hierarchy.
 
-Firefox deliberately places its inactive tabs on the near-black teal tab strip with `#839496` titles. The selected tab uses the blue-green panel surface, warm text, and the seafoam active line. This preserves the reference theme's quiet, background-blending tab behavior without importing its Solarized background colors.
+Firefox deliberately places its inactive tabs on the near-black teal tab strip with <img src="swatches/839496.svg" width="32" height="12" alt="Color swatch"> `#839496` titles. The selected tab uses the blue-green panel surface, warm text, and the seafoam active line. This preserves the reference theme's quiet, background-blending tab behavior without importing its Solarized background colors.
 
 ## Interaction adaptations
 
 | Role | Mapping |
 | --- | --- |
 | Primary action | Accent fill with near-black teal text where the host exposes button colors |
-| Hover | Existing `#586E7533` overlay when alpha is supported |
-| Focus | `#00A591` border, outline, or tab line |
+| Hover | Existing <img src="swatches/586e7533.svg" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#586E7533` overlay when alpha is supported |
+| Focus | <img src="swatches/00a591.svg" width="32" height="12" alt="Color swatch"> `#00A591` border, outline, or tab line |
 | Selected controls | Near-black teal fill with cyan foreground or outline |
-| UI text selection | Derived `#00A59126` (38/255 = 14.90% opacity); distinct from the original pale pixel-selection edge |
-| Terminal selection | Exact `#003748` from the supplied higher-contrast reference, with `#9CC2C3` foreground |
-| Error presentation | Warm text where a host separates text from state, with `#E84A5F` borders, underlines, or icons; dark text on opaque rose fills |
+| UI text selection | Derived <img src="color-swatches/00a59126.svg" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#00A59126` (38/255 = 14.90% opacity); distinct from the original pale pixel-selection edge |
+| Terminal selection | Exact <img src="terminal-swatches/003748.svg" width="32" height="12" alt="Color swatch"> `#003748` from the supplied higher-contrast reference, with <img src="terminal-swatches/9cc2c3.svg" width="32" height="12" alt="Color swatch"> `#9CC2C3` foreground |
+| Error presentation | Warm text where a host separates text from state, with <img src="swatches/e84a5f.svg" width="32" height="12" alt="Color swatch"> `#E84A5F` borders, underlines, or icons; dark text on opaque rose fills |
 | Shadows | Transparent black only |
 
-UI selection keeps its 14.90% opacity: `#00A59126` composites to `#002526` on the base and `#003236` on the panel. Ordinary `#93A1A1` text has approximately 6.08:1 and 5.20:1 contrast respectively, retaining at least 4.5:1 on both. The generator checks these pairs, terminal foreground against its background and selection, and cursor contrast. These checks do not establish universal accessibility compliance or contrast for every syntax/ANSI color emitted by applications.
+UI selection keeps its 14.90% opacity: <img src="color-swatches/00a59126.svg" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#00A59126` composites to <img src="color-swatches/002526.svg" width="32" height="12" alt="Color swatch"> `#002526` on the base and <img src="color-swatches/003236.svg" width="32" height="12" alt="Color swatch"> `#003236` on the panel. Ordinary <img src="swatches/93a1a1.svg" width="32" height="12" alt="Color swatch"> `#93A1A1` text has approximately 6.08:1 and 5.20:1 contrast respectively, retaining at least 4.5:1 on both. The generator checks these pairs, terminal foreground against its background and selection, and cursor contrast. These checks do not establish universal accessibility compliance or contrast for every syntax/ANSI color emitted by applications.
 
-VS Code uses `#00A5911A` (10.20% opacity) for incidental selection/word highlights, `#EBE56526` for the active find fill, and `#EBE5651A` for other find matches. Full-color borders keep the subdued fills distinguishable. Invalid-token errors use `#000F13` text over opaque `#E84A5F`.
+VS Code uses <img src="color-swatches/00a5911a.svg" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#00A5911A` (10.20% opacity) for incidental selection/word highlights, <img src="color-swatches/ebe56526.svg" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#EBE56526` for the active find fill, and <img src="color-swatches/ebe5651a.svg" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#EBE5651A` for other find matches. Full-color borders keep the subdued fills distinguishable. Invalid-token errors use <img src="swatches/000f13.svg" width="32" height="12" alt="Color swatch"> `#000F13` text over opaque <img src="swatches/e84a5f.svg" width="32" height="12" alt="Color swatch"> `#E84A5F`.
 
-Obsidian error surfaces use `#E84A5F26` and hover `#E84A5F2E`, not an opaque rose fill behind warm text. HSL/RGB aliases are generated from the canonical colors rather than hardcoded independently.
+Obsidian error surfaces use <img src="color-swatches/e84a5f26.svg" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#E84A5F26` and hover <img src="color-swatches/e84a5f2e.svg" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#E84A5F2E`, not an opaque rose fill behind warm text. HSL/RGB aliases are generated from the canonical colors rather than hardcoded independently.
 
 ## Additional application mappings (0.5.0)
 
@@ -86,12 +86,12 @@ the main generator supplies the MIT license automatically.
 
 | Array index | Native role | Canonical source | Value |
 | --- | --- | --- | --- |
-| 0 | `bg` | `solid.base` | `#000F13` |
-| 1, 2 | `main`, `caret` | `solid.accent` | `#00A591` |
-| 3 | `sub` | `solid.faintText` | `#839496` |
-| 4 | `subAlt` | `solid.panel` | `#001E26` |
-| 5 | `text` | `solid.warm` | `#EEE8D5` |
-| 6, 7, 8, 9 | `error`, `errorExtra`, `colorfulError`, `colorfulErrorExtra` | `solid.error` | `#E84A5F` |
+| 0 | `bg` | `solid.base` | <img src="swatches/000f13.svg" width="32" height="12" alt="Color swatch"> `#000F13` |
+| 1, 2 | `main`, `caret` | `solid.accent` | <img src="swatches/00a591.svg" width="32" height="12" alt="Color swatch"> `#00A591` |
+| 3 | `sub` | `solid.faintText` | <img src="swatches/839496.svg" width="32" height="12" alt="Color swatch"> `#839496` |
+| 4 | `subAlt` | `solid.panel` | <img src="swatches/001e26.svg" width="32" height="12" alt="Color swatch"> `#001E26` |
+| 5 | `text` | `solid.warm` | <img src="swatches/eee8d5.svg" width="32" height="12" alt="Color swatch"> `#EEE8D5` |
+| 6, 7, 8, 9 | `error`, `errorExtra`, `colorfulError`, `colorfulErrorExtra` | `solid.error` | <img src="swatches/e84a5f.svg" width="32" height="12" alt="Color swatch"> `#E84A5F` |
 
 Warm ivory intentionally becomes normal typed text to meet upstream's near-white
 or black text guidance. Normal typing uses `text` for correct letters and `sub`
@@ -150,10 +150,10 @@ The original interface did not define language syntax. Editor exports retain the
 
 | Extension role | Value | Current use |
 | --- | --- | --- |
-| Orange | `#CB4B16` | Preprocessor / regular-expression distinction |
-| Magenta | `#D33682` | Special constants and escape characters |
-| Violet | `#6C71C4` | Properties, operators and brace levels |
-| Blue | `#268BD2` | Types, tags and properties |
+| Orange | <img src="syntax-swatches/cb4b16.svg" width="32" height="12" alt="Color swatch"> `#CB4B16` | Preprocessor / regular-expression distinction |
+| Magenta | <img src="syntax-swatches/d33682.svg" width="32" height="12" alt="Color swatch"> `#D33682` | Special constants and escape characters |
+| Violet | <img src="syntax-swatches/6c71c4.svg" width="32" height="12" alt="Color swatch"> `#6C71C4` | Properties, operators and brace levels |
+| Blue | <img src="syntax-swatches/268bd2.svg" width="32" height="12" alt="Color swatch"> `#268BD2` | Types, tags and properties |
 
 These four extension colors are unchanged in 0.4.2. Syntax roles sourced from the core are not frozen: strings inherit vivid seafoam, keywords vivid green, and numbers bright yellow; diagnostics and other core-backed semantic roles inherit the corresponding terminal-derived signals.
 
@@ -162,10 +162,10 @@ These four extension colors are unchanged in 0.4.2. Syntax roles sourced from th
 Windows Terminal, VS Code's integrated terminal, Alacritty and Xfce4 Terminal share
 all 19 values in the canonical terminal group. Termux uses its supported foreground,
 cursor and 16 ANSI slots but exposes no selection property. Zsh's prompt is separate
-from emulator colors. All terminal buffers use `#000F13` instead of the reference's
-`#001E27`. See the [visible terminal swatches](PALETTE.md#higher-contrast-terminals).
+from emulator colors. All terminal buffers use <img src="swatches/000f13.svg" width="32" height="12" alt="Color swatch"> `#000F13` instead of the reference's
+<img src="color-swatches/001e27.svg" width="32" height="12" alt="Color swatch"> `#001E27`. See the [visible terminal swatches](PALETTE.md#higher-contrast-terminals).
 
-Introduced in 0.3.0, this extension supplies stronger bright variants, `#9CC2C3` text, warm `#EAE3CB` / `#FCF4DC` whites, and an orange `#F34B00` cursor. It remains a separate stored group even though 0.4.2 uses four entries as sources for derived core signals. **All 19 terminal colors and the Windows Terminal scheme content remain unchanged in 0.5.0.** UI selection is `#00A59126`; terminals retain opaque `#003748`. Alacritty uses its native `magenta` key for the source's `purple`, without changing the value.
+Introduced in 0.3.0, this extension supplies stronger bright variants, <img src="terminal-swatches/9cc2c3.svg" width="32" height="12" alt="Color swatch"> `#9CC2C3` text, warm <img src="terminal-swatches/eae3cb.svg" width="32" height="12" alt="Color swatch"> `#EAE3CB` / <img src="terminal-swatches/fcf4dc.svg" width="32" height="12" alt="Color swatch"> `#FCF4DC` whites, and an orange <img src="terminal-swatches/f34b00.svg" width="32" height="12" alt="Color swatch"> `#F34B00` cursor. It remains a separate stored group even though 0.4.2 uses four entries as sources for derived core signals. **All 19 terminal colors and the Windows Terminal scheme content remain unchanged in 0.5.0.** UI selection is <img src="color-swatches/00a59126.svg" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#00A59126`; terminals retain opaque <img src="terminal-swatches/003748.svg" width="32" height="12" alt="Color swatch"> `#003748`. Alacritty uses its native `magenta` key for the source's `purple`, without changing the value.
 
 ## Unsupported or host-controlled areas
 

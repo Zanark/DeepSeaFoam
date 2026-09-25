@@ -16,7 +16,7 @@ The hero has no eyebrow. Its four-line poem reads:
 > A little warmth, a clearer view.<br>
 > A home for all the work you do.
 
-**Find your app** sits beside **Explore the palette**, using the existing document green `#45D072` with dark text. These are navigation choices, not new theme colors. ([site/index.html:134–150](../site/index.html#L134-L150), `.button-applications`, [site/styles.css:299–306](../site/styles.css#L299-L306), [site/palette.css:11](../site/palette.css#L11))
+**Find your app** sits beside **Explore the palette**, using the existing document green <img src="swatches/45d072.svg" width="32" height="12" alt="Color swatch"> `#45D072` with dark text. These are navigation choices, not new theme colors. ([site/index.html:134–150](../site/index.html#L134-L150), `.button-applications`, [site/styles.css:299–306](../site/styles.css#L299-L306), [site/palette.css:11](../site/palette.css#L11))
 
 The reading path is **hero/workspace → surface hierarchy → editorial rationale/photo reference → palette → applications → interaction study → anglerfish → download → footer/blobfish**. Applications immediately follow the palette. The nautilus is no longer an inline section or spacer: it occupies a root-level scene layer independently of document flow, above the ocean but below readable content. The old four principle cards, four-item signal legend, and heritage/extension block are retired from the page; the research narrative and interaction study remain. Creature placement is composition, not biological depth ordering, and the 0–2,000 m gauge is explicitly narrative. ([site/index.html:70–86](../site/index.html#L70-L86), [site/index.html:228–327](../site/index.html#L228-L327), [site/index.html:445–579](../site/index.html#L445-L579), [scripts/validate-site.mjs:257–279](../scripts/validate-site.mjs#L257-L279), `updateScene`, [site/ocean.js:71–91](../site/ocean.js#L71-L91))
 
@@ -85,6 +85,9 @@ flowchart LR
   style Data fill:#161b22,stroke:#30363d,color:#e6edf3
   linkStyle default stroke:#8b949e
 ```
+<!-- color-swatches:start -->
+Colors in this example: <img src="color-swatches/161b22.svg" width="32" height="12" alt="Color swatch"> `#161b22` · <img src="color-swatches/2d333b.svg" width="32" height="12" alt="Color swatch"> `#2d333b` · <img src="color-swatches/6d5dfc.svg" width="32" height="12" alt="Color swatch"> `#6d5dfc` · <img src="color-swatches/e6edf3.svg" width="32" height="12" alt="Color swatch"> `#e6edf3` · <img src="color-swatches/8b949e.svg" width="32" height="12" alt="Color swatch"> `#8b949e` · <img src="color-swatches/30363d.svg" width="32" height="12" alt="Color swatch"> `#30363d`.
+<!-- color-swatches:end -->
 
 The modules load independently from HTML; palette loading is not a prerequisite. Shared body classes coordinate motion, while music uses a separate **dive-completion handshake**: HTML starts with `data-dive-state="pending"`, `dive` sets `running`, and `finishDive` sets `complete`. Ocean emits `deepseafoam:dive-complete` once for each transition to completion, except while hidden or handling `pagehide`. Music also checks the current state when it mounts, so an already-skipped intro is not missed. Motion pause/reduced motion do not mute playback; they can finish the intro and make its initial request eligible. The diagram describes state/event flow, not JavaScript imports. ([site/index.html:16–25](../site/index.html#L16-L25), `dive` / `finishDive`, [site/ocean.js:50–69](../site/ocean.js#L50-L69), `syncMotion`, [site/ocean.js:102–114](../site/ocean.js#L102-L114), [site/ocean.js:159–181](../site/ocean.js#L159-L181), `startAutomatic`, [site/music.js:79–101](../site/music.js#L79-L101), [site/music.js:135–145](../site/music.js#L135-L145))
 
@@ -144,6 +147,9 @@ flowchart TD
   classDef default fill:#2d333b,stroke:#6d5dfc,color:#e6edf3
   linkStyle default stroke:#8b949e
 ```
+<!-- color-swatches:start -->
+Colors in this example: <img src="color-swatches/161b22.svg" width="32" height="12" alt="Color swatch"> `#161b22` · <img src="color-swatches/2d333b.svg" width="32" height="12" alt="Color swatch"> `#2d333b` · <img src="color-swatches/6d5dfc.svg" width="32" height="12" alt="Color swatch"> `#6d5dfc` · <img src="color-swatches/e6edf3.svg" width="32" height="12" alt="Color swatch"> `#e6edf3` · <img src="color-swatches/8b949e.svg" width="32" height="12" alt="Color swatch"> `#8b949e`.
+<!-- color-swatches:end -->
 
 `blocked` also handles collapsed bounds and shared `page-hidden` state. Intersection/resize observers are event-driven, with scroll/resize fallbacks. Persisted page navigation suspends the controller for back/forward-cache restoration; non-persisted departure destroys it. Cleanup restores the original transform, state attribute, and zone sizing, and detaches viewport listeners as well as the other observers/listeners. ([site/nautilus.js:202–218](../site/nautilus.js#L202-L218), [site/nautilus.js:258–342](../site/nautilus.js#L258-L342))
 

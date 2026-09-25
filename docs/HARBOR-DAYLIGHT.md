@@ -23,27 +23,27 @@ There are **12 new opaque solids + 4 alpha derivations**. Paper also supplies bu
 
 | Token | Value | Intended role |
 | --- | --- | --- |
-| `background` | `#F3F2E9` | Warm ambient page field |
-| `surface` | `#E3ECE7` | Cooler structural panels |
-| `paper` | `#FCFAF2` | Raised paper/sign; also filled-button ink |
-| `text` | `#355451` | Ordinary reading ink |
-| `muted` | `#536B66` | Secondary labels on checked opaque surfaces |
-| `heading` | `#173D3A` | Strong emphasis; selected and hovered labels |
-| `border` | `#6B857E` | Full-opacity structural edge, not ordinary text |
-| `accent` | `#006F63` | Links, interactive outlines, primary-action fill |
-| `accentHover` | `#00594F` | Darker accent action fill/foreground |
-| `document` | `#247449` | Document indicator; explicit status adaptations need words/icons |
-| `warning` | `#77600E` | Ochre caution ink, not decorative yellow fill |
-| `error` | `#AD3E55` | Error ink accompanied by a message or recognizable indicator |
+| `background` | <img src="light-swatches/f3f2e9.svg" width="32" height="12" alt="Color swatch"> `#F3F2E9` | Warm ambient page field |
+| `surface` | <img src="light-swatches/e3ece7.svg" width="32" height="12" alt="Color swatch"> `#E3ECE7` | Cooler structural panels |
+| `paper` | <img src="light-swatches/fcfaf2.svg" width="32" height="12" alt="Color swatch"> `#FCFAF2` | Raised paper/sign; also filled-button ink |
+| `text` | <img src="light-swatches/355451.svg" width="32" height="12" alt="Color swatch"> `#355451` | Ordinary reading ink |
+| `muted` | <img src="light-swatches/536b66.svg" width="32" height="12" alt="Color swatch"> `#536B66` | Secondary labels on checked opaque surfaces |
+| `heading` | <img src="light-swatches/173d3a.svg" width="32" height="12" alt="Color swatch"> `#173D3A` | Strong emphasis; selected and hovered labels |
+| `border` | <img src="light-swatches/6b857e.svg" width="32" height="12" alt="Color swatch"> `#6B857E` | Full-opacity structural edge, not ordinary text |
+| `accent` | <img src="light-swatches/006f63.svg" width="32" height="12" alt="Color swatch"> `#006F63` | Links, interactive outlines, primary-action fill |
+| `accentHover` | <img src="light-swatches/00594f.svg" width="32" height="12" alt="Color swatch"> `#00594F` | Darker accent action fill/foreground |
+| `document` | <img src="light-swatches/247449.svg" width="32" height="12" alt="Color swatch"> `#247449` | Document indicator; explicit status adaptations need words/icons |
+| `warning` | <img src="light-swatches/77600e.svg" width="32" height="12" alt="Color swatch"> `#77600E` | Ochre caution ink, not decorative yellow fill |
+| `error` | <img src="light-swatches/ad3e55.svg" width="32" height="12" alt="Color swatch"> `#AD3E55` | Error ink accompanied by a message or recognizable indicator |
 
 CSS eight-digit hex is **`#RRGGBBAA`**, with alpha last:
 
 | Overlay | Value | Opacity | Boundary |
 | --- | --- | --- | --- |
-| Separator | `#6B857E66` | 102/255 = 40% | Decorative, not an essential control edge |
-| Hover | `#6B857E1A` | 26/255 ≈ 10.196% | Translucent state fill, not `accentHover` |
-| Selection | `#006F631F` | 31/255 ≈ 12.157% | Ordinary text selection with explicit heading ink |
-| Shadow | `#00000014` | 20/255 ≈ 7.843% | Transparent black outside readable content |
+| Separator | <img src="light-swatches/6b857e66.svg" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#6B857E66` | 102/255 = 40% | Decorative, not an essential control edge |
+| Hover | <img src="light-swatches/6b857e1a.svg" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#6B857E1A` | 26/255 ≈ 10.196% | Translucent state fill, not `accentHover` |
+| Selection | <img src="light-swatches/006f631f.svg" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#006F631F` | 31/255 ≈ 12.157% | Ordinary text selection with explicit heading ink |
+| Shadow | <img src="light-swatches/00000014.svg" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#00000014` | 20/255 ≈ 7.843% | Transparent black outside readable content |
 
 The shadow's `14` is hexadecimal for decimal 20, **not 20%**. Composite overlays against their actual background; stacking, opacity, images and gradients can change the result. Interpolated/rendered colors do not create new named semantic solids or inherit a contrast guarantee.
 
@@ -51,10 +51,10 @@ The shadow's `14` is hexadecimal for decimal 20, **not 20%**. Composite overlays
 
 | Role | Existing value | Limit |
 | --- | --- | --- |
-| Safety fill | `#EBE565` · dark warning | Small construction details or daylight sun, not general daylight text |
-| Safety ink | `#000F13` · dark base | Dark lettering on a continuous safety-fill backing |
-| Sunset | `#CB4B16` · syntax-heritage orange | Decorative dusk accent, not an error/warning taxonomy |
-| Pearl | `#FDF6E3` · dark light edge | Decorative moon/stars, not assured daylight contrast |
+| Safety fill | <img src="swatches/ebe565.svg" width="32" height="12" alt="Color swatch"> `#EBE565` · dark warning | Small construction details or daylight sun, not general daylight text |
+| Safety ink | <img src="swatches/000f13.svg" width="32" height="12" alt="Color swatch"> `#000F13` · dark base | Dark lettering on a continuous safety-fill backing |
+| Sunset | <img src="syntax-swatches/cb4b16.svg" width="32" height="12" alt="Color swatch"> `#CB4B16` · syntax-heritage orange | Decorative dusk accent, not an error/warning taxonomy |
+| Pearl | <img src="swatches/fdf6e3.svg" width="32" height="12" alt="Color swatch"> `#FDF6E3` · dark light edge | Decorative moon/stars, not assured daylight contrast |
 
 These roles explain the portfolio handoff's reuse; they do not require importing its construction scene, music, artwork or other assets into DeepSeaFoam.
 
@@ -70,10 +70,10 @@ tokens and selection safeguards, not a complete component framework or native th
 
 ## Interaction safeguards
 
-1. **Ordinary selection:** explicitly use heading `#173D3A` over selection `#006F631F` on page, panel or paper. Do not retain inherited muted, accent or status ink. Body ink also passes the documented pairs, but heading is the chosen stronger rule.
-2. **Filled actions:** use paper `#FCFAF2` on accent `#006F63` and accent-hover `#00594F`. Their `::selection`, including selected child text, must keep paper ink on **opaque accent-hover**, not apply the ordinary translucent-selection recipe.
+1. **Ordinary selection:** explicitly use heading <img src="light-swatches/173d3a.svg" width="32" height="12" alt="Color swatch"> `#173D3A` over selection <img src="light-swatches/006f631f.svg" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#006F631F` on page, panel or paper. Do not retain inherited muted, accent or status ink. Body ink also passes the documented pairs, but heading is the chosen stronger rule.
+2. **Filled actions:** use paper <img src="light-swatches/fcfaf2.svg" width="32" height="12" alt="Color swatch"> `#FCFAF2` on accent <img src="light-swatches/006f63.svg" width="32" height="12" alt="Color swatch"> `#006F63` and accent-hover <img src="light-swatches/00594f.svg" width="32" height="12" alt="Color swatch"> `#00594F`. Their `::selection`, including selected child text, must keep paper ink on **opaque accent-hover**, not apply the ordinary translucent-selection recipe.
 3. **Hover:** promote muted/status labels to heading (or separately checked body ink) on the translucent hover fill. Passing on an opaque surface does not justify retaining the same foreground after tinting.
-4. **Borders:** solid `#6B857E` exceeds 3:1 on the three opaque surfaces, but fails 4.5:1 for ordinary text. The 40% separator is decorative; neither it nor the subtle hover/selection fill is the sole required focus, boundary or selected-control indicator. Check actual adjacent colors.
+4. **Borders:** solid <img src="light-swatches/6b857e.svg" width="32" height="12" alt="Color swatch"> `#6B857E` exceeds 3:1 on the three opaque surfaces, but fails 4.5:1 for ordinary text. The 40% separator is decorative; neither it nor the subtle hover/selection fill is the sole required focus, boundary or selected-control indicator. Check actual adjacent colors.
 5. **Meaning and operation:** retain words/icons, underlined inline links, visible keyboard focus, opaque readable surfaces and usable zoom/reduced-motion/no-JavaScript behavior. Color alone must not carry status or selection meaning.
 
 ### Specific contrast evidence, not certification
@@ -86,9 +86,9 @@ The original handoff uses W3C sRGB relative luminance and normal source-over com
 | Muted on panel | 4.756:1 | Passes, with limited reserve |
 | Solid border on panel | 3.298:1 | Structural 3:1 pair passes; ordinary text does not |
 | Paper on accent / accent-hover | 5.818:1 / 7.906:1 | Checked filled-button and selected-button ink |
-| Heading on selected panel `#C7DDD7` | 8.358:1 | Chosen selection foreground |
+| Heading on selected panel <img src="color-swatches/c7ddd7.svg" width="32" height="12" alt="Color swatch"> `#C7DDD7` | 8.358:1 | Chosen selection foreground |
 | Muted on selected panel | 4.028:1 | Inherited muted selection fails 4.5:1 |
-| Heading on hovered panel `#D7E1DC` | 8.891:1 | Checked hover foreground |
+| Heading on hovered panel <img src="color-swatches/d7e1dc.svg" width="32" height="12" alt="Color swatch"> `#D7E1DC` | 8.891:1 | Checked hover foreground |
 | Muted / document / error on hovered panel | 4.284:1 / 4.277:1 / 4.363:1 | Inherited secondary/status ink fails 4.5:1 |
 | Border against hovered panel | 2.971:1 | Opaque-panel boundary result does not transfer |
 

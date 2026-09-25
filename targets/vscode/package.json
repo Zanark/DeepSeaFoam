@@ -23,6 +23,7 @@
   },
   "files": [
     "themes/**",
+    "swatches/**",
     "README.md",
     "LICENSE",
     "icon.png"

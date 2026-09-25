@@ -15,7 +15,7 @@ BetterDiscord and Vencord are third-party client modifications. Their use may vi
 
 1. Open **User Settings > Appearance** and record your previous theme.
 2. With Nitro, choose **Color Themes > Custom Theme**, then the dark palette.
-3. Try one color: panel `#001E26`, or base `#000F13`. Prefer a uniform background rather than decorative gradient stops. Adjust intensity as needed and select **Apply**.
+3. Try one color: panel <img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26`, or base <img src="swatches/000f13.png" width="32" height="12" alt="Color swatch"> `#000F13`. Prefer a uniform background rather than decorative gradient stops. Adjust intensity as needed and select **Apply**.
 
 Discord derives the result; this does not reproduce every DeepSeaFoam surface or foreground. Without Nitro, a built-in dark theme is only an approximation. Native theme sharing uses Discord's **Share** control; this repository does not provide a native share URL or import file.
 

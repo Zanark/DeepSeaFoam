@@ -2,7 +2,7 @@
 
 ## Scope
 
-`DeepSeaFoam.toml` is a colors-only fragment for current TOML-based Alacritty. It shares the same **19 terminal-extension colors** as Windows Terminal and VS Code: `#000F13` background, `#9CC2C3` foreground, `#F34B00` cursor, `#003748` selection and all 16 ANSI values. The palette's `purple` names map to Alacritty's `magenta` keys.
+`DeepSeaFoam.toml` is a colors-only fragment for current TOML-based Alacritty. It shares the same **19 terminal-extension colors** as Windows Terminal and VS Code: <img src="swatches/000f13.png" width="32" height="12" alt="Color swatch"> `#000F13` background, <img src="swatches/9cc2c3.png" width="32" height="12" alt="Color swatch"> `#9CC2C3` foreground, <img src="swatches/f34b00.png" width="32" height="12" alt="Color swatch"> `#F34B00` cursor, <img src="swatches/003748.png" width="32" height="12" alt="Color swatch"> `#003748` selection and all 16 ANSI values. The palette's `purple` names map to Alacritty's `magenta` keys.
 
 Search and hint highlights reuse terminal colors with dark text; the footer and line indicator use the surrounding panel color. Cursor glyphs use dark ink and selected text uses the terminal foreground. Fonts, padding, opacity, keybindings, shell and window preferences remain yours.
 

@@ -65,55 +65,55 @@ All keys below are relative to `text_editor/theme/highlighting/`:
 
 | Native key | Generated color |
 | --- | --- |
-| `background_color` | `#000F13` |
-| `base_type_color` | `#268BD2` |
-| `bookmark_color` | `#00A591` |
-| `brace_mismatch_color` | `#E84A5F` |
-| `breakpoint_color` | `#E84A5F` |
-| `caret_background_color` | `#000F13` |
-| `caret_color` | `#FDF6E3` |
-| `code_folding_color` | `#586E75` |
-| `comment_color` | `#839496` |
-| `comment_markers/critical_color` | `#E84A5F` |
-| `comment_markers/notice_color` | `#45D072` |
-| `comment_markers/warning_color` | `#EBE565` |
-| `completion_background_color` | `#001E26` |
-| `completion_existing_color` | `#586E7533` |
-| `completion_font_color` | `#93A1A1` |
-| `completion_scroll_color` | `#586E75` |
-| `completion_scroll_hovered_color` | `#00A591` |
-| `completion_selected_color` | `#00A59126` |
-| `control_flow_keyword_color` | `#45D072` |
-| `current_line_color` | `#001E26` |
-| `doc_comment_color` | `#93A1A1` |
-| `engine_type_color` | `#268BD2` |
-| `executing_line_color` | `#EBE565` |
-| `folded_code_region_color` | `#586E7533` |
-| `function_color` | `#EEE8D5` |
-| `gdscript/annotation_color` | `#6C71C4` |
-| `gdscript/function_definition_color` | `#EEE8D5` |
-| `gdscript/global_function_color` | `#268BD2` |
-| `gdscript/node_path_color` | `#00A591` |
-| `gdscript/node_reference_color` | `#00A591` |
-| `gdscript/string_name_color` | `#00A591` |
-| `keyword_color` | `#45D072` |
-| `line_length_guideline_color` | `#586E7566` |
-| `line_number_color` | `#839496` |
-| `mark_color` | `#E84A5F26` |
-| `member_variable_color` | `#6C71C4` |
-| `number_color` | `#EBE565` |
-| `safe_line_number_color` | `#45D072` |
-| `search_result_border_color` | `#00A59188` |
-| `search_result_color` | `#00A59126` |
-| `selection_color` | `#00A59126` |
-| `string_color` | `#00A591` |
-| `string_placeholder_color` | `#D33682` |
-| `symbol_color` | `#6C71C4` |
-| `text_color` | `#93A1A1` |
-| `text_selected_color` | `#EEE8D5` |
-| `user_type_color` | `#268BD2` |
-| `warning_color` | `#EBE56526` |
-| `word_highlighted_color` | `#586E7533` |
+| `background_color` | <img src="swatches/000f13.png" width="32" height="12" alt="Color swatch"> `#000F13` |
+| `base_type_color` | <img src="swatches/268bd2.png" width="32" height="12" alt="Color swatch"> `#268BD2` |
+| `bookmark_color` | <img src="swatches/00a591.png" width="32" height="12" alt="Color swatch"> `#00A591` |
+| `brace_mismatch_color` | <img src="swatches/e84a5f.png" width="32" height="12" alt="Color swatch"> `#E84A5F` |
+| `breakpoint_color` | <img src="swatches/e84a5f.png" width="32" height="12" alt="Color swatch"> `#E84A5F` |
+| `caret_background_color` | <img src="swatches/000f13.png" width="32" height="12" alt="Color swatch"> `#000F13` |
+| `caret_color` | <img src="swatches/fdf6e3.png" width="32" height="12" alt="Color swatch"> `#FDF6E3` |
+| `code_folding_color` | <img src="swatches/586e75.png" width="32" height="12" alt="Color swatch"> `#586E75` |
+| `comment_color` | <img src="swatches/839496.png" width="32" height="12" alt="Color swatch"> `#839496` |
+| `comment_markers/critical_color` | <img src="swatches/e84a5f.png" width="32" height="12" alt="Color swatch"> `#E84A5F` |
+| `comment_markers/notice_color` | <img src="swatches/45d072.png" width="32" height="12" alt="Color swatch"> `#45D072` |
+| `comment_markers/warning_color` | <img src="swatches/ebe565.png" width="32" height="12" alt="Color swatch"> `#EBE565` |
+| `completion_background_color` | <img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26` |
+| `completion_existing_color` | <img src="swatches/586e7533.png" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#586E7533` |
+| `completion_font_color` | <img src="swatches/93a1a1.png" width="32" height="12" alt="Color swatch"> `#93A1A1` |
+| `completion_scroll_color` | <img src="swatches/586e75.png" width="32" height="12" alt="Color swatch"> `#586E75` |
+| `completion_scroll_hovered_color` | <img src="swatches/00a591.png" width="32" height="12" alt="Color swatch"> `#00A591` |
+| `completion_selected_color` | <img src="swatches/00a59126.png" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#00A59126` |
+| `control_flow_keyword_color` | <img src="swatches/45d072.png" width="32" height="12" alt="Color swatch"> `#45D072` |
+| `current_line_color` | <img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26` |
+| `doc_comment_color` | <img src="swatches/93a1a1.png" width="32" height="12" alt="Color swatch"> `#93A1A1` |
+| `engine_type_color` | <img src="swatches/268bd2.png" width="32" height="12" alt="Color swatch"> `#268BD2` |
+| `executing_line_color` | <img src="swatches/ebe565.png" width="32" height="12" alt="Color swatch"> `#EBE565` |
+| `folded_code_region_color` | <img src="swatches/586e7533.png" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#586E7533` |
+| `function_color` | <img src="swatches/eee8d5.png" width="32" height="12" alt="Color swatch"> `#EEE8D5` |
+| `gdscript/annotation_color` | <img src="swatches/6c71c4.png" width="32" height="12" alt="Color swatch"> `#6C71C4` |
+| `gdscript/function_definition_color` | <img src="swatches/eee8d5.png" width="32" height="12" alt="Color swatch"> `#EEE8D5` |
+| `gdscript/global_function_color` | <img src="swatches/268bd2.png" width="32" height="12" alt="Color swatch"> `#268BD2` |
+| `gdscript/node_path_color` | <img src="swatches/00a591.png" width="32" height="12" alt="Color swatch"> `#00A591` |
+| `gdscript/node_reference_color` | <img src="swatches/00a591.png" width="32" height="12" alt="Color swatch"> `#00A591` |
+| `gdscript/string_name_color` | <img src="swatches/00a591.png" width="32" height="12" alt="Color swatch"> `#00A591` |
+| `keyword_color` | <img src="swatches/45d072.png" width="32" height="12" alt="Color swatch"> `#45D072` |
+| `line_length_guideline_color` | <img src="swatches/586e7566.png" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#586E7566` |
+| `line_number_color` | <img src="swatches/839496.png" width="32" height="12" alt="Color swatch"> `#839496` |
+| `mark_color` | <img src="swatches/e84a5f26.png" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#E84A5F26` |
+| `member_variable_color` | <img src="swatches/6c71c4.png" width="32" height="12" alt="Color swatch"> `#6C71C4` |
+| `number_color` | <img src="swatches/ebe565.png" width="32" height="12" alt="Color swatch"> `#EBE565` |
+| `safe_line_number_color` | <img src="swatches/45d072.png" width="32" height="12" alt="Color swatch"> `#45D072` |
+| `search_result_border_color` | <img src="swatches/00a59188.png" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#00A59188` |
+| `search_result_color` | <img src="swatches/00a59126.png" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#00A59126` |
+| `selection_color` | <img src="swatches/00a59126.png" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#00A59126` |
+| `string_color` | <img src="swatches/00a591.png" width="32" height="12" alt="Color swatch"> `#00A591` |
+| `string_placeholder_color` | <img src="swatches/d33682.png" width="32" height="12" alt="Color swatch"> `#D33682` |
+| `symbol_color` | <img src="swatches/6c71c4.png" width="32" height="12" alt="Color swatch"> `#6C71C4` |
+| `text_color` | <img src="swatches/93a1a1.png" width="32" height="12" alt="Color swatch"> `#93A1A1` |
+| `text_selected_color` | <img src="swatches/eee8d5.png" width="32" height="12" alt="Color swatch"> `#EEE8D5` |
+| `user_type_color` | <img src="swatches/268bd2.png" width="32" height="12" alt="Color swatch"> `#268BD2` |
+| `warning_color` | <img src="swatches/ebe56526.png" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#EBE56526` |
+| `word_highlighted_color` | <img src="swatches/586e7533.png" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#586E7533` |
 
 ## Optional editor chrome (manual, not part of the import)
 
@@ -126,8 +126,8 @@ only these controls under **Editor Settings -> Interface -> Theme**:
 | Follow System Theme (`interface/theme/follow_system_theme`) | Off |
 | Use System Accent Color (`interface/theme/use_system_accent_color`) | Off |
 | Color Preset (`interface/theme/color_preset`) | Custom |
-| Base Color (`interface/theme/base_color`) | panel `#001E26` |
-| Accent Color (`interface/theme/accent_color`) | `#00A591` |
+| Base Color (`interface/theme/base_color`) | panel <img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26` |
+| Accent Color (`interface/theme/accent_color`) | <img src="swatches/00a591.png" width="32" height="12" alt="Color swatch"> `#00A591` |
 | Contrast (`interface/theme/contrast`) | 0.30 |
 | Icon And Font Color (`interface/theme/icon_and_font_color`) | Light |
 

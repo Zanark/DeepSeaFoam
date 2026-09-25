@@ -45,10 +45,10 @@ content, replace an entire configuration, or reset Git history to remove a theme
 
 ## Mapping and limits
 
-Content uses `#000F13`; header, footer and panels use
-`#001E26`. Focus/actions use `#00A591`, ordinary text
-`#93A1A1`, headings `#EEE8D5`, and native RGBA selection
-`#00A59126`. Rouge/Pygments token classes receive a limited
+Content uses <img src="swatches/000f13.png" width="32" height="12" alt="Color swatch"> `#000F13`; header, footer and panels use
+<img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26`. Focus/actions use <img src="swatches/00a591.png" width="32" height="12" alt="Color swatch"> `#00A591`, ordinary text
+<img src="swatches/93a1a1.png" width="32" height="12" alt="Color swatch"> `#93A1A1`, headings <img src="swatches/eee8d5.png" width="32" height="12" alt="Color swatch"> `#EEE8D5`, and native RGBA selection
+<img src="swatches/00a59126.png" width="32" height="12" alt="Color swatch (alpha over checkerboard)"> `#00A59126`. Rouge/Pygments token classes receive a limited
 syntax mapping; unsupported token classes inherit ordinary text.
 
 No script, external asset, font download, image filter or app-setting change is

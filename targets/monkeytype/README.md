@@ -39,16 +39,16 @@ All ten slots use existing canonical colors; no new palette values are invented.
 
 | Index | Native slot | Canonical role | Value |
 | --- | --- | --- | --- |
-| 0 | `bg` | `solid.base` | `#000F13` |
-| 1 | `main` | `solid.accent` | `#00A591` |
-| 2 | `caret` | `solid.accent` | `#00A591` |
-| 3 | `sub` | `solid.faintText` | `#839496` |
-| 4 | `subAlt` | `solid.panel` | `#001E26` |
-| 5 | `text` | `solid.warm` | `#EEE8D5` |
-| 6 | `error` | `solid.error` | `#E84A5F` |
-| 7 | `errorExtra` | `solid.error` | `#E84A5F` |
-| 8 | `colorfulError` | `solid.error` | `#E84A5F` |
-| 9 | `colorfulErrorExtra` | `solid.error` | `#E84A5F` |
+| 0 | `bg` | `solid.base` | <img src="swatches/000f13.png" width="32" height="12" alt="Color swatch"> `#000F13` |
+| 1 | `main` | `solid.accent` | <img src="swatches/00a591.png" width="32" height="12" alt="Color swatch"> `#00A591` |
+| 2 | `caret` | `solid.accent` | <img src="swatches/00a591.png" width="32" height="12" alt="Color swatch"> `#00A591` |
+| 3 | `sub` | `solid.faintText` | <img src="swatches/839496.png" width="32" height="12" alt="Color swatch"> `#839496` |
+| 4 | `subAlt` | `solid.panel` | <img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26` |
+| 5 | `text` | `solid.warm` | <img src="swatches/eee8d5.png" width="32" height="12" alt="Color swatch"> `#EEE8D5` |
+| 6 | `error` | `solid.error` | <img src="swatches/e84a5f.png" width="32" height="12" alt="Color swatch"> `#E84A5F` |
+| 7 | `errorExtra` | `solid.error` | <img src="swatches/e84a5f.png" width="32" height="12" alt="Color swatch"> `#E84A5F` |
+| 8 | `colorfulError` | `solid.error` | <img src="swatches/e84a5f.png" width="32" height="12" alt="Color swatch"> `#E84A5F` |
+| 9 | `colorfulErrorExtra` | `solid.error` | <img src="swatches/e84a5f.png" width="32" height="12" alt="Color swatch"> `#E84A5F` |
 
 Warm ivory is deliberately the normal typed text: it meets upstream's
 near-white/black text guidance. Untyped text and secondary UI use the readable

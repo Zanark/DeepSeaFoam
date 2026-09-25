@@ -23,8 +23,8 @@ The current [official FAQ](https://novalauncher.com/faq/) documents:
 
 | Path, starting in Nova Settings | Color |
 | --- | --- |
-| Style (bottom-right icon) > Home Screen > Text | `#93A1A1` |
-| Style > App Drawer > Text | `#93A1A1` |
+| Style (bottom-right icon) > Home Screen > Text | <img src="swatches/93a1a1.png" width="32" height="12" alt="Color swatch"> `#93A1A1` |
+| Style > App Drawer > Text | <img src="swatches/93a1a1.png" width="32" height="12" alt="Color swatch"> `#93A1A1` |
 
 Use the installed picker's supported input. The supplied values are six-digit
 **RGB references**, not a verified current Nova parser grammar. If your picker
@@ -39,19 +39,19 @@ matching color control**; otherwise skip it rather than changing another setting
 
 | Historical path, starting in Nova Settings | DeepSeaFoam color |
 | --- | --- |
-| Home Screen > Search Bar Style > Bar Color > Advanced | `#001E26` |
-| Home Screen > Indicator Color > Advanced | `#00A591` |
-| Home Screen > Dock > Dock Background > Advanced | `#001E26` |
-| App Drawer > Background Color > Advanced | `#000F13` |
-| App Drawer > Scroll Accent Color > Advanced | `#00A591` |
-| Folders > Window Style > Background Color > Advanced | `#001E26` |
-| Search > Background Color > Advanced | `#001E26` |
-| Search > Drawer Search Bar > Bar Color > Advanced | `#001E26` |
+| Home Screen > Search Bar Style > Bar Color > Advanced | <img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26` |
+| Home Screen > Indicator Color > Advanced | <img src="swatches/00a591.png" width="32" height="12" alt="Color swatch"> `#00A591` |
+| Home Screen > Dock > Dock Background > Advanced | <img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26` |
+| App Drawer > Background Color > Advanced | <img src="swatches/000f13.png" width="32" height="12" alt="Color swatch"> `#000F13` |
+| App Drawer > Scroll Accent Color > Advanced | <img src="swatches/00a591.png" width="32" height="12" alt="Color swatch"> `#00A591` |
+| Folders > Window Style > Background Color > Advanced | <img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26` |
+| Search > Background Color > Advanced | <img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26` |
+| Search > Drawer Search Bar > Bar Color > Advanced | <img src="swatches/001e26.png" width="32" height="12" alt="Color swatch"> `#001E26` |
 
 If Material You or automatic colors override an edited surface, select that
 surface's explicit custom-color option when available. Do not disable unrelated
 system features to force a match. Additional reference colors
-`#839496` (lower emphasis) and `#EEE8D5` (warm emphasis)
+<img src="swatches/839496.png" width="32" height="12" alt="Color swatch"> `#839496` (lower emphasis) and <img src="swatches/eee8d5.png" width="32" height="12" alt="Color swatch"> `#EEE8D5` (warm emphasis)
 are not assigned to invented controls.
 
 ## Remove / restore
